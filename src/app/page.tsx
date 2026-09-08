@@ -5,6 +5,9 @@ import HeroVideoCard from "@/components/HeroVideoCard";
 import PoetrySection from "@/components/PoetrySection";
 import FogCountdown from "@/components/FogCountdown";
 import CalendarCard from "@/components/CalendarCard";
+import ScheduleTimeline from "@/components/ScheduleTimeline";
+import GuestGuide from "@/components/GuestGuide";
+import WishesWall from "@/components/WishesWall";
 import VenueSection from "@/components/VenueSection";
 import GallerySection from "@/components/GallerySection";
 import RsvpForm from "@/components/RsvpForm";
@@ -25,7 +28,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#090e0b] text-[#f5f2eb] relative overflow-x-hidden selection:bg-[#d4af37] selection:text-[#090e0b]">
+    <main className="min-h-screen bg-[#faf8f3] text-[#2c3831] relative overflow-x-hidden selection:bg-[#8b1e2d] selection:text-white">
       {/* 1. Closed Hero Card Video */}
       <HeroVideoCard
         key={replayKey}
@@ -33,31 +36,40 @@ export default function Home() {
         onRequestMusicPrompt={() => setAskForMusic(true)}
       />
 
-      {/* Main Page Content (Revealed after video) */}
-      <div className="relative z-10 space-y-8 md:space-y-16">
-        {/* 2. Dari Wedding Poetry & Groom/Bride Story */}
+      {/* Main Page Content */}
+      <div className="relative z-10 space-y-12 md:space-y-20 pb-12">
+        {/* 2. Dari Wedding Poetry & Names */}
         <PoetrySection />
 
         {/* 3. Interactive Fog Wipe Countdown Timer */}
         <FogCountdown />
 
-        {/* 4. Dari Calendar UI Component */}
+        {/* 4. Real Interactive Dari Calendar Section */}
         <CalendarCard />
 
-        {/* 5. Venue Information & Google Maps Location */}
+        {/* 5. Schedule & Program Timeline */}
+        <ScheduleTimeline />
+
+        {/* 6. Guest Information Guide & Etiquette */}
+        <GuestGuide />
+
+        {/* 7. Interactive Wishes Wall */}
+        <WishesWall />
+
+        {/* 8. Venue Information, Photos & Google Maps */}
         <VenueSection />
 
-        {/* 6. Photo Gallery Showcase */}
+        {/* 9. Photo Gallery Showcase */}
         <GallerySection />
 
-        {/* 7. Interactive RSVP Form */}
+        {/* 10. Interactive RSVP Form */}
         <RsvpForm />
 
-        {/* 8. Replay & Back to Top Footer */}
+        {/* 11. Replay & Back to Top Footer */}
         <FooterReplay onReplay={handleReplay} />
       </div>
 
-      {/* Floating Audio Controller & Music Prompt */}
+      {/* Floating Audio Controller with Aryana Sayeed BG Music */}
       <AudioPlayer autoPrompt={askForMusic} />
     </main>
   );
