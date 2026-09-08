@@ -28,7 +28,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#faf8f3] text-[#2c3831] relative overflow-x-hidden selection:bg-[#8b1e2d] selection:text-white">
+<main className="min-h-screen relative overflow-x-hidden">
       {/* 1. Closed Hero Card Video */}
       <HeroVideoCard
         key={replayKey}
