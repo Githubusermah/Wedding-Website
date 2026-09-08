@@ -1,75 +1,58 @@
 "use client";
 
 import { useState } from "react";
-import HeroVideoCard from "@/components/HeroVideoCard";
-import PoetrySection from "@/components/PoetrySection";
-import FogCountdown from "@/components/FogCountdown";
-import CalendarCard from "@/components/CalendarCard";
+import HeroVideoIntro from "@/components/HeroVideoIntro";
+import InvitationHero from "@/components/InvitationHero";
+import EventFacts from "@/components/EventFacts";
+import RsvpForm from "@/components/RsvpForm";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
 import GuestGuide from "@/components/GuestGuide";
-import WishesWall from "@/components/WishesWall";
 import VenueSection from "@/components/VenueSection";
-import GallerySection from "@/components/GallerySection";
-import RsvpForm from "@/components/RsvpForm";
-import AudioPlayer from "@/components/AudioPlayer";
+import WishesWall from "@/components/WishesWall";
 import FooterReplay from "@/components/FooterReplay";
+import MobileActionBar from "@/components/MobileActionBar";
+import AudioPlayer from "@/components/AudioPlayer";
 
 export default function Home() {
   const [askForMusic, setAskForMusic] = useState(false);
-  const [replayKey, setReplayKey] = useState(0);
 
-  const handleVideoEnd = () => {
+  const handleVideoDismiss = () => {
     setAskForMusic(true);
   };
 
-  const handleReplay = () => {
-    setAskForMusic(false);
-    setReplayKey((prev) => prev + 1);
-  };
-
   return (
-<main className="min-h-screen relative overflow-x-hidden">
-      {/* 1. Closed Hero Card Video */}
-      <HeroVideoCard
-        key={replayKey}
-        onVideoEnd={handleVideoEnd}
-        onRequestMusicPrompt={() => setAskForMusic(true)}
-      />
+    <main className="min-h-screen relative pb-16 md:pb-0">
+      {/* 1. Full-screen Video Intro Overlay (disappears when ended or skipped) */}
+      <HeroVideoIntro onDismiss={handleVideoDismiss} />
 
-      {/* Main Page Content */}
-      <div className="relative z-10 space-y-12 md:space-y-20 pb-12">
-        {/* 2. Dari Wedding Poetry & Names */}
-        <PoetrySection />
+      {/* 2. Primary Invitation Hero Section */}
+      <InvitationHero />
 
-        {/* 3. Interactive Fog Wipe Countdown Timer */}
-        <FogCountdown />
+      {/* 3. Quick Event Facts Card */}
+      <EventFacts />
 
-        {/* 4. Real Interactive Dari Calendar Section */}
-        <CalendarCard />
+      {/* 4. Primary RSVP Form */}
+      <RsvpForm />
 
-        {/* 5. Schedule & Program Timeline */}
-        <ScheduleTimeline />
+      {/* 5. Itinerary / Program */}
+      <ScheduleTimeline />
 
-        {/* 6. Guest Information Guide & Etiquette */}
-        <GuestGuide />
+      {/* 6. Guest Guidance */}
+      <GuestGuide />
 
-        {/* 7. Interactive Wishes Wall */}
-        <WishesWall />
+      {/* 7. Venue Section */}
+      <VenueSection />
 
-        {/* 8. Venue Information, Photos & Google Maps */}
-        <VenueSection />
+      {/* 8. Guestbook */}
+      <WishesWall />
 
-        {/* 9. Photo Gallery Showcase */}
-        <GallerySection />
+      {/* 9. Minimal Dari Footer */}
+      <FooterReplay />
 
-        {/* 10. Interactive RSVP Form */}
-        <RsvpForm />
+      {/* 10. Sticky Mobile Action Bar */}
+      <MobileActionBar />
 
-        {/* 11. Replay & Back to Top Footer */}
-        <FooterReplay onReplay={handleReplay} />
-      </div>
-
-      {/* Floating Audio Controller with Aryana Sayeed BG Music */}
+      {/* Background Audio Player */}
       <AudioPlayer autoPrompt={askForMusic} />
     </main>
   );

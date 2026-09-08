@@ -1,128 +1,102 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Clock, Sparkle, Heart, ForkKnife, Cake, MusicNotes, Door } from "@phosphor-icons/react";
+import { Door, Sparkle, Heart, ForkKnife, Cake } from "@phosphor-icons/react";
 
 export default function ScheduleTimeline() {
   const scheduleEvents = [
     {
       time: "۰۶:۰۰ شام",
       title: "ورود و استقبال از مهمانان گرامی",
-      description: "پذیرایی اولیه با نوشیدنی‌های گرم، چای و شیرینی در لابی تالار الماس",
-      icon: <Door size={22} weight="duotone" className="text-[#8b1e2d]" />,
-      highlight: false,
+      description: "پذیرایی اولیه با چای، نوشیدنی‌های گرم و شیرینی سنتی",
+      icon: <Door size={20} className="text-[var(--ruby)]" />,
+      featured: false,
     },
     {
       time: "۰۷:۰۰ شب",
       title: "تلاوت کلام‌الله مجید و آغاز محفل",
-      description: "آغاز رسمی برنامه با کلام خدای متعال و خوش‌آمدگویی خانواده‌های رضایی و همت",
-      icon: <Sparkle size={22} weight="fill" className="text-[#5b7e53]" />,
-      highlight: false,
+      description: "خوش‌آمدگویی و طنین آیات متبرکه قرآن کریم",
+      icon: <Sparkle size={20} className="text-[var(--gold)]" />,
+      featured: false,
     },
     {
-      time: "۰۷:۳۰ شب",
-      title: "مراسم مقدس عقد نکاح و آیین آئینه مصحف",
-      description: "اجرای خطبه عقد و سنت دیرینه آئینه و مصحف با دعای خیر بزرگان",
-      icon: <Heart size={22} weight="fill" className="text-[#8b1e2d]" />,
-      highlight: true,
+      time: "۰۸:۰۰ شب",
+      title: "آیین شرعی عقد نکاح و نکاح‌خط",
+      description: "لحظهٔ مقدس ثبت پیوند زناشویی با حضور بزرگواران و شهود",
+      icon: <Heart size={20} className="text-[var(--ruby)]" />,
+      featured: true,
     },
     {
-      time: "۰۸:۳۰ شب",
-      title: "صرف شام شاهانه و بوفه مفصل",
-      description: "پذیرایی شام شامل غذاهای اصیل افغانی (قابلی پلو، کباب، منتو، دسرها و میوه‌جات)",
-      icon: <ForkKnife size={22} weight="duotone" className="text-[#5b7e53]" />,
-      highlight: false,
+      time: "۰۹:۰۰ شب",
+      title: "صرف شام فاخر و پذیرایی",
+      description: "بوفهٔ کامل غذاهای اصیل افغانی و دسرها",
+      icon: <ForkKnife size={20} className="text-[var(--gold)]" />,
+      featured: false,
     },
     {
-      time: "۰۹:۳۰ شب",
-      title: "کیک‌بری، اهداء تحایف و شادمانی",
-      description: "مراسم بریدن کیک عروسی، عکس‌های یادگاری و ترانه‌های اصیل افغانی",
-      icon: <Cake size={22} weight="duotone" className="text-[#8b1e2d]" />,
-      highlight: false,
-    },
-    {
-      time: "۱۰:۳۰ شب",
-      title: "ختم محفل و بدرقه مهمانان عزیز",
-      description: "سپاسگزاری از حضور گرم شما و بدرقه با صلوات بر محمد و آل محمد",
-      icon: <MusicNotes size={22} weight="duotone" className="text-[#5b7e53]" />,
-      highlight: false,
+      time: "۱۰:۰۰ شب",
+      title: "برش کیک و شادمانی پایان محفل",
+      description: "عکس‌های یادگاری، بریدن کیک و بدرود مهمانان عزیز",
+      icon: <Cake size={20} className="text-[var(--ruby)]" />,
+      featured: false,
     },
   ];
 
   return (
-    <section className="py-16 px-4 max-w-4xl mx-auto" id="schedule-section">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-12"
-      >
-        <span className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold tracking-widest text-[#8b1e2d] uppercase bg-[#fdf0f2] px-4 py-1.5 rounded-full border border-[#8b1e2d]/20 shadow-xs">
-          <Clock size={16} weight="bold" />
-          برنامه زمان‌بندی مراسم
+    <section className="py-12 px-4 max-w-3xl mx-auto">
+      <div className="text-center mb-10">
+        <span className="text-xs text-[var(--gold)] font-semibold tracking-wider uppercase">
+          برنامه محفل
         </span>
-        <h2 className="text-3xl md:text-5xl font-heading text-deep-red-gradient mt-3">
-          جدول زمانی محفل عروسی
+        <h2 className="text-2xl md:text-3xl font-bold text-[var(--ruby)] mt-1">
+          محفل در یک نگاه
         </h2>
-        <p className="text-[#4a5850] text-sm md:text-base mt-2 max-w-lg mx-auto">
-          جهت هماهنگی بیشتر و بهره‌مندی از تمام لحظات شادمانی، برنامه‌ریزی زیر تنظیم شده است
-        </p>
-      </motion.div>
+      </div>
 
-      {/* Timeline Container */}
-      <div className="relative border-r-2 border-[#c5a059]/40 mr-4 md:mr-8 space-y-8 pr-6 md:pr-10">
-        {scheduleEvents.map((item, idx) => (
+      <div className="relative border-r-2 border-[var(--gold)]/40 pr-6 mr-4 space-y-8 text-right">
+        {scheduleEvents.map((item, index) => (
           <motion.div
-            key={idx}
-            initial={{ opacity: 0, x: -20 }}
+            key={index}
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: idx * 0.1, duration: 0.6 }}
-            className="relative group"
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="relative"
           >
-            {/* Timeline Bullet Node */}
+            {/* Thread Dot */}
             <div
-              className={`absolute -right-[35px] md:-right-[51px] top-1.5 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center border-2 transition-transform duration-300 group-hover:scale-110 shadow-md ${
-                item.highlight
-                  ? "bg-deep-red-gradient border-[#c5a059] text-white ring-4 ring-[#8b1e2d]/15"
-                  : "bg-white border-[#5b7e53] text-[#5b7e53]"
+              className={`absolute -right-[31px] top-1.5 w-4 h-4 rounded-full border-2 border-[var(--paper-white)] shadow-sm ${
+                item.featured
+                  ? "bg-[var(--ruby)] ring-4 ring-[var(--ruby)]/20"
+                  : "bg-[var(--gold)]"
               }`}
-            >
-              {item.icon}
-            </div>
+            />
 
-            {/* Event Card Content */}
+            {/* Row Content */}
             <div
-              className={`rounded-2xl p-5 md:p-6 border transition-all duration-300 ${
-                item.highlight
-                  ? "glass-card-ruby border-[#8b1e2d]/30 shadow-lg"
-                  : "glass-card border-[#c5a059]/25 hover:border-[#5b7e53]/40"
+              className={`p-4 md:p-5 transition-all ${
+                item.featured
+                  ? "paper-card border-[var(--ruby)]/40 shadow-md bg-[var(--paper-white)]"
+                  : "bg-transparent"
               }`}
             >
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <span
-                  className={`text-xs md:text-sm font-bold px-3 py-1 rounded-full ${
-                    item.highlight
-                      ? "bg-[#8b1e2d] text-white"
-                      : "bg-[#eef4ed] text-[#5b7e53] border border-[#5b7e53]/20"
-                  }`}
-                >
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <span className="text-xs md:text-sm font-bold text-[var(--ruby)] font-mono">
                   {item.time}
                 </span>
 
-                {item.highlight && (
-                  <span className="text-xs text-[#8b1e2d] font-bold bg-white px-2.5 py-0.5 rounded-full border border-[#8b1e2d]/30">
-                    مهم‌ترین لحظه محفل
+                {item.featured && (
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[var(--ruby)] text-[var(--paper-white)]">
+                    لحظهٔ ویژه
                   </span>
                 )}
               </div>
 
-              <h3 className="text-xl md:text-2xl font-heading text-[#2c3831] mt-2">
+              <h3 className="text-base md:text-lg font-bold text-[var(--ink)] flex items-center gap-2">
                 {item.title}
               </h3>
 
-              <p className="text-xs md:text-sm text-[#4a5850] mt-1.5 leading-relaxed">
+              <p className="text-xs md:text-sm text-[var(--ink-muted)] mt-1 leading-relaxed">
                 {item.description}
               </p>
             </div>

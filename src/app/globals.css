@@ -2,200 +2,72 @@
 
 @layer base {
   :root {
-    --font-vazir: var(--font-vazirmatn), sans-serif;
-    --font-amiri-serif: var(--font-amiri), serif;
-    --font-lalezar-heading: var(--font-lalezar), display;
-    --font-naskh: var(--font-noto-naskh), serif;
-
-    /* ---- Theme: Afghan wedding stationery — ink, oxblood, jade, antique brass ---- */
-    --color-cream-bg: #f6f0e2;        /* warm ivory paper, not stark white */
-    --color-cream-bg-deep: #efe6d2;   /* slightly deeper panel tone */
-    --color-ink: #241d17;             /* warm near-black for body text */
-    --color-ink-soft: #4a4038;        /* secondary text */
-
-    --color-pistachio: #4a6b40;       /* deeper jade-green, less minty */
-    --color-pistachio-dark: #2c4025;
-    --color-pistachio-light: #e6ede1;
-
-    --color-deep-red: #7a1c28;        /* oxblood/garnet, less "brand red" */
-    --color-deep-red-dark: #4f1119;
-    --color-deep-red-light: #f6e9e9;
-
-    --color-gold: #b8863f;            /* antique brass, less yellow/plastic */
-    --color-gold-dark: #8a6329;
-    --color-gold-light: #f2e8d3;
+    --ivory: #F6F0E2;
+    --ivory-deep: #ECE1CB;
+    --paper-white: #FFFDF8;
+    --ink: #241D17;
+    --ink-muted: #5E5449;
+    --ruby: #7A1C28;
+    --ruby-deep: #4F1119;
+    --gold: #B8863F;
+    --sage: #4A6B40;
+    --line: color-mix(in srgb, var(--gold) 36%, transparent);
+    --shadow-paper: 0 1px 0 rgba(70, 45, 22, 0.10), 0 14px 36px rgba(70, 45, 22, 0.07);
+    --radius-paper: 18px;
   }
 }
 
 * {
-  outline-color: var(--color-gold-dark);
+  box-sizing: border-box;
 }
 
-body {
-  font-family: var(--font-vazir);
-  background-color: var(--color-cream-bg);
-  color: var(--color-ink);
-
-  /* Faint boteh/paisley-inspired texture instead of a flat fill.
-     Kept extremely subtle — it should be felt, not seen. */
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(184, 134, 63, 0.05) 0%, transparent 45%),
-    radial-gradient(circle at 80% 75%, rgba(74, 107, 64, 0.05) 0%, transparent 45%);
-  background-attachment: fixed;
+html, body {
+  background-color: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-vazir), sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Never apply letter-spacing to Persian/Arabic text: it breaks glyph joining. */
-.font-poetry {
-  font-family: var(--font-amiri-serif);
-  line-height: 2;
+.font-nastaliq {
+  font-family: var(--font-nastaliq), serif;
+  line-height: 1.8;
 }
 
-.font-heading {
-  font-family: var(--font-lalezar-heading);
-  letter-spacing: 0;
+.font-vazir {
+  font-family: var(--font-vazir), sans-serif;
 }
 
-.font-naskh {
-  font-family: var(--font-naskh);
-  line-height: 1.9;
+.paper-card {
+  background-color: var(--paper-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-paper);
+  box-shadow: var(--shadow-paper);
 }
 
-/* ---- Accent text: reserve gradient treatment for the couple's names only ---- */
-.text-gold-gradient {
-  background: linear-gradient(160deg, #8a6329 0%, #c99b4e 45%, #8a6329 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.paper-card-inset {
+  background-color: var(--ivory-deep);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius-paper) - 4px);
 }
 
-.text-deep-red {
-  color: var(--color-deep-red);
-}
-
-.text-pistachio {
-  color: var(--color-pistachio-dark);
-}
-
-.bg-gold-gradient {
-  background: linear-gradient(160deg, #c99b4e 0%, #b8863f 50%, #8a6329 100%);
-}
-
-.bg-deep-red-gradient {
-  background: linear-gradient(160deg, #8f2130 0%, #7a1c28 50%, #4f1119 100%);
-}
-
-.bg-pistachio-gradient {
-  background: linear-gradient(160deg, #587e4d 0%, #4a6b40 50%, #2c4025 100%);
-}
-
-/* ---- Stationery card: replaces frosted glass with a paper + foil-rule look ---- */
-.invite-card {
-  position: relative;
-  background: #fdfaf3;
-  border: 1px solid var(--color-gold);
-  border-radius: 6px;
-  box-shadow: 0 1px 0 rgba(184, 134, 63, 0.5) inset,
-              0 12px 28px -14px rgba(36, 29, 23, 0.25);
-  padding: 2rem;
-}
-
-/* Hairline double-rule, evoking an engraved invitation border */
-.invite-card::before {
-  content: "";
-  position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(184, 134, 63, 0.35);
-  border-radius: 3px;
-  pointer-events: none;
-}
-
-.invite-card-pistachio {
-  background: #f6f8f2;
-  border-color: var(--color-pistachio);
-}
-.invite-card-pistachio::before {
-  border-color: rgba(74, 107, 64, 0.3);
-}
-
-.invite-card-ruby {
-  background: #fbf3f3;
-  border-color: var(--color-deep-red);
-}
-.invite-card-ruby::before {
-  border-color: rgba(122, 28, 40, 0.3);
-}
-
-.invite-card-hover {
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.invite-card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 1px 0 rgba(184, 134, 63, 0.6) inset,
-              0 18px 34px -14px rgba(122, 28, 40, 0.22);
-}
-
-/* Small ornamental divider — use where content is a genuine break, not decoration */
-.ornament-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  color: var(--color-gold-dark);
-}
-.ornament-divider::before,
-.ornament-divider::after {
-  content: "";
-  height: 1px;
-  width: 48px;
-  background: linear-gradient(90deg, transparent, currentColor);
-}
-.ornament-divider::after {
-  background: linear-gradient(270deg, transparent, currentColor);
-}
-
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-cream-bg-deep);
+  background: var(--ivory-deep);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-gold);
+  background: var(--gold);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-deep-red);
+  background: var(--ruby);
 }
 
 ::selection {
-  background: var(--color-gold-light);
-  color: var(--color-deep-red-dark);
-}
-
-/* ---- Motion: one deliberate float for the countdown/fog moment, nothing scattered ---- */
-@keyframes floatSlow {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-}
-.animate-float {
-  animation: floatSlow 6s ease-in-out infinite;
-}
-
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.55; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.03); }
-}
-.animate-pulse-glow {
-  animation: pulseGlow 5s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-float,
-  .animate-pulse-glow,
-  .invite-card-hover {
-    animation: none;
-    transition: none;
-  }
+  background: var(--gold);
+  color: var(--paper-white);
 }
