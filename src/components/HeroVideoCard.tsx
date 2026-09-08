@@ -1,193 +1,173 @@
-"use client";
+@import "tailwindcss";
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { CaretDown, SpeakerHigh, SpeakerX } from "@phosphor-icons/react";
+@layer base {
+  :root {
+    --font-vazir: var(--font-vazirmatn), sans-serif;
+    --font-amiri-serif: var(--font-amiri), serif;
+    --font-lalezar-heading: var(--font-lalezar), display;
+    --font-naskh: var(--font-noto-naskh), serif;
 
-interface HeroVideoCardProps {
-  onVideoEnd?: () => void;
-  onRequestMusicPrompt?: () => void;
+    /* ---- Theme: ivory invitation card — warm paper, oxblood, jade, antique brass ---- */
+    --color-cream-bg: #f6f0e2;        /* warm ivory paper, not stark white */
+    --color-cream-bg-deep: #efe6d2;   /* deeper panel/footer tone */
+    --color-ink: #241d17;             /* warm near-black body text */
+    --color-ink-soft: #4a4038;        /* secondary text */
+
+    --color-pistachio: #4a6b40;       /* deep jade */
+    --color-pistachio-dark: #2c4025;
+    --color-pistachio-light: #e6ede1;
+
+    --color-deep-red: #7a1c28;        /* oxblood/garnet */
+    --color-deep-red-dark: #4f1119;
+    --color-deep-red-light: #f6e9e9;
+
+    --color-gold: #b8863f;            /* antique brass */
+    --color-gold-dark: #8a6329;
+    --color-gold-light: #f2e8d3;
+  }
 }
 
-export default function HeroVideoCard({
-  onVideoEnd,
-  onRequestMusicPrompt,
-}: HeroVideoCardProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [hasEnded, setHasEnded] = useState(false);
-  const [isDimmed, setIsDimmed] = useState(false);
-  const [showPrompt, setShowPrompt] = useState(false);
+* {
+  outline-color: var(--color-gold-dark);
+}
 
-  // Lock scrolling when video is playing or before completion
-  useEffect(() => {
-    if (!hasEnded) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [hasEnded]);
+body {
+  font-family: var(--font-vazir);
+  background-color: var(--color-cream-bg);
+  color: var(--color-ink);
 
-  // Set initial video frame frozen
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 1.35; // Speed up video slightly per request
-    }
-  }, []);
+  /* Faint warmth, barely perceptible — not a flat fill */
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(184, 134, 63, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(74, 107, 64, 0.05) 0%, transparent 45%);
+  background-attachment: fixed;
+}
 
-  const playCrackSound = () => {
-    try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      if (!AudioCtx) return;
-      const ctx = new AudioCtx();
+/* Never apply letter-spacing to Persian/Arabic text: it breaks glyph joining. */
+.font-poetry {
+  font-family: var(--font-amiri-serif);
+  line-height: 2;
+  color: var(--color-ink-soft);
+}
 
-      // Sharp crack transient
-      const bufferSize = ctx.sampleRate * 0.18;
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        const decay = Math.exp(-i / (ctx.sampleRate * 0.025));
-        data[i] = (Math.random() * 2 - 1) * decay;
-      }
+.font-heading {
+  font-family: var(--font-lalezar-heading);
+  letter-spacing: 0;
+}
 
-      const noise = ctx.createBufferSource();
-      noise.buffer = buffer;
+.font-naskh {
+  font-family: var(--font-naskh);
+  line-height: 1.9;
+}
 
-      const filter = ctx.createBiquadFilter();
-      filter.type = "highpass";
-      filter.frequency.setValueAtTime(800, ctx.currentTime);
+/* ---- Gold-foil text: reserve for the couple's names / one hero line, not every heading ---- */
+.text-gold-gradient {
+  background: linear-gradient(160deg, #8a6329 0%, #c99b4e 45%, #8a6329 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-deep-red-gradient {
+  background: linear-gradient(160deg, #8f2130 0%, #7a1c28 50%, #4f1119 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-pistachio-gradient {
+  background: linear-gradient(160deg, #587e4d 0%, #4a6b40 50%, #2c4025 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(1.0, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+.bg-gold-gradient { background: linear-gradient(160deg, #c99b4e 0%, #b8863f 50%, #8a6329 100%); }
+.bg-deep-red-gradient { background: linear-gradient(160deg, #8f2130 0%, #7a1c28 50%, #4f1119 100%); }
+.bg-pistachio-gradient { background: linear-gradient(160deg, #587e4d 0%, #4a6b40 50%, #2c4025 100%); }
 
-      noise.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
+/* ---- Invitation card: paper + hairline foil rule, not frosted glass ---- */
+.glass-card {
+  position: relative;
+  background: rgba(253, 250, 243, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(184, 134, 63, 0.4);
+  border-radius: 6px;
+  box-shadow: 0 14px 32px -16px rgba(74, 42, 20, 0.15),
+              0 1px 0 rgba(255, 255, 255, 0.6) inset;
+}
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(184, 134, 63, 0.25);
+  border-radius: 3px;
+  pointer-events: none;
+}
 
-      noise.start();
-    } catch (e) {
-      console.warn("Audio Context error:", e);
-    }
-  };
+.glass-card-pistachio {
+  background: rgba(238, 244, 237, 0.94);
+  border-color: rgba(74, 107, 64, 0.35);
+}
+.glass-card-pistachio::before { border-color: rgba(74, 107, 64, 0.25); }
 
-  const handleCardClick = () => {
-    if (isPlaying || hasEnded) return;
+.glass-card-ruby {
+  background: rgba(250, 240, 240, 0.94);
+  border-color: rgba(122, 28, 40, 0.3);
+}
+.glass-card-ruby::before { border-color: rgba(122, 28, 40, 0.25); }
 
-    playCrackSound();
-    setIsPlaying(true);
-    setIsDimmed(true);
+.glass-card-hover {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 134, 63, 0.65);
+  box-shadow: 0 20px 38px -16px rgba(122, 28, 40, 0.18),
+              0 1px 0 rgba(255, 255, 255, 0.7) inset;
+}
 
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.playbackRate = 1.35;
-      videoRef.current.play().catch((err) => console.log("Play failed:", err));
-    }
-  };
+/* Small ornamental divider — for genuine section breaks */
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--color-gold-dark);
+}
+.ornament-divider::before,
+.ornament-divider::after {
+  content: "";
+  height: 1px;
+  width: 48px;
+  background: linear-gradient(90deg, transparent, currentColor);
+}
+.ornament-divider::after { background: linear-gradient(270deg, transparent, currentColor); }
 
-  const handleEnded = () => {
-    setIsPlaying(false);
-    setIsDimmed(false);
-    setHasEnded(true);
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-cream-bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--color-gold); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-deep-red); }
 
-    if (onVideoEnd) onVideoEnd();
-    if (onRequestMusicPrompt) onRequestMusicPrompt();
-  };
+::selection {
+  background: var(--color-gold-light);
+  color: var(--color-deep-red-dark);
+}
 
-  const scrollToContent = () => {
-    const nextSection = document.getElementById("poetry-section");
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+.animate-float { animation: floatSlow 6s ease-in-out infinite; }
 
-  return (
-    <section className="relative w-full h-[100dvh] flex items-center justify-center overflow-hidden bg-[#070a08] select-none">
-      {/* Background Dimming Overlay */}
-      <AnimatePresence>
-        {isDimmed && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.85 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-            className="absolute inset-0 bg-black/90 z-20 pointer-events-none"
-          />
-        )}
-      </AnimatePresence>
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.03); }
+}
+.animate-pulse-glow { animation: pulseGlow 5s ease-in-out infinite; }
 
-      {/* Top & Bottom Letterbox Bars */}
-      <motion.div
-        initial={{ height: 0 }}
-        animate={{ height: isPlaying ? "8vh" : 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="absolute top-0 left-0 right-0 bg-black z-30 pointer-events-none"
-      />
-      <motion.div
-        initial={{ height: 0 }}
-        animate={{ height: isPlaying ? "8vh" : 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="absolute bottom-0 left-0 right-0 bg-black z-30 pointer-events-none"
-      />
-
-      {/* Main Full-Screen Video Container */}
-      <div
-        onClick={handleCardClick}
-        className={`relative w-full h-full flex items-center justify-center cursor-pointer transition-transform duration-700 ${
-          !isPlaying && !hasEnded ? "hover:scale-[1.01] active:scale-[0.99]" : ""
-        }`}
-      >
-        <video
-          ref={videoRef}
-          src="/Unveiling Elegance.mp4"
-          playsInline
-          muted
-          preload="auto"
-          onEnded={handleEnded}
-          className={`w-full h-full object-cover transition-all duration-700 ${
-            isPlaying ? "scale-105 z-20" : "scale-100"
-          }`}
-        />
-
-        {/* Ambient Seal Glow on closed video card state */}
-        {!isPlaying && !hasEnded && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <motion.div
-              initial={{ opacity: 0.4, scale: 0.95 }}
-              animate={{ opacity: [0.3, 0.7, 0.3], scale: [0.95, 1.05, 0.95] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-              className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-r from-[#d4af37]/30 via-[#f3e5ab]/20 to-[#986d1a]/30 blur-2xl pointer-events-none"
-            />
-          </div>
-        )}
-      </div>
-
-      {/* Scroll Cue Chevron after video ends */}
-      <AnimatePresence>
-        {hasEnded && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center cursor-pointer"
-            onClick={scrollToContent}
-          >
-            <span className="text-xs tracking-widest text-[#d4af37] mb-2 font-medium">
-              ورود به دعوت‌نامه
-            </span>
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-              className="w-10 h-10 rounded-full border border-[#d4af37]/40 bg-[#0d1210]/80 backdrop-blur-md flex items-center justify-center text-[#d4af37] shadow-lg shadow-[#d4af37]/20 hover:border-[#d4af37]"
-            >
-              <CaretDown size={20} weight="bold" />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
-  );
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-pulse-glow,
+  .glass-card-hover {
+    animation: none;
+    transition: none;
+  }
 }
