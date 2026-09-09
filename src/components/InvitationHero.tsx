@@ -207,7 +207,7 @@ export default function InvitationHero() {
             <img
               className="venue-img"
               src="/wedding-venue.png"
-              alt="Illustration of the wedding venue, City Star Wedding Hotel"
+              alt="Illustration of the wedding venue, Taj Continental Hotel"
             />
             <div className="sparkle-pt sp1"></div>
             <div className="sparkle-pt sp2"></div>
@@ -217,7 +217,7 @@ export default function InvitationHero() {
           </div>
 
           <div className="venue-caption-wrap">
-            <span className="venue-caption">CITY STAR WEDDING HOTEL</span>
+            <span className="venue-caption">TAJ CONTINENTAL HOTEL</span>
           </div>
           <div className="venue-caption-rule"></div>
 
@@ -225,7 +225,7 @@ export default function InvitationHero() {
             <span>&#10022;</span>
           </div>
 
-          <p className="date-line">October 13, 2026</p>
+          <p className="date-line">{event.invitationDateGregorian}</p>
           <p className="dari-date" dir="rtl">
             {event.invitationDateFa}
           </p>

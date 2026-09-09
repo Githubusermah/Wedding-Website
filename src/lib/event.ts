@@ -3,15 +3,15 @@ export const event = {
   groomName: "فرهاد",
   coupleDisplayName: "فرهاد و سحر",
   pageTitle: "جشن پیوند فرهاد و سحر",
-  invitationDateFa: "دوشنبه، ۱۳ میزان ۱۴۰۴",
-  invitationDateGregorian: "13 October 2025",
+  invitationDateFa: "دوشنبه، ۱۳ میزان ۱۴۰۵",
+  invitationDateGregorian: "13 October 2026",
   startTimeFa: "۶:۰۰ شام",
   endTimeFa: "۱۰:۳۰ شب",
-  startDateTimeISO: "2025-10-13T18:00:00+04:30",
-  endDateTimeISO: "2025-10-13T22:30:00+04:30",
+  startDateTimeISO: "2026-10-13T18:00:00+04:30",
+  endDateTimeISO: "2026-10-13T22:30:00+04:30",
   venueName: "تالار مجلل، هتل تاج کانتیننتال",
   venueShortName: "هتل تاج کانتیننتال",
-  venueAddressFa: "کابل، هتل تاج کانتیننتال",
+  venueAddressFa: "کابل، خیابان کارته چهار، هتل تاج کانتیننتال",
   cityFa: "کابل",
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=Taj+Continental+Hotel+Kabul+Afghanistan",
   latitude: 34.528,
@@ -22,5 +22,10 @@ export const event = {
   familyLine: "خانواده‌های رضایی و همت",
   hashtag: "#FarhadAndSahar",
   dressCodeFa: "لباس رسمی / پیراهن تنبان فاخر یا دریشی / لباس‌های مجلسی با رنگ‌های ملایم، طلایی یا عنابی",
-  photos: [] as Array<{ src: string; alt: string }>
+  photos: [
+    { src: "/venue/taj-1.jpg", alt: "چشم‌انداز و نمای باشکوه هتل تاج کانتیننتال" },
+    { src: "/venue/taj-2.jpg", alt: "تالار مجلل و نورپردازی طلایی هتل تاج کانتیننتال" },
+    { src: "/venue/taj-3.jpg", alt: "دکوراسیون فاخر و جایگاه ویژه عروس و داماد" },
+    { src: "/venue/taj-4.jpg", alt: "فضا و لابی تشریفاتی هتل تاج کانتیننتال" }
+  ]
 } as const;

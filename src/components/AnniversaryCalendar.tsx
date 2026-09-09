@@ -10,12 +10,12 @@ export default function AnniversaryCalendar() {
   const [selectedDay, setSelectedDay] = useState<number>(13);
   const weddingDay = 13;
 
-  // October 2025 calendar days grid (Oct 1 2025 = Wednesday)
+  // October 2026 calendar days grid (Oct 1 2026 = Thursday)
   // Days of week: شنبه (Sat), یکشنبه (Sun), دوشنبه (Mon), سه‌شنبه (Tue), چهارشنبه (Wed), پنج‌شنبه (Thu), جمعه (Fri)
   const daysOfWeekFa = ["ش", "ی", "د", "س", "چ", "پ", "ج"];
 
-  // Grid padding for October 2025 (Starts on Wednesday = index 4)
-  const emptyPrefixSlots = 4;
+  // Grid padding for October 2026 (Starts on Thursday = index 5)
+  const emptyPrefixSlots = 5;
   const daysInMonth = 31;
 
   return (
@@ -34,7 +34,7 @@ export default function AnniversaryCalendar() {
           </div>
 
           <h3 className="text-2xl md:text-3xl font-bold text-[var(--ruby)]">
-            میزان ۱۴۰۴ / اکتبر ۲۰۲۵
+            میزان ۱۴۰۵ / اکتبر ۲۰۲۶
           </h3>
           <p className="text-xs md:text-sm text-[var(--ink-muted)] mt-1">
             روز ماندگار پیوند {event.coupleDisplayName}
@@ -123,8 +123,8 @@ export default function AnniversaryCalendar() {
 
                   <p className="text-sm font-semibold text-[var(--ink)]">
                     {selectedDay === weddingDay
-                      ? "دوشنبه، ۱۳ میزان ۱۴۰۴ (13 October 2025)"
-                      : `${selectedDay} میزان ۱۴۰۴`}
+                      ? "دوشنبه، ۱۳ میزان ۱۴۰۵ (13 October 2026)"
+                      : `${selectedDay} میزان ۱۴۰۵`}
                   </p>
 
                   <p className="text-xs text-[var(--ink-muted)] leading-relaxed">

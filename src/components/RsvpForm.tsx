@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CheckCircle, XCircle, User, Phone, Users, ChatText, PencilSimple } from "@phosphor-icons/react";
+import Image from "next/image";
+import { event } from "@/lib/event";
+import { CheckCircle, XCircle, User, Phone, Users, ChatText, PencilSimple, Heart, Sparkle } from "@phosphor-icons/react";
 
 interface FormData {
   fullName: string;
@@ -59,7 +61,7 @@ export default function RsvpForm() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="paper-card p-6 md:p-10 relative"
+        className="paper-card p-6 md:p-10 relative overflow-hidden"
       >
         <div className="text-center mb-8">
           <span className="text-xs text-[var(--gold)] font-semibold tracking-wider uppercase">
@@ -80,23 +82,84 @@ export default function RsvpForm() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                className="paper-card-inset p-6 md:p-8 text-center space-y-4"
+                className="paper-card-inset p-6 md:p-8 text-center space-y-6 relative overflow-hidden"
               >
-                <div className="w-14 h-14 rounded-full bg-[var(--sage)]/15 text-[var(--sage)] mx-auto flex items-center justify-center">
-                  <CheckCircle size={32} weight="fill" />
-                </div>
+                {formData.attending === "yes" ? (
+                  /* ACCEPTED RESULT SCREEN */
+                  <div className="space-y-5">
+                    {/* Wax Seal Badge */}
+                    <div className="relative w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[var(--ruby)] to-[#4f1119] border-2 border-[var(--gold)] flex items-center justify-center shadow-lg shadow-[var(--ruby)]/20 animate-bounce">
+                      <div className="absolute inset-1 rounded-full border border-dashed border-[var(--gold-light,#e9c96a)] opacity-60" />
+                      <CheckCircle size={40} weight="fill" className="text-[#faf5e8]" />
+                    </div>
 
-                <h3 className="text-xl font-bold text-[var(--ink)]">
-                  سپاس از پاسخ شما، {formData.fullName}.
-                </h3>
+                    <div className="space-y-2">
+                      <span className="text-xs text-[var(--gold)] font-bold tracking-widest uppercase flex items-center justify-center gap-1">
+                        <Sparkle size={14} weight="fill" />
+                        <span>پاسخ شما با موفقیت ثبت شد</span>
+                        <Sparkle size={14} weight="fill" />
+                      </span>
+                      <h3 className="text-2xl font-extrabold text-[var(--ruby)]">
+                        قدم‌تان روی چشم، {formData.fullName} عزیز!
+                      </h3>
+                      <p className="text-sm md:text-base text-[var(--ink)] leading-relaxed max-w-lg mx-auto">
+                        حضور گرم شما همراه با <span className="font-bold text-[var(--ruby)]">{formData.companionCount} نفر</span> در محفل جشن پیوند {event.coupleDisplayName} مایهٔ مسرت و سرافرازی ماست.
+                      </p>
+                    </div>
 
-                <p className="text-sm text-[var(--ink-muted)] leading-relaxed">
-                  {formData.attending === "yes"
-                    ? `حضور شما با ${formData.companionCount} نفر همراه با خوشی ثبت شد.`
-                    : "پاسخ شما مبنی بر عدم امکان حضور با احترام ثبت شد."}
-                </p>
+                    <div className="p-4 rounded-xl bg-[var(--paper-white)] border border-[var(--gold)]/30 text-xs text-[var(--ink-muted)] space-y-1">
+                      <p className="font-semibold text-[var(--ink)]">موعد دیدار:</p>
+                      <p>{event.invitationDateFa} · ساعت {event.startTimeFa}</p>
+                      <p>{event.venueName}</p>
+                    </div>
 
-                <div className="pt-4 border-t border-[var(--line)]">
+                    {/* Arvin Atelier Branding */}
+                    <div className="pt-4 border-t border-[var(--line)] flex items-center justify-center gap-3">
+                      <Image
+                        src="/arvin-atelier-logo.jpg"
+                        alt="Arvin Atelier Logo"
+                        width={32}
+                        height={32}
+                        className="rounded-full border border-[var(--gold)]"
+                      />
+                      <span className="text-[11px] text-[var(--ink-muted)]">
+                        طراحی و اجرای تشریفاتی اختصاصی توسط <strong className="text-[var(--ruby)] font-medium">آتلیه آروین (Arvin Atelier)</strong>
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  /* DECLINED RESULT SCREEN */
+                  <div className="space-y-5">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-[var(--ivory-deep)] text-[var(--gold-dark,#8a6329)] border border-[var(--gold)]/40 flex items-center justify-center">
+                      <Heart size={32} weight="duotone" className="text-[var(--ruby)]" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-bold text-[var(--ink)]">
+                        سپاس فراوان، {formData.fullName} گرامی
+                      </h3>
+                      <p className="text-sm text-[var(--ink-muted)] leading-relaxed max-w-md mx-auto">
+                        پاسخ شما مبنی بر عدم امکان حضور با کمال احترام ثبت شد. از پیام پرمهر و دعای خیرتان صمیمانه سپاسگزاریم.
+                      </p>
+                    </div>
+
+                    {/* Arvin Atelier Branding */}
+                    <div className="pt-4 border-t border-[var(--line)] flex items-center justify-center gap-3">
+                      <Image
+                        src="/arvin-atelier-logo.jpg"
+                        alt="Arvin Atelier Logo"
+                        width={28}
+                        height={28}
+                        className="rounded-full border border-[var(--gold)]"
+                      />
+                      <span className="text-[11px] text-[var(--ink-muted)]">
+                        آتلیه آروین (Arvin Atelier)
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-2">
                   <button
                     onClick={() => setIsSubmitted(false)}
                     className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--ruby)] hover:text-[var(--ruby-deep)] transition-colors"
