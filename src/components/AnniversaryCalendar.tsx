@@ -34,7 +34,7 @@ export default function AnniversaryCalendar() {
           </div>
 
           <h3 className="text-2xl md:text-3xl font-bold text-[var(--ruby)]">
-            میزان ۱۴۰۴ / اکتبر ۲۰۲۵
+            میزان ۱۴۰۵ / اکتبر ۲۰۲۶
           </h3>
           <p className="text-xs md:text-sm text-[var(--ink-muted)] mt-1">
             روز ماندگار پیوند {event.coupleDisplayName}
@@ -56,8 +56,8 @@ export default function AnniversaryCalendar() {
             </div>
 
             <div className="grid grid-cols-7 gap-1 md:gap-2 text-center dir-rtl">
-              {/* Empty leading slots */}
-              {Array.from({ length: emptyPrefixSlots }).map((_, idx) => (
+              {/* Empty leading slots for Oct 2026 (Starts Thursday = index 5) */}
+              {Array.from({ length: 5 }).map((_, idx) => (
                 <div key={`empty-${idx}`} className="h-9 md:h-10 opacity-0" />
               ))}
 
@@ -123,8 +123,8 @@ export default function AnniversaryCalendar() {
 
                   <p className="text-sm font-semibold text-[var(--ink)]">
                     {selectedDay === weddingDay
-                      ? "دوشنبه، ۱۳ میزان ۱۴۰۴ (13 October 2025)"
-                      : `${selectedDay} میزان ۱۴۰۴`}
+                      ? "دوشنبه، ۱۳ میزان ۱۴۰۵ (13 October 2026)"
+                      : `${selectedDay} میزان ۱۴۰۵`}
                   </p>
 
                   <p className="text-xs text-[var(--ink-muted)] leading-relaxed">

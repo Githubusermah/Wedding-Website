@@ -2,7 +2,19 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CheckCircle, XCircle, User, Phone, Users, ChatText, PencilSimple } from "@phosphor-icons/react";
+import Image from "next/image";
+import confetti from "canvas-confetti";
+import {
+  CheckCircle,
+  XCircle,
+  User,
+  Phone,
+  Users,
+  ChatText,
+  PencilSimple,
+  Sparkle,
+  Heart,
+} from "@phosphor-icons/react";
 
 interface FormData {
   fullName: string;
@@ -25,6 +37,32 @@ export default function RsvpForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showMessageField, setShowMessageField] = useState(false);
+
+  const fireGoldConfetti = () => {
+    try {
+      const count = 180;
+      const defaults = {
+        origin: { y: 0.65 },
+        colors: ["#B8863F", "#D4AF37", "#7A1C28", "#ECE1CB", "#FFFDF8"],
+      };
+
+      const fire = (particleRatio: number, opts: confetti.Options) => {
+        confetti({
+          ...defaults,
+          ...opts,
+          particleCount: Math.floor(count * particleRatio),
+        });
+      };
+
+      fire(0.25, { spread: 26, startVelocity: 55 });
+      fire(0.2, { spread: 60 });
+      fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+      fire(0.1, { spread: 120, startVelocity: 45 });
+    } catch {
+      // Fallback gracefully if canvas-confetti is unsupported
+    }
+  };
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -49,6 +87,9 @@ export default function RsvpForm() {
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
+      if (formData.attending === "yes") {
+        fireGoldConfetti();
+      }
     }, 800);
   };
 
@@ -59,10 +100,10 @@ export default function RsvpForm() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="paper-card p-6 md:p-10 relative"
+        className="paper-card p-6 md:p-10 relative shadow-xl border-[var(--line)] overflow-hidden"
       >
         <div className="text-center mb-8">
-          <span className="text-xs text-[var(--gold)] font-semibold tracking-wider uppercase">
+          <span className="text-xs text-[var(--gold)] font-semibold tracking-widest uppercase">
             RSVP
           </span>
           <h2 className="text-2xl md:text-3xl font-bold text-[var(--ruby)] mt-1">
@@ -76,37 +117,122 @@ export default function RsvpForm() {
         <div aria-live="polite">
           <AnimatePresence mode="wait">
             {isSubmitted ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="paper-card-inset p-6 md:p-8 text-center space-y-4"
-              >
-                <div className="w-14 h-14 rounded-full bg-[var(--sage)]/15 text-[var(--sage)] mx-auto flex items-center justify-center">
-                  <CheckCircle size={32} weight="fill" />
-                </div>
+              formData.attending === "yes" ? (
+                /* ACCEPTED ATTENDANCE SUCCESS SCREEN */
+                <motion.div
+                  key="accepted-screen"
+                  initial={{ opacity: 0, scale: 0.92 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5 }}
+                  className="p-6 md:p-8 rounded-2xl bg-gradient-to-b from-[var(--paper-white)] via-[#fffdf6] to-[#faf4e6] border-2 border-[var(--gold)] text-center space-y-5 shadow-lg relative overflow-hidden"
+                >
+                  {/* Gold/Ruby Wax Seal Badge */}
+                  <div className="relative w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[#dfb971] via-[#b8863f] to-[#7a1c28] p-1 shadow-md flex items-center justify-center">
+                    <div className="w-full h-full rounded-full bg-[var(--paper-white)] flex flex-col items-center justify-center border border-[var(--gold)]">
+                      <span className="font-nastaliq text-xl text-[var(--ruby)] font-bold">
+                        ف &amp; س
+                      </span>
+                    </div>
+                  </div>
 
-                <h3 className="text-xl font-bold text-[var(--ink)]">
-                  سپاس از پاسخ شما، {formData.fullName}.
-                </h3>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold text-[var(--ruby)] flex items-center justify-center gap-2">
+                      <Sparkle size={20} weight="fill" className="text-[var(--gold)]" />
+                      <span>پاسخ شما با خوشی ثبت شد</span>
+                      <Sparkle size={20} weight="fill" className="text-[var(--gold)]" />
+                    </h3>
 
-                <p className="text-sm text-[var(--ink-muted)] leading-relaxed">
-                  {formData.attending === "yes"
-                    ? `حضور شما با ${formData.companionCount} نفر همراه با خوشی ثبت شد.`
-                    : "پاسخ شما مبنی بر عدم امکان حضور با احترام ثبت شد."}
-                </p>
+                    <p className="text-base font-semibold text-[var(--ink)] mt-2">
+                      گرامی {formData.fullName}،
+                    </p>
 
-                <div className="pt-4 border-t border-[var(--line)]">
-                  <button
-                    onClick={() => setIsSubmitted(false)}
-                    className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--ruby)] hover:text-[var(--ruby-deep)] transition-colors"
-                  >
-                    <PencilSimple size={16} />
-                    <span>ویرایش پاسخ</span>
-                  </button>
-                </div>
-              </motion.div>
+                    <p className="text-xs md:text-sm text-[var(--ink-muted)] leading-relaxed mt-2 max-w-lg mx-auto">
+                      از حضور گرم شما در این جشن فرخنده سپاسگزاریم.
+                      <br />
+                      دیدار شما باعث شادی و افتخار ماست.
+                    </p>
+
+                    <div className="mt-3 inline-block px-4 py-1.5 rounded-full bg-[var(--gold)]/15 text-[var(--gold-dark,#8a6329)] text-xs font-bold border border-[var(--gold)]/30">
+                      تعداد همراهان ثبت‌شده: {formData.companionCount} نفر
+                    </div>
+                  </div>
+
+                  {/* Arvin Atelier Logo Signature */}
+                  <div className="pt-4 border-t border-[var(--line)]/60 flex flex-col items-center gap-2">
+                    <div className="relative w-24 h-12 opacity-85 hover:opacity-100 transition-opacity">
+                      <Image
+                        src="/arvin-atelier-logo.jpg"
+                        alt="Arvin Atelier Logo"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <span className="text-[10px] text-[var(--ink-muted)] tracking-wider uppercase">
+                      DESIGNED BY ARVIN ATELIER
+                    </span>
+
+                    <button
+                      onClick={() => setIsSubmitted(false)}
+                      className="inline-flex items-center gap-1.5 mt-2 text-xs font-semibold text-[var(--ruby)] hover:text-[var(--ruby-deep)] transition-colors"
+                    >
+                      <PencilSimple size={15} />
+                      <span>ویرایش پاسخ</span>
+                    </button>
+                  </div>
+                </motion.div>
+              ) : (
+                /* DECLINED ATTENDANCE RESPECTFUL SCREEN */
+                <motion.div
+                  key="declined-screen"
+                  initial={{ opacity: 0, scale: 0.92 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5 }}
+                  className="p-6 md:p-8 rounded-2xl bg-[var(--paper-white)] border border-[var(--line)] text-center space-y-5 shadow-sm relative"
+                >
+                  <div className="w-16 h-16 rounded-full bg-[var(--gold)]/15 text-[var(--gold-dark,#8a6329)] mx-auto flex items-center justify-center border border-[var(--gold)]/30">
+                    <Heart size={30} weight="fill" />
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-bold text-[var(--ink)]">
+                      با سپاس و احترام، {formData.fullName}
+                    </h3>
+
+                    <p className="text-xs md:text-sm text-[var(--ink-muted)] leading-relaxed mt-2 max-w-lg mx-auto">
+                      از اینکه به ما اطلاع دادید سپاسگزاریم.
+                      <br />
+                      برای شما شادی و سلامتی آرزو داریم و از یاد شما در این روز خجسته خوشحالیم.
+                    </p>
+                  </div>
+
+                  {/* Arvin Atelier Logo Signature */}
+                  <div className="pt-4 border-t border-[var(--line)]/60 flex flex-col items-center gap-2">
+                    <div className="relative w-24 h-12 opacity-75 hover:opacity-100 transition-opacity">
+                      <Image
+                        src="/arvin-atelier-logo.jpg"
+                        alt="Arvin Atelier Logo"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <span className="text-[10px] text-[var(--ink-muted)] tracking-wider uppercase">
+                      DESIGNED BY ARVIN ATELIER
+                    </span>
+
+                    <button
+                      onClick={() => setIsSubmitted(false)}
+                      className="inline-flex items-center gap-1.5 mt-2 text-xs font-semibold text-[var(--ruby)] hover:text-[var(--ruby-deep)] transition-colors"
+                    >
+                      <PencilSimple size={15} />
+                      <span>ویرایش پاسخ</span>
+                    </button>
+                  </div>
+                </motion.div>
+              )
             ) : (
+              /* RSVP INPUT FORM */
               <form onSubmit={handleSubmit} noValidate className="space-y-6 text-right">
                 {/* Full Name */}
                 <div>
@@ -167,7 +293,7 @@ export default function RsvpForm() {
                     <label
                       className={`flex items-center gap-3 p-3.5 rounded-lg border cursor-pointer transition-colors ${
                         formData.attending === "yes"
-                          ? "border-[var(--ruby)] bg-[var(--paper-white)] text-[var(--ruby-deep)] font-semibold"
+                          ? "border-[var(--ruby)] bg-[var(--paper-white)] text-[var(--ruby-deep)] font-semibold shadow-sm"
                           : "border-[var(--line)] bg-[var(--paper-white)] text-[var(--ink)]"
                       }`}
                     >
@@ -185,7 +311,7 @@ export default function RsvpForm() {
                     <label
                       className={`flex items-center gap-3 p-3.5 rounded-lg border cursor-pointer transition-colors ${
                         formData.attending === "no"
-                          ? "border-[var(--ruby)] bg-[var(--paper-white)] text-[var(--ruby-deep)] font-semibold"
+                          ? "border-[var(--ruby)] bg-[var(--paper-white)] text-[var(--ruby-deep)] font-semibold shadow-sm"
                           : "border-[var(--line)] bg-[var(--paper-white)] text-[var(--ink)]"
                       }`}
                     >
@@ -269,7 +395,7 @@ export default function RsvpForm() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 px-6 rounded-xl bg-[var(--ruby)] hover:bg-[var(--ruby-deep)] text-[var(--paper-white)] font-semibold text-base shadow-md transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-6 rounded-xl bg-[var(--ruby)] hover:bg-[var(--ruby-deep)] text-[var(--paper-white)] font-semibold text-base shadow-md transition-all disabled:opacity-70 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <span>در حال ثبت پاسخ…</span>
