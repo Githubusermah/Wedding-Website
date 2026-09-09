@@ -1,10 +1,29 @@
 "use client";
 
 import { motion } from "motion/react";
+import Image from "next/image";
 import { event } from "@/lib/event";
 import { MapPin, NavigationArrow, Buildings } from "@phosphor-icons/react";
 
 export default function VenueSection() {
+  const hotelPhotos = [
+    {
+      src: "/venue/hotel-exterior.jpg",
+      title: "نمای هتل کابل استار",
+      desc: "ساختمان اصلی هتل در چهارراهی زنبق",
+    },
+    {
+      src: "/venue/hotel-lobby.jpg",
+      title: "ورودی و ورودی هتل",
+      desc: "ورودی تشریفاتی و فضای استقبال",
+    },
+    {
+      src: "/venue/diamond-hall.jpg",
+      title: "تالار الماس",
+      desc: "سالن مجلل برگزاری جشن پیوند",
+    },
+  ];
+
   return (
     <section className="py-12 px-4 max-w-4xl mx-auto">
       <motion.div
@@ -24,6 +43,38 @@ export default function VenueSection() {
           <p className="text-sm text-[var(--ink-muted)] mt-2">
             {event.venueName}
           </p>
+        </div>
+
+        {/* Real Hotel Image Gallery */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          {hotelPhotos.map((photo, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="group relative rounded-xl overflow-hidden border border-[var(--line)] shadow-sm bg-[var(--ivory-deep)] flex flex-col"
+            >
+              <div className="relative h-40 w-full overflow-hidden">
+                <Image
+                  src={photo.src}
+                  alt={photo.title}
+                  fill
+                  sizes="(max-width: 640px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-3 text-right">
+                <h4 className="font-bold text-xs md:text-sm text-[var(--ink)]">
+                  {photo.title}
+                </h4>
+                <p className="text-[11px] text-[var(--ink-muted)] mt-0.5">
+                  {photo.desc}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center text-right">
@@ -49,7 +100,7 @@ export default function VenueSection() {
               </div>
             </div>
 
-            <div className="pt-4">
+            <div className="pt-2">
               <a
                 href={event.mapsUrl}
                 target="_blank"
@@ -62,8 +113,8 @@ export default function VenueSection() {
             </div>
           </div>
 
-          {/* Abstract Map Graphic */}
-          <div className="paper-card-inset p-6 flex flex-col items-center justify-center text-center space-y-3 min-h-[200px] border border-[var(--line)]">
+          {/* Location Summary Card */}
+          <div className="paper-card-inset p-6 flex flex-col items-center justify-center text-center space-y-3 min-h-[160px] border border-[var(--line)]">
             <div className="w-12 h-12 rounded-full bg-[var(--ruby)] text-[var(--paper-white)] flex items-center justify-center shadow-md">
               <MapPin size={28} weight="fill" />
             </div>
@@ -71,7 +122,7 @@ export default function VenueSection() {
               {event.venueShortName}
             </h4>
             <p className="text-xs text-[var(--ink-muted)] max-w-xs">
-              {event.cityFa} · چهارراهی زنبق
+              {event.cityFa} · چهارراهی زنبق، هتل کابل استار
             </p>
           </div>
         </div>
