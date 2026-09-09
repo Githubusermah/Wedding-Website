@@ -4,7 +4,11 @@ import { useEffect, useRef } from "react";
 import { ArrowDown, MapPin, CheckCircle } from "@phosphor-icons/react";
 import { event } from "@/lib/event";
 
-export default function InvitationHero() {
+interface InvitationHeroProps {
+  isVideoDismissed?: boolean;
+}
+
+export default function InvitationHero({ isVideoDismissed = false }: InvitationHeroProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const heroRef = useRef<HTMLDivElement | null>(null);
 
@@ -25,6 +29,8 @@ export default function InvitationHero() {
   };
 
   useEffect(() => {
+    if (!isVideoDismissed) return;
+
     // 1. Drifting Petals inside Hero
     const heroEl = heroRef.current;
     if (!heroEl) return;
@@ -174,7 +180,9 @@ export default function InvitationHero() {
     <section
       id="hero-section"
       ref={heroRef}
-      className="hero-theme-wrapper relative min-h-screen w-full flex items-center justify-center overflow-hidden dir-ltr text-center px-4 py-8 md:py-12"
+      className={`hero-theme-wrapper relative min-h-screen w-full flex items-center justify-center overflow-hidden dir-ltr text-center px-4 py-8 md:py-12 ${
+        isVideoDismissed ? "is-active" : ""
+      }`}
     >
       <canvas ref={canvasRef} className="hero-sky-canvas" />
 
@@ -184,7 +192,7 @@ export default function InvitationHero() {
             <span className="eyebrow">A MOMENT TO REMEMBER</span>
           </div>
 
-          <div className="headline">
+          <div className="headline flex-row" dir="ltr">
             <span className="word save">
               <span>SAVE</span>
             </span>
@@ -217,7 +225,7 @@ export default function InvitationHero() {
           </div>
 
           <div className="venue-caption-wrap">
-            <span className="venue-caption">CITY STAR WEDDING HOTEL</span>
+            <span className="venue-caption">TAJ CONTINENTAL HOTEL</span>
           </div>
           <div className="venue-caption-rule"></div>
 
@@ -273,6 +281,11 @@ export default function InvitationHero() {
 
       <style jsx>{`
         .hero-theme-wrapper {
+          opacity: ${isVideoDismissed ? 1 : 0};
+          transition: opacity 0.5s ease-in-out;
+        }
+
+        .hero-theme-wrapper {
           --ivory: #faf5e8;
           --ivory-deep: #f1e8d4;
           --ink: #241d17;
@@ -314,7 +327,14 @@ export default function InvitationHero() {
           text-align: center;
           padding: 1.6rem 1.5rem 1.2rem;
           opacity: 0;
+        }
+
+        .hero-theme-wrapper.is-active .hero-card {
           animation: cardIn 1.4s ease-out 0.2s forwards;
+        }
+
+        .hero-theme-wrapper:not(.is-active) * {
+          animation: none !important;
         }
 
         @keyframes cardIn {

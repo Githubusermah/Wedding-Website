@@ -9,18 +9,18 @@ export default function VenueSection() {
   const hotelPhotos = [
     {
       src: "/venue/hotel-exterior.jpg",
-      title: "نمای هتل کابل استار",
-      desc: "ساختمان اصلی هتل در چهارراهی زنبق",
+      title: "نمای هتل تاج کانتیننتال",
+      desc: "ساختمان مجلل هتل تاج کانتیننتال کابل",
     },
     {
       src: "/venue/hotel-lobby.jpg",
-      title: "ورودی و ورودی هتل",
-      desc: "ورودی تشریفاتی و فضای استقبال",
+      title: "ورودی و لابی هتل",
+      desc: "فضای تشریفاتی و لابی لوکس هتل",
     },
     {
       src: "/venue/diamond-hall.jpg",
-      title: "تالار الماس",
-      desc: "سالن مجلل برگزاری جشن پیوند",
+      title: "سالن برگزاری محفل",
+      desc: "تالار باشکوه پذیرایی از مهمانان گرامی",
     },
   ];
 
@@ -122,7 +122,7 @@ export default function VenueSection() {
               {event.venueShortName}
             </h4>
             <p className="text-xs text-[var(--ink-muted)] max-w-xs">
-              {event.cityFa} · چهارراهی زنبق، هتل کابل استار
+              {event.cityFa} · هتل تاج کانتیننتال
             </p>
           </div>
         </div>
