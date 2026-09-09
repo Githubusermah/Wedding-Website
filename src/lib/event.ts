@@ -2,20 +2,18 @@ export const event = {
   brideName: "سحر",
   groomName: "فرهاد",
   coupleDisplayName: "فرهاد و سحر",
-  pageTitle: "جشن پیوند فرهاد و سحر — City Star Wedding Hotel",
+  pageTitle: "جشن پیوند فرهاد و سحر",
   invitationDateFa: "دوشنبه، ۱۳ میزان ۱۴۰۴",
   invitationDateGregorian: "13 October 2025",
   startTimeFa: "۶:۰۰ شام",
   endTimeFa: "۱۰:۳۰ شب",
   startDateTimeISO: "2025-10-13T18:00:00+04:30",
   endDateTimeISO: "2025-10-13T22:30:00+04:30",
-  venueName: "هتل عروسی ستی استار (کابل استار)",
-  venueEnglishName: "City Star Wedding Hotel",
-  venueShortName: "هتل ستی استار",
-  venueAddressFa: "کابل، چهارراهی زنبق، هتل کابل استار، تالار عروسی ستی استار",
+  venueName: "تالار الماس، هتل کابل استار",
+  venueShortName: "تالار الماس",
+  venueAddressFa: "کابل، چهارراهی زنبق، هتل کابل استار، تالار الماس",
   cityFa: "کابل",
-  mapsUrl: "https://www.google.com/maps/search/?api=1&query=City+Star+Wedding+Hotel+Kabul+Star+Hotel+Kabul+Afghanistan",
-  mapsEmbedUrl: "https://maps.google.com/maps?q=Kabul+Star+Hotel+Kabul+Afghanistan&t=&z=15&ie=UTF8&iwloc=&output=embed",
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Kabul+Star+Hotel+Kabul+Afghanistan",
   latitude: 34.528,
   longitude: 69.172,
   rsvpDeadlineFa: "لطفاً تا ۵ میزان پاسخ دهید",
@@ -24,8 +22,5 @@ export const event = {
   familyLine: "خانواده‌های رضایی و همت",
   hashtag: "#FarhadAndSahar",
   dressCodeFa: "لباس رسمی / پیراهن تنبان فاخر یا دریشی / لباس‌های مجلسی با رنگ‌های ملایم، طلایی یا عنابی",
-  photos: [
-    { src: "/images/wedding-venue.png", alt: "تصویر اختصاصی هتل عروسی ستی استار (City Star Wedding Hotel)" },
-    { src: "/images/save-the-date-card.png", alt: "کارت دعوت رسمی سحر و فرهاد" },
-  ]
-};
+  photos: [] as Array<{ src: string; alt: string }>
+} as const;
