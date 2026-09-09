@@ -3,6 +3,7 @@
 import { useState } from "react";
 import HeroVideoIntro from "@/components/HeroVideoIntro";
 import InvitationHero from "@/components/InvitationHero";
+import FoggedCountdownCalendar from "@/components/FoggedCountdownCalendar";
 import EventFacts from "@/components/EventFacts";
 import RsvpForm from "@/components/RsvpForm";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
@@ -15,9 +16,11 @@ import AudioPlayer from "@/components/AudioPlayer";
 
 export default function Home() {
   const [askForMusic, setAskForMusic] = useState(false);
+  const [videoDismissed, setVideoDismissed] = useState(false);
 
   const handleVideoDismiss = () => {
     setAskForMusic(true);
+    setVideoDismissed(true);
   };
 
   return (
@@ -26,7 +29,10 @@ export default function Home() {
       <HeroVideoIntro onDismiss={handleVideoDismiss} />
 
       {/* 2. Primary Invitation Hero Section */}
-      <InvitationHero />
+      <InvitationHero isVideoDismissed={videoDismissed} />
+
+      {/* Interactive Fogged Scratch-Off Countdown & Calendar */}
+      <FoggedCountdownCalendar />
 
       {/* 3. Quick Event Facts Card */}
       <EventFacts />
