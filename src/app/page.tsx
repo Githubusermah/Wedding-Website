@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import HeroVideoIntro from "@/components/HeroVideoIntro";
-import InvitationHero from "@/components/InvitationHero";
+import SaveTheDateHero from "@/components/SaveTheDateHero";
+import FoggedCountdown from "@/components/FoggedCountdown";
+import AnniversaryCalendar from "@/components/AnniversaryCalendar";
 import EventFacts from "@/components/EventFacts";
 import RsvpForm from "@/components/RsvpForm";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
@@ -15,41 +17,49 @@ import AudioPlayer from "@/components/AudioPlayer";
 
 export default function Home() {
   const [askForMusic, setAskForMusic] = useState(false);
+  const [isVideoDismissed, setIsVideoDismissed] = useState(false);
 
   const handleVideoDismiss = () => {
+    setIsVideoDismissed(true);
     setAskForMusic(true);
   };
 
   return (
     <main className="min-h-screen relative pb-16 md:pb-0">
-      {/* 1. Full-screen Video Intro Overlay (disappears when ended or skipped) */}
+      {/* 1. Full-screen Video Intro Overlay */}
       <HeroVideoIntro onDismiss={handleVideoDismiss} />
 
-      {/* 2. Primary Invitation Hero Section */}
-      <InvitationHero />
+      {/* 2. Standalone React Client Component Save-The-Date Hero (Triggers when video is dismissed so animations run from start) */}
+      {isVideoDismissed && <SaveTheDateHero />}
 
-      {/* 3. Quick Event Facts Card */}
+      {/* 3. Interactive Scratch-off Fogged Countdown Component */}
+      <FoggedCountdown />
+
+      {/* 4. Ceremonial Anniversary Calendar Component */}
+      <AnniversaryCalendar />
+
+      {/* 5. Quick Event Facts Card */}
       <EventFacts />
 
-      {/* 4. Primary RSVP Form */}
+      {/* 6. Primary RSVP Form */}
       <RsvpForm />
 
-      {/* 5. Itinerary / Program */}
+      {/* 7. Itinerary / Program */}
       <ScheduleTimeline />
 
-      {/* 6. Guest Guidance */}
+      {/* 8. Guest Guidance */}
       <GuestGuide />
 
-      {/* 7. Venue Section */}
+      {/* 9. Venue Section */}
       <VenueSection />
 
-      {/* 8. Guestbook */}
+      {/* 10. Guestbook */}
       <WishesWall />
 
-      {/* 9. Minimal Dari Footer */}
+      {/* 11. Minimal Dari Footer */}
       <FooterReplay />
 
-      {/* 10. Sticky Mobile Action Bar */}
+      {/* 12. Sticky Mobile Action Bar */}
       <MobileActionBar />
 
       {/* Background Audio Player */}

@@ -9,18 +9,18 @@ export default function VenueSection() {
   const hotelPhotos = [
     {
       src: "/venue/hotel-exterior.jpg",
-      title: "نمای هتل کابل استار",
-      desc: "ساختمان اصلی هتل در چهارراهی زنبق",
+      title: "نمای هتل تاج کانتیننتال",
+      desc: "ساختمان مجلل هتل تاج کانتیننتال",
     },
     {
       src: "/venue/hotel-lobby.jpg",
-      title: "ورودی و ورودی هتل",
-      desc: "ورودی تشریفاتی و فضای استقبال",
+      title: "ورودی تشریفاتی هتل",
+      desc: "ورودی باشکوه و فضای استقبال",
     },
     {
       src: "/venue/diamond-hall.jpg",
-      title: "تالار الماس",
-      desc: "سالن مجلل برگزاری جشن پیوند",
+      title: "سالن اصلی برگزاری جشن",
+      desc: "تالار مجلل برگزاری محفل پیوند",
     },
   ];
 
@@ -45,7 +45,7 @@ export default function VenueSection() {
           </p>
         </div>
 
-        {/* Real Hotel Image Gallery */}
+        {/* Hotel Image Gallery */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           {hotelPhotos.map((photo, index) => (
             <motion.div
@@ -85,7 +85,7 @@ export default function VenueSection() {
                 <Buildings size={22} />
               </div>
               <div>
-                <h3 className="font-bold text-base text-[var(--ink)]">نام تالار</h3>
+                <h3 className="font-bold text-base text-[var(--ink)]">نام تالار و هتل</h3>
                 <p className="text-sm text-[var(--ink-muted)] mt-0.5">{event.venueName}</p>
               </div>
             </div>
@@ -122,7 +122,7 @@ export default function VenueSection() {
               {event.venueShortName}
             </h4>
             <p className="text-xs text-[var(--ink-muted)] max-w-xs">
-              {event.cityFa} · چهارراهی زنبق، هتل کابل استار
+              {event.cityFa} · {event.venueAddressFa}
             </p>
           </div>
         </div>

@@ -15,7 +15,10 @@ export default function AudioPlayer({ autoPrompt = false }: AudioPlayerProps) {
 
   useEffect(() => {
     if (autoPrompt) {
-      setShowPromptModal(true);
+      const timer = setTimeout(() => {
+        setShowPromptModal(true);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [autoPrompt]);
 
