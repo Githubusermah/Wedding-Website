@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { SpeakerHigh, SpeakerX, MusicNotes, Play, Pause } from "@phosphor-icons/react";
+import { SpeakerHigh, SpeakerX, MusicNotes, Play } from "@phosphor-icons/react";
 
 interface AudioPlayerProps {
   autoPrompt?: boolean;
@@ -45,7 +45,6 @@ export default function AudioPlayer({ autoPrompt = false }: AudioPlayerProps) {
 
   return (
     <>
-      {/* HTML5 Audio element for background music */}
       <audio
         ref={audioRef}
         src="/music/aryana-ahesta-bero.opus"
@@ -54,36 +53,23 @@ export default function AudioPlayer({ autoPrompt = false }: AudioPlayerProps) {
       />
 
       {/* Floating Music Controller Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-20 md:bottom-6 left-6 z-40">
         <button
           onClick={toggleMusic}
-          className={`relative group flex items-center gap-3 px-4 py-3 rounded-full border shadow-xl backdrop-blur-md transition-all duration-300 cursor-pointer ${
+          className={`relative group flex items-center gap-3 px-4 py-2.5 rounded-full border shadow-md backdrop-blur-md transition-all cursor-pointer ${
             isPlaying
-              ? "bg-[#8b1e2d] border-[#c5a059] text-white shadow-[#8b1e2d]/30 scale-105"
-              : "bg-white/90 border-[#5b7e53]/30 text-[#5b7e53] hover:bg-[#eef4ed]"
+              ? "bg-[var(--ruby)] border-[var(--gold)] text-[var(--paper-white)] shadow-md"
+              : "bg-[var(--paper-white)] border-[var(--line)] text-[var(--ink)] hover:bg-[var(--ivory-deep)]"
           }`}
           title={isPlaying ? "توقف موسیقی" : "پخش آهنگ آهسته برو"}
         >
-          {/* Animated Equalizer Bars when Playing */}
-          {isPlaying ? (
-            <div className="flex items-end gap-1 h-5 w-5 justify-center">
-              <span className="w-1 bg-[#c5a059] rounded-full animate-[bounce_1s_infinite_100ms] h-full" />
-              <span className="w-1 bg-[#ffffff] rounded-full animate-[bounce_1s_infinite_300ms] h-3/4" />
-              <span className="w-1 bg-[#c5a059] rounded-full animate-[bounce_1s_infinite_200ms] h-1/2" />
-            </div>
-          ) : (
-            <MusicNotes size={22} weight="fill" className="text-[#5b7e53]" />
-          )}
+          <MusicNotes size={20} weight="fill" className={isPlaying ? "text-[var(--gold)]" : "text-[var(--ruby)]"} />
 
           <span className="text-xs font-semibold hidden sm:inline-block">
-            {isPlaying ? "آهسته برو - آریانا سعید" : "پخش موسیقی محفل"}
+            {isPlaying ? "آهسته برو - آریانا سعید" : "پخش موسیقی"}
           </span>
 
-          <div
-            className={`w-7 h-7 rounded-full flex items-center justify-center text-xs transition-colors ${
-              isPlaying ? "bg-white/20 text-white" : "bg-[#5b7e53]/10 text-[#5b7e53]"
-            }`}
-          >
+          <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs">
             {isPlaying ? <SpeakerHigh size={16} weight="fill" /> : <SpeakerX size={16} weight="bold" />}
           </div>
         </button>
@@ -99,38 +85,38 @@ export default function AudioPlayer({ autoPrompt = false }: AudioPlayerProps) {
             className="fixed inset-0 z-50 bg-[#1a2a20]/60 backdrop-blur-sm flex items-center justify-center p-4"
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.95, y: 15 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="glass-card rounded-3xl p-6 md:p-8 border border-[#c5a059]/40 max-w-sm w-full text-center shadow-2xl space-y-5 bg-white/95"
+              exit={{ scale: 0.95, y: 15 }}
+              className="paper-card p-6 md:p-8 max-w-sm w-full text-center shadow-2xl space-y-5"
             >
-              <div className="w-16 h-16 rounded-full bg-[#fdf0f2] border border-[#8b1e2d]/30 flex items-center justify-center text-[#8b1e2d] mx-auto shadow-md">
-                <MusicNotes size={32} weight="fill" />
+              <div className="w-14 h-14 rounded-full bg-[var(--ruby)]/10 text-[var(--ruby)] border border-[var(--gold)]/30 flex items-center justify-center mx-auto shadow-sm">
+                <MusicNotes size={28} weight="fill" />
               </div>
 
               <div>
-                <span className="inline-block text-xs font-bold text-[#5b7e53] uppercase bg-[#eef4ed] px-3 py-1 rounded-full border border-[#5b7e53]/20 mb-2">
+                <span className="inline-block text-xs font-bold text-[var(--gold)] uppercase bg-[var(--ivory-deep)] px-3 py-1 rounded-full mb-2">
                   موسیقی اصیل افغانی
                 </span>
-                <h3 className="text-xl font-heading text-[#8b1e2d]">
+                <h3 className="text-xl font-bold text-[var(--ruby)]">
                   پخش آهنگ «آهسته برو»
                 </h3>
-                <p className="text-xs md:text-sm text-[#4a5850] mt-2 leading-relaxed">
-                  آیا می‌خواهید آهنگ خاطره‌انگیز «آهسته برو» با صدای هنرمند محبوب آریانا سعید حین مرور کارت عروسی پخش شود؟
+                <p className="text-xs md:text-sm text-[var(--ink-muted)] mt-2 leading-relaxed">
+                  آیا می‌خواهید آهنگ خاطره‌انگیز «آهسته برو» حین مرور کارت عروسی پخش شود؟
                 </p>
               </div>
 
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={handleConfirmPlay}
-                  className="flex-1 py-3 rounded-xl bg-deep-red-gradient text-white font-bold text-sm shadow-md shadow-[#8b1e2d]/20 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                  className="flex-1 py-3 rounded-xl bg-[var(--ruby)] text-[var(--paper-white)] font-bold text-sm shadow-md hover:bg-[var(--ruby-deep)] transition-all cursor-pointer flex items-center justify-center gap-1.5"
                 >
                   <Play size={18} weight="fill" />
                   بله، پخش شود
                 </button>
                 <button
                   onClick={() => setShowPromptModal(false)}
-                  className="flex-1 py-3 rounded-xl border border-[#5b7e53]/30 text-[#4a5850] text-sm hover:bg-[#eef4ed] transition-colors cursor-pointer"
+                  className="flex-1 py-3 rounded-xl border border-[var(--line)] text-[var(--ink)] text-sm hover:bg-[var(--ivory-deep)] transition-colors cursor-pointer"
                 >
                   خیر، بدون صدا
                 </button>

@@ -1,122 +1,89 @@
 "use client";
 
 import { motion } from "motion/react";
-import { TShirt, Car, Camera, MapPin, Heart, Info, CheckCircle } from "@phosphor-icons/react";
+import { event } from "@/lib/event";
+import { Car, TShirt, Camera, PhoneCall } from "@phosphor-icons/react";
 
 export default function GuestGuide() {
-  const guideItems = [
+  const guideTopics = [
     {
-      title: "کد پوشش و لباس (Dress Code)",
-      icon: <TShirt size={28} weight="duotone" className="text-[#8b1e2d]" />,
-      color: "border-[#8b1e2d]/30 bg-[#fdf8f5]",
-      description: "لباس رسمی، دریشی یا پیراهن تنبان افغانی فاخر / لباس‌های مجلسی شیک با رنگ‌های ملایم، زمردی، طلایی یا عنابی",
-      tips: [
-        "پوشیدن لباس با رنگ‌های روشن و فاخر توصیه می‌شود",
-        "امکانات رختکن و تبدیل لباس با پرسونل مخصوص مهیا است"
-      ]
+      id: "parking",
+      title: "رسیدن و پارکینگ",
+      icon: <Car size={20} className="text-[var(--ruby)]" />,
+      content:
+        "هتل کابل استار دارای پارکینگ اختصاصی سرپوشیده و امن برای تمام مهمانان گرامی می‌باشد. پرسونل راهنما در ورودی هتل جهت هدایت خودروها مستقر خواهند بود.",
     },
     {
-      title: "پارکنیگ اختصاصی و وسایل نقلیه",
-      icon: <Car size={28} weight="duotone" className="text-[#5b7e53]" />,
-      color: "border-[#5b7e53]/30 bg-[#f4f8f4]",
-      description: "پارکنیگ سرپوشیده و مصون هتل با ظرفیت ۲۰۰ عراده موتر همراه با نگهبانان آموزش دیده و پارک‌بان اختصاصی",
-      tips: [
-        "ورودی پارکینگ از ضلع غربی هتل کابل استار می‌باشد",
-        "خدمات پارک‌بان (Valet Parking) به طور رایگان آماده خدمات است"
-      ]
+      id: "dresscode",
+      title: "پوشش پیشنهادی",
+      icon: <TShirt size={20} className="text-[var(--gold)]" />,
+      content: event.dressCodeFa,
     },
     {
-      title: "عکاسی و ثبت خاطرات",
-      icon: <Camera size={28} weight="duotone" className="text-[#c5a059]" />,
-      color: "border-[#c5a059]/30 bg-[#fcfaf5]",
-      description: "امکان عکاسی در غرفه‌ها و دکورهای گل‌آرایی شده سالن هم در بخش زنانه و هم مردانه فراهم شده است",
-      tips: [
-        "لطفاً در بخش بانوان احترام به حریم خصوصی مهمانان رعایت گردد",
-        "هشتگ رسمی اینستاگرام محفل: #FarhadAndSahar"
-      ]
+      id: "photography",
+      title: "عکاسی و حریم خصوصی",
+      icon: <Camera size={20} className="text-[var(--ruby)]" />,
+      content:
+        "لطفاً هنگام ثبت خاطرات و عکاسی، آسایش و حریم خصوصی سایر مهمانان محترم و خانواده‌ها را در نظر بگیرید.",
     },
-    {
-      title: "آدرس دقیق و مسیرها",
-      icon: <MapPin size={28} weight="duotone" className="text-[#8b1e2d]" />,
-      color: "border-[#8b1e2d]/30 bg-[#fdf0f2]",
-      description: "کابل، شهرنو، سرک دوم، هتل ۵ ستاره کابل استار - سالن مجلل الماس (طبقه دوم)",
-      tips: [
-        "جهت مسیریابی آسان می‌توانید از نقشه انلاین در انتهای صفحه استفاده نمایید",
-        "تیم تشریفات از ساعت ۰۵:۳۰ عصر آماده پذیرایی می‌باشد"
-      ]
-    }
   ];
 
   return (
-    <section className="py-16 px-4 max-w-5xl mx-auto" id="guest-guide">
+    <section className="py-12 px-4 max-w-3xl mx-auto">
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-12"
+        transition={{ duration: 0.6 }}
+        className="paper-card p-6 md:p-8"
       >
-        <span className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold tracking-widest text-[#5b7e53] uppercase bg-[#eef4ed] px-4 py-1.5 rounded-full border border-[#5b7e53]/20">
-          <Info size={16} weight="bold" />
-          راهنمای مهمانان گرامی
-        </span>
-        <h2 className="text-3xl md:text-5xl font-heading text-[#8b1e2d] mt-3">
-          اطلاعات و توصیه‌های مهم برای حضور در محفل
-        </h2>
-        <p className="text-[#4a5850] text-sm md:text-base mt-2 max-w-xl mx-auto">
-          برای تجربه هرچه راحت‌تر و لذت‌بخش‌تر شما عزیزان، نکاتی چند جهت سهولت حضور ارائه می‌گردد
-        </p>
-      </motion.div>
+        <div className="text-center mb-8">
+          <span className="text-xs text-[var(--gold)] font-semibold tracking-wider uppercase">
+            اطلاعات ضروری
+          </span>
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--ruby)] mt-1">
+            راهنمای مهمانان
+          </h2>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {guideItems.map((item, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.1, duration: 0.6 }}
-            className={`rounded-2xl p-6 border shadow-xs hover:shadow-md transition-all duration-300 ${item.color}`}
+        <div className="space-y-4 text-right">
+          {guideTopics.map((topic) => (
+            <details
+              key={topic.id}
+              className="group paper-card-inset p-4 rounded-xl [&_summary::-webkit-details-marker]:hidden border border-[var(--line)]"
+            >
+              <summary className="flex items-center justify-between cursor-pointer font-semibold text-base text-[var(--ink)] select-none min-h-[44px]">
+                <div className="flex items-center gap-3">
+                  {topic.icon}
+                  <span>{topic.title}</span>
+                </div>
+                <span className="text-[var(--gold)] transition-transform group-open:rotate-180 text-sm">
+                  ▼
+                </span>
+              </summary>
+              <p className="mt-3 pt-3 border-t border-[var(--line)] text-sm text-[var(--ink-muted)] leading-relaxed">
+                {topic.content}
+              </p>
+            </details>
+          ))}
+        </div>
+
+        {/* Contact Hotline */}
+        <div className="mt-8 pt-6 border-t border-[var(--line)] flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-right">
+          <div>
+            <span className="text-xs text-[var(--ink-muted)] block">سوال یا نیاز به راهنمایی دارید؟</span>
+            <p className="text-sm font-bold text-[var(--ink)] mt-0.5">تیم تشریفات محفل در خدمت شماست</p>
+          </div>
+
+          <a
+            href={event.contactPhoneHref}
+            dir="ltr"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--ruby)] hover:bg-[var(--ruby-deep)] text-[var(--paper-white)] text-sm font-semibold shadow-sm transition-colors"
           >
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 bg-white rounded-xl shadow-xs border border-stone-200/60">
-                {item.icon}
-              </div>
-              <h3 className="text-lg md:text-xl font-heading text-[#2c3831]">
-                {item.title}
-              </h3>
-            </div>
-
-            <p className="text-sm text-[#38453d] font-medium leading-relaxed mb-4">
-              {item.description}
-            </p>
-
-            <ul className="space-y-2 border-t border-stone-200/80 pt-3">
-              {item.tips.map((tip, tIdx) => (
-                <li key={tIdx} className="flex items-start gap-2 text-xs md:text-sm text-[#526358]">
-                  <CheckCircle size={16} weight="fill" className="text-[#5b7e53] shrink-0 mt-0.5" />
-                  <span>{tip}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Warm Hospitality Note */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        className="mt-10 rounded-2xl p-6 text-center border border-[#c5a059]/40 bg-gradient-to-r from-[#faf5eb] via-white to-[#faf5eb] shadow-sm max-w-3xl mx-auto"
-      >
-        <Heart size={32} weight="fill" className="text-[#8b1e2d] mx-auto mb-2 animate-bounce" />
-        <h4 className="text-lg font-heading text-[#8b1e2d]">
-          حضور شما، زیباترین هدیه برای آغاز زندگی مشترک ماست
-        </h4>
-        <p className="text-xs md:text-sm text-[#526358] mt-1">
-          در صورت داشتن هرگونه سوال یا نیاز به هماهنگی بیشتر، می‌توانید با شماره تشریفات ۰۰۹۳۷۹۹۱۲۳۴۵۶ در تماس باشید.
-        </p>
+            <PhoneCall size={18} />
+            <span>{event.contactPhoneDisplay}</span>
+          </a>
+        </div>
       </motion.div>
     </section>
   );

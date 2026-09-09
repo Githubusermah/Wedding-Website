@@ -2,261 +2,288 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import confetti from "canvas-confetti";
-import {
-  CheckCircle,
-  XCircle,
-  User,
-  Users,
-  Phone,
-  ChatText,
-  PaperPlaneRight,
-  Sparkle,
-} from "@phosphor-icons/react";
+import { CheckCircle, XCircle, User, Phone, Users, ChatText, PencilSimple } from "@phosphor-icons/react";
 
-interface RSVPData {
+interface FormData {
   fullName: string;
   phone: string;
-  guestCount: string;
-  attending: "yes" | "no";
-  wishes: string;
+  attending: "yes" | "no" | "";
+  companionCount: number;
+  message: string;
 }
 
 export default function RsvpForm() {
-  const [formData, setFormData] = useState<RSVPData>({
+  const [formData, setFormData] = useState<FormData>({
     fullName: "",
     phone: "",
-    guestCount: "1",
-    attending: "yes",
-    wishes: "",
+    attending: "",
+    companionCount: 1,
+    message: "",
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showMessageField, setShowMessageField] = useState(false);
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "لطفاً نام و نام خانوادگی خود را بنویسید.";
+    }
+    if (!formData.phone.trim()) {
+      newErrors.phone = "لطفاً شماره تماس یا واتساپ خود را وارد کنید.";
+    }
+    if (!formData.attending) {
+      newErrors.attending = "لطفاً وضعیت حضور خود را مشخص کنید.";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.fullName.trim() || !formData.phone.trim()) return;
+    if (!validate()) return;
 
     setIsSubmitting(true);
-
     setTimeout(() => {
-      // Save to localStorage
-      try {
-        const existing = JSON.parse(localStorage.getItem("wedding_rsvps") || "[]");
-        existing.push({ ...formData, timestamp: new Date().toISOString() });
-        localStorage.setItem("wedding_rsvps", JSON.stringify(existing));
-      } catch (err) {
-        console.warn("LocalStorage save error:", err);
-      }
-
       setIsSubmitting(false);
-      setSubmitted(true);
-
-      // Trigger Celebration Confetti
-      confetti({
-        particleCount: 120,
-        spread: 80,
-        origin: { y: 0.6 },
-        colors: ["#8b1e2d", "#5b7e53", "#c5a059", "#faf5eb"],
-      });
-    }, 600);
+      setIsSubmitted(true);
+    }, 800);
   };
 
   return (
-    <section className="py-20 px-4 max-w-3xl mx-auto" id="rsvp-section">
+    <section id="rsvp" className="py-12 px-4 max-w-2xl mx-auto scroll-mt-20">
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="glass-card rounded-3xl p-8 md:p-12 border border-[#c5a059]/40 shadow-xl relative overflow-hidden"
+        transition={{ duration: 0.6 }}
+        className="paper-card p-6 md:p-10 relative"
       >
-        <div className="text-center mb-10">
-          <span className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold tracking-widest text-[#8b1e2d] uppercase bg-[#fdf0f2] px-4 py-1.5 rounded-full border border-[#8b1e2d]/20 shadow-xs">
-            <Sparkle size={16} weight="fill" className="text-[#8b1e2d]" />
-            اعلام حضور در محفل
+        <div className="text-center mb-8">
+          <span className="text-xs text-[var(--gold)] font-semibold tracking-wider uppercase">
+            RSVP
           </span>
-          <h2 className="text-3xl md:text-5xl font-heading text-deep-red-gradient mt-3">
-            تأیید حضور و کارت دعوتیه
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--ruby)] mt-1">
+            تأیید حضور
           </h2>
-          <p className="text-[#4a5850] text-sm md:text-base mt-2">
-            لطفاً جهت برنامه‌ریزی بهتر و تکریم حضور شما، فرم زیر را تکمیل فرمایید
+          <p className="text-sm text-[var(--ink-muted)] mt-2">
+            لطفاً برای هماهنگی بهتر محفل، پاسخ خود را ثبت کنید.
           </p>
         </div>
 
-        <AnimatePresence mode="wait">
-          {!submitted ? (
-            <motion.form
-              key="form"
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -20 }}
-              onSubmit={handleSubmit}
-              className="space-y-6 text-right"
-            >
-              {/* Full Name */}
-              <div>
-                <label className="block text-sm font-semibold text-[#2c3831] mb-2">
-                  نام و نام خانوادگی <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    required
-                    placeholder="مثلاً: محمد همت"
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full bg-white/90 border border-stone-300 rounded-xl px-4 py-3.5 pr-11 text-sm text-[#2c3831] placeholder-stone-400 focus:outline-none focus:border-[#8b1e2d] focus:ring-2 focus:ring-[#8b1e2d]/20 transition-all shadow-xs"
-                  />
-                  <User size={20} className="absolute top-1/2 -translate-y-1/2 right-3.5 text-[#8b1e2d]" />
+        <div aria-live="polite">
+          <AnimatePresence mode="wait">
+            {isSubmitted ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                className="paper-card-inset p-6 md:p-8 text-center space-y-4"
+              >
+                <div className="w-14 h-14 rounded-full bg-[var(--sage)]/15 text-[var(--sage)] mx-auto flex items-center justify-center">
+                  <CheckCircle size={32} weight="fill" />
                 </div>
-              </div>
 
-              {/* Phone / Contact */}
-              <div>
-                <label className="block text-sm font-semibold text-[#2c3831] mb-2">
-                  شماره تماس / واتساپ <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="tel"
-                    required
-                    placeholder="۰۷۹۹ ۱۲۳ ۴۵۶"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full bg-white/90 border border-stone-300 rounded-xl px-4 py-3.5 pr-11 text-sm text-[#2c3831] placeholder-stone-400 focus:outline-none focus:border-[#8b1e2d] focus:ring-2 focus:ring-[#8b1e2d]/20 transition-all shadow-xs"
-                  />
-                  <Phone size={20} className="absolute top-1/2 -translate-y-1/2 right-3.5 text-[#8b1e2d]" />
-                </div>
-              </div>
+                <h3 className="text-xl font-bold text-[var(--ink)]">
+                  سپاس از پاسخ شما، {formData.fullName}.
+                </h3>
 
-              {/* Attendance Toggle */}
-              <div>
-                <label className="block text-sm font-semibold text-[#2c3831] mb-2">
-                  وضعیت حضور شما
-                </label>
-                <div className="grid grid-cols-2 gap-4">
+                <p className="text-sm text-[var(--ink-muted)] leading-relaxed">
+                  {formData.attending === "yes"
+                    ? `حضور شما با ${formData.companionCount} نفر همراه با خوشی ثبت شد.`
+                    : "پاسخ شما مبنی بر عدم امکان حضور با احترام ثبت شد."}
+                </p>
+
+                <div className="pt-4 border-t border-[var(--line)]">
                   <button
-                    type="button"
-                    onClick={() => setFormData({ ...formData, attending: "yes" })}
-                    className={`py-3.5 px-4 rounded-xl border flex items-center justify-center gap-2 text-sm font-bold transition-all cursor-pointer ${
-                      formData.attending === "yes"
-                        ? "bg-[#5b7e53] text-white border-[#5b7e53] shadow-md"
-                        : "bg-white border-stone-300 text-stone-600 hover:border-[#5b7e53]"
-                    }`}
+                    onClick={() => setIsSubmitted(false)}
+                    className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--ruby)] hover:text-[var(--ruby-deep)] transition-colors"
                   >
-                    <CheckCircle size={20} weight="bold" />
-                    با کمال میل شرکت می‌کنم
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setFormData({ ...formData, attending: "no" })}
-                    className={`py-3.5 px-4 rounded-xl border flex items-center justify-center gap-2 text-sm font-bold transition-all cursor-pointer ${
-                      formData.attending === "no"
-                        ? "bg-[#8b1e2d] text-white border-[#8b1e2d] shadow-md"
-                        : "bg-white border-stone-300 text-stone-600 hover:border-[#8b1e2d]"
-                    }`}
-                  >
-                    <XCircle size={20} weight="bold" />
-                    متأسفانه امکان حضور ندارم
+                    <PencilSimple size={16} />
+                    <span>ویرایش پاسخ</span>
                   </button>
                 </div>
-              </div>
-
-              {/* Guest Count */}
-              {formData.attending === "yes" && (
+              </motion.div>
+            ) : (
+              <form onSubmit={handleSubmit} noValidate className="space-y-6 text-right">
+                {/* Full Name */}
                 <div>
-                  <label className="block text-sm font-semibold text-[#2c3831] mb-2">
-                    تعداد همراهان (شامل خودتان)
+                  <label htmlFor="fullName" className="block text-sm font-semibold text-[var(--ink)] mb-1.5">
+                    نام و نام خانوادگی <span className="text-[var(--ruby)]">*</span>
                   </label>
                   <div className="relative">
-                    <select
-                      value={formData.guestCount}
-                      onChange={(e) => setFormData({ ...formData, guestCount: e.target.value })}
-                      className="w-full bg-white/90 border border-stone-300 rounded-xl px-4 py-3.5 pr-11 text-sm text-[#2c3831] focus:outline-none focus:border-[#8b1e2d] focus:ring-2 focus:ring-[#8b1e2d]/20 transition-all cursor-pointer shadow-xs"
-                    >
-                      <option value="1">۱ نفر (تنها)</option>
-                      <option value="2">۲ نفر (همراه با همسر)</option>
-                      <option value="3">۳ نفر (خانوادگی)</option>
-                      <option value="4">۴ نفر یا بیشتر</option>
-                    </select>
-                    <Users size={20} className="absolute top-1/2 -translate-y-1/2 right-3.5 text-[#8b1e2d]" />
+                    <input
+                      id="fullName"
+                      type="text"
+                      value={formData.fullName}
+                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                      placeholder="مثال: احمد شکیب"
+                      className="w-full px-4 py-3 rounded-xl border border-[var(--line)] bg-[var(--paper-white)] text-[var(--ink)] text-base focus:outline-none focus:ring-2 focus:ring-[var(--gold)] transition-shadow"
+                    />
+                    <User size={18} className="absolute left-3.5 top-3.5 text-[var(--ink-muted)]" />
                   </div>
+                  {errors.fullName && (
+                    <p className="text-xs text-[var(--ruby)] mt-1.5 font-medium flex items-center gap-1">
+                      <XCircle size={14} />
+                      <span>{errors.fullName}</span>
+                    </p>
+                  )}
                 </div>
-              )}
 
-              {/* Special Wishes */}
-              <div>
-                <label className="block text-sm font-semibold text-[#2c3831] mb-2">
-                  پیام تبریک برای فرهاد و سحر (اختیاری)
-                </label>
-                <div className="relative">
-                  <textarea
-                    rows={3}
-                    placeholder="آرزوی شادمانی و خوشبختی برای شما..."
-                    value={formData.wishes}
-                    onChange={(e) => setFormData({ ...formData, wishes: e.target.value })}
-                    className="w-full bg-white/90 border border-stone-300 rounded-xl px-4 py-3 pr-11 text-sm text-[#2c3831] placeholder-stone-400 focus:outline-none focus:border-[#8b1e2d] focus:ring-2 focus:ring-[#8b1e2d]/20 transition-all shadow-xs resize-none"
-                  />
-                  <ChatText size={20} className="absolute top-4 right-3.5 text-[#8b1e2d]" />
+                {/* Phone / WhatsApp */}
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-semibold text-[var(--ink)] mb-1.5">
+                    شماره تماس یا واتساپ <span className="text-[var(--ruby)]">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="phone"
+                      type="tel"
+                      dir="ltr"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="۰۷۹۹ ۱۲۳ ۴۵۶"
+                      className="w-full px-4 py-3 rounded-xl border border-[var(--line)] bg-[var(--paper-white)] text-[var(--ink)] text-base focus:outline-none focus:ring-2 focus:ring-[var(--gold)] transition-shadow text-left"
+                    />
+                    <Phone size={18} className="absolute right-3.5 top-3.5 text-[var(--ink-muted)]" />
+                  </div>
+                  {errors.phone && (
+                    <p className="text-xs text-[var(--ruby)] mt-1.5 font-medium flex items-center gap-1">
+                      <XCircle size={14} />
+                      <span>{errors.phone}</span>
+                    </p>
+                  )}
                 </div>
-              </div>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-4 rounded-xl bg-deep-red-gradient text-white font-bold text-base shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-2 mt-4"
-              >
-                {isSubmitting ? (
-                  <span>در حال ثبت...</span>
-                ) : (
-                  <>
-                    <PaperPlaneRight size={20} weight="bold" />
-                    ارسال نهایی فرم حضور
-                  </>
+                {/* Attendance Radio Group */}
+                <fieldset className="border border-[var(--line)] rounded-xl p-4 bg-[var(--ivory-deep)]/40">
+                  <legend className="text-sm font-semibold text-[var(--ink)] px-2">
+                    آیا در محفل حضور می‌یابید؟ <span className="text-[var(--ruby)]">*</span>
+                  </legend>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                    <label
+                      className={`flex items-center gap-3 p-3.5 rounded-lg border cursor-pointer transition-colors ${
+                        formData.attending === "yes"
+                          ? "border-[var(--ruby)] bg-[var(--paper-white)] text-[var(--ruby-deep)] font-semibold"
+                          : "border-[var(--line)] bg-[var(--paper-white)] text-[var(--ink)]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="attending"
+                        value="yes"
+                        checked={formData.attending === "yes"}
+                        onChange={() => setFormData({ ...formData, attending: "yes" })}
+                        className="w-4 h-4 accent-[var(--ruby)]"
+                      />
+                      <span className="text-sm">با خوشی شرکت می‌کنم</span>
+                    </label>
+
+                    <label
+                      className={`flex items-center gap-3 p-3.5 rounded-lg border cursor-pointer transition-colors ${
+                        formData.attending === "no"
+                          ? "border-[var(--ruby)] bg-[var(--paper-white)] text-[var(--ruby-deep)] font-semibold"
+                          : "border-[var(--line)] bg-[var(--paper-white)] text-[var(--ink)]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="attending"
+                        value="no"
+                        checked={formData.attending === "no"}
+                        onChange={() => setFormData({ ...formData, attending: "no" })}
+                        className="w-4 h-4 accent-[var(--ruby)]"
+                      />
+                      <span className="text-sm">متأسفانه نمی‌توانم حضور یابم</span>
+                    </label>
+                  </div>
+
+                  {errors.attending && (
+                    <p className="text-xs text-[var(--ruby)] mt-2 font-medium flex items-center gap-1">
+                      <XCircle size={14} />
+                      <span>{errors.attending}</span>
+                    </p>
+                  )}
+                </fieldset>
+
+                {/* Conditional Companion Count */}
+                {formData.attending === "yes" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="space-y-1.5"
+                  >
+                    <label htmlFor="companionCount" className="block text-sm font-semibold text-[var(--ink)]">
+                      تعداد همراهان، همراه با خودتان
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="companionCount"
+                        value={formData.companionCount}
+                        onChange={(e) => setFormData({ ...formData, companionCount: Number(e.target.value) })}
+                        className="w-full px-4 py-3 rounded-xl border border-[var(--line)] bg-[var(--paper-white)] text-[var(--ink)] text-base focus:outline-none focus:ring-2 focus:ring-[var(--gold)] transition-shadow"
+                      >
+                        {[1, 2, 3, 4, 5, 6].map((num) => (
+                          <option key={num} value={num}>
+                            {num} نفر
+                          </option>
+                        ))}
+                      </select>
+                      <Users size={18} className="absolute left-3.5 top-3.5 text-[var(--ink-muted)] pointer-events-none" />
+                    </div>
+                  </motion.div>
                 )}
-              </button>
-            </motion.form>
-          ) : (
-            <motion.div
-              key="confirmation"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-10 space-y-6"
-            >
-              <div className="w-20 h-20 rounded-full bg-[#5b7e53] text-white flex items-center justify-center mx-auto shadow-lg">
-                <CheckCircle size={48} weight="fill" />
-              </div>
 
-              <h3 className="text-3xl font-heading text-deep-red-gradient">
-                پاسخ شما با موفقیت ثبت گردید!
-              </h3>
+                {/* Collapsible Optional Message */}
+                <div>
+                  {!showMessageField ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowMessageField(true)}
+                      className="text-xs font-semibold text-[var(--gold)] hover:text-[var(--ruby)] transition-colors flex items-center gap-1"
+                    >
+                      <ChatText size={16} />
+                      <span>پیام تبریک می‌نویسم (اختیاری)</span>
+                    </button>
+                  ) : (
+                    <div>
+                      <label htmlFor="message" className="block text-sm font-semibold text-[var(--ink)] mb-1.5">
+                        پیام تبریک (اختیاری)
+                      </label>
+                      <textarea
+                        id="message"
+                        rows={3}
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        placeholder="آرزوی خوشبختی و شادکامی برای فرهاد و سحر عزیز..."
+                        className="w-full px-4 py-3 rounded-xl border border-[var(--line)] bg-[var(--paper-white)] text-[var(--ink)] text-base focus:outline-none focus:ring-2 focus:ring-[var(--gold)] transition-shadow"
+                      />
+                    </div>
+                  )}
+                </div>
 
-              <p className="text-[#38453d] text-base max-w-md mx-auto leading-relaxed font-medium">
-                از اعلام حضور شما صمیمانه سپاسگزاریم. منتظر دیدار گرم شما در جشن پیوند فرهاد و سحر هستیم.
-              </p>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setSubmitted(false);
-                  setFormData({
-                    fullName: "",
-                    phone: "",
-                    guestCount: "1",
-                    attending: "yes",
-                    wishes: "",
-                  });
-                }}
-                className="px-6 py-2.5 rounded-xl border border-[#8b1e2d] text-[#8b1e2d] text-sm font-semibold hover:bg-[#8b1e2d] hover:text-white transition-all cursor-pointer"
-              >
-                ویرایش یا ارسال مجدد فرم
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-3.5 px-6 rounded-xl bg-[var(--ruby)] hover:bg-[var(--ruby-deep)] text-[var(--paper-white)] font-semibold text-base shadow-md transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <span>در حال ثبت پاسخ…</span>
+                  ) : (
+                    <>
+                      <CheckCircle size={20} />
+                      <span>ثبت پاسخ</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </AnimatePresence>
+        </div>
       </motion.div>
     </section>
   );
