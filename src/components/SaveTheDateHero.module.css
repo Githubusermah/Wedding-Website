@@ -246,10 +246,9 @@
   display: block;
   width: auto;
   height: auto;
-  max-width: min(96vw, 650px);
-  max-height: 60vh;
-  margin: -1.5rem auto -1rem;
-  transform: scale(1.35);
+  max-width: min(94vw, 500px);
+  max-height: 52vh;
+  margin: 0 auto;
   filter: blur(16px) saturate(0.5) brightness(1.1);
   clip-path: circle(4% at 50% 46%);
   animation:
@@ -268,7 +267,7 @@
 
 @keyframes venueFloat {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-7px); }
+  50% { transform: translateY(-6px); }
 }
 
 .sparklePt {

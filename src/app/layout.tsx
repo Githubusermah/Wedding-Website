@@ -54,6 +54,10 @@ const notoNaskh = Noto_Naskh_Arabic({
 export const metadata: Metadata = {
   title: event.pageTitle,
   description: `دعوت‌نامه رسمی جشن پیوند ${event.coupleDisplayName} در ${event.venueName}`,
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: event.pageTitle,
     description: `جشن پیوند ${event.coupleDisplayName} - ${event.invitationDateFa}`,
