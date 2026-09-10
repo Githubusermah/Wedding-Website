@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { event } from "@/lib/event";
 import { ArrowUp } from "@phosphor-icons/react";
+import InitialsMonogram from "@/components/InitialsMonogram";
 
 export default function FooterReplay() {
   const scrollToTop = () => {
@@ -11,8 +12,9 @@ export default function FooterReplay() {
 
   return (
     <footer className="py-12 px-4 border-t border-[var(--line)] bg-[var(--ivory-deep)]/40 text-center space-y-6 max-w-4xl mx-auto rounded-t-2xl">
-      <div className="flex flex-col items-center justify-center space-y-2">
-        <p className="font-nastaliq text-3xl text-[var(--ruby)] font-bold">
+      <div className="flex flex-col items-center justify-center space-y-3">
+        <InitialsMonogram size={64} showGlow={true} />
+        <p className="font-nastaliq text-3xl text-[var(--ruby)] font-bold mt-2">
           {event.coupleDisplayName}
         </p>
         <p className="text-xs md:text-sm text-[var(--ink-muted)] max-w-md mx-auto leading-relaxed">

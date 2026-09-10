@@ -4,7 +4,6 @@ import { useState } from "react";
 import HeroVideoIntro from "@/components/HeroVideoIntro";
 import SaveTheDateHero from "@/components/SaveTheDateHero";
 import FoggedCountdown from "@/components/FoggedCountdown";
-import AnniversaryCalendar from "@/components/AnniversaryCalendar";
 import EventFacts from "@/components/EventFacts";
 import RsvpForm from "@/components/RsvpForm";
 import ScheduleTimeline from "@/components/ScheduleTimeline";
@@ -32,13 +31,10 @@ export default function Home() {
       {/* 2. Standalone React Client Component Save-The-Date Hero (Triggers when video is dismissed so animations run from start) */}
       {isVideoDismissed && <SaveTheDateHero />}
 
-      {/* 3. Interactive Scratch-off Fogged Countdown Component */}
+      {/* 3. Invitation Countdown Component */}
       <FoggedCountdown />
 
-      {/* 4. Ceremonial Anniversary Calendar Component */}
-      <AnniversaryCalendar />
-
-      {/* 5. Quick Event Facts Card */}
+      {/* 4. Quick Event Facts Card */}
       <EventFacts />
 
       {/* 6. Primary RSVP Form */}
