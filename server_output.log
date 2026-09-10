@@ -1,9 +1,12 @@
 
-> wedding-app@0.1.0 start
-> next start
+> wedding-app@0.1.0 dev
+> next dev
 
-▲ Next.js 16.3.4
+▲ Next.js 16.3.4 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 197ms
-✓ Running next.config.ts took 44ms
+✓ Ready in 571ms
+✓ Running next.config.ts took 45ms
+
+○ Compiling / ...
+ GET / 200 in 6.5s (next.js: 5.9s, application-code: 571ms)
