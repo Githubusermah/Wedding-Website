@@ -40,6 +40,7 @@ export default function HeroVideoIntro({ onDismiss }: HeroVideoIntroProps) {
           <video
             ref={videoRef}
             src="/Unveiling-Elegance_2.webm"
+            poster="/venue-illustration.png"
             playsInline
             preload="auto"
             onEnded={handleDismiss}

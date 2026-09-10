@@ -180,18 +180,18 @@ export default function SaveTheDateHero() {
           <p className={styles.subtitle}>FOR THE WEDDING OF</p>
 
           <div className={styles.names}>
-            <span className={styles.name}>FARHAD</span>
+            <span className={styles.name}>{event.groomNameEn}</span>
             <span className={styles.amp}>&amp;</span>
-            <span className={`${styles.name} ${styles.nameBride}`}>SAHAR</span>
+            <span className={`${styles.name} ${styles.nameBride}`}>{event.brideNameEn}</span>
           </div>
 
           <div className={styles.illustrationWrap}>
             <div className={styles.halo}></div>
             <Image
               src="/venue-illustration.png"
-              alt="Illustration of the wedding venue, Taj Continental Hotel, framed by two crescent arcs"
-              width={364}
-              height={317}
+              alt="Illustration of the wedding venue, City Star Hotel Kabul"
+              width={480}
+              height={418}
               className={styles.venueImg}
               priority
             />
@@ -203,7 +203,7 @@ export default function SaveTheDateHero() {
           </div>
 
           <div className={styles.venueCaptionWrap}>
-            <span className={styles.venueCaption}>TAJ CONTINENTAL HOTEL</span>
+            <span className={styles.venueCaption}>{event.venueNameEn.toUpperCase()}</span>
           </div>
           <div className={styles.venueCaptionRule}></div>
 

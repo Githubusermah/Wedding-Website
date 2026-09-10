@@ -28,8 +28,7 @@ export default function ScheduleTimeline() {
   // Line fill progress
   const lineHeight = useTransform(progressValue, [0, 1], ["0%", "100%"]);
   // Blossom scale and opening rotation
-  const flowerScale = useTransform(progressValue, [0, 0.3, 1], [0.85, 1.1, 1.3]);
-  const petalOpen = useTransform(progressValue, [0, 1], [0, 1]);
+  const flowerScale = useTransform(progressValue, [0, 0.3, 1], [0.85, 1.1, 1.35]);
   const flowerGlow = useTransform(progressValue, [0.8, 1], [0, 1]);
 
   const scheduleEvents = [
@@ -73,10 +72,10 @@ export default function ScheduleTimeline() {
   return (
     <section ref={sectionRef} className="py-14 px-4 max-w-3xl mx-auto scroll-mt-20">
       <div className="text-center mb-12">
-        <span className="text-xs text-[var(--gold)] font-semibold tracking-widest uppercase">
+        <span className="text-xs text-[var(--gold-dark,#8a6329)] font-bold tracking-widest uppercase">
           برنامه محفل
         </span>
-        <h2 className="text-2xl md:text-3xl font-bold text-[var(--ruby)] mt-1">
+        <h2 className="text-2xl md:text-3xl font-bold text-[var(--ruby)] mt-1 font-serif">
           محفل در یک نگاه
         </h2>
         <p className="text-xs md:text-sm text-[var(--ink-muted)] mt-1.5">
@@ -86,23 +85,23 @@ export default function ScheduleTimeline() {
 
       {/* Timeline Outer Container */}
       <div className="relative dir-rtl pr-8 md:pr-12">
-        {/* Background Vertical Gold Line */}
+        {/* Background Vertical Line */}
         <div className="absolute top-0 right-3.5 md:right-5 bottom-0 w-1 bg-[var(--gold)]/25 rounded-full" />
 
-        {/* Dynamic Scroll-Filled Gold Line */}
+        {/* Dynamic Scroll-Filled Line */}
         <motion.div
           style={{ height: lineHeight }}
-          className="absolute top-0 right-3.5 md:right-5 w-1 bg-gradient-to-b from-[var(--gold)] via-[var(--ruby)] to-[var(--gold)] rounded-full origin-top shadow-[0_0_8px_rgba(184,134,63,0.6)]"
+          className="absolute top-0 right-3.5 md:right-5 w-1 bg-gradient-to-b from-[var(--gold)] via-[var(--ruby)] to-[var(--ruby-deep)] rounded-full origin-top shadow-[0_0_8px_rgba(184,134,63,0.5)]"
         />
 
         {/* Flower Bud at the top of the line */}
         <div className="absolute -top-3 right-1.5 md:right-3 z-20 flex items-center justify-center">
-          <div className="w-5 h-5 rounded-full bg-[var(--paper-white)] border-2 border-[var(--gold)] flex items-center justify-center shadow-sm">
-            <div className="w-2 h-2 rounded-full bg-[var(--sage)]" />
+          <div className="w-5 h-5 rounded-full bg-[var(--paper-white)] border-2 border-[var(--ruby)] flex items-center justify-center shadow-sm">
+            <div className="w-2 h-2 rounded-full bg-[var(--ruby)]" />
           </div>
         </div>
 
-        {/* Travelling Blossom Flower moving down as user scrolls */}
+        {/* Travelling Realistic Deep-Red Blossom Flower moving down as user scrolls */}
         <motion.div
           style={{
             top: flowerY,
@@ -110,124 +109,129 @@ export default function ScheduleTimeline() {
           }}
           className="absolute right-[2px] md:right-[8px] -translate-y-1/2 z-30 pointer-events-none"
         >
-          <div className="relative flex items-center justify-center w-8 h-8 md:w-10 md:h-10">
+          <div className="relative flex items-center justify-center w-9 h-9 md:w-11 md:h-11">
             {/* Soft background glow when fully bloomed */}
             <motion.div
               style={{ opacity: flowerGlow }}
-              className="absolute inset-0 rounded-full bg-[var(--gold)]/30 blur-sm scale-125"
+              className="absolute inset-0 rounded-full bg-[var(--ruby)]/30 blur-md scale-125"
             />
 
-            {/* Blossom SVG Flower */}
+            {/* Realistic Deep Red Floral Blossom SVG */}
             <svg
-              viewBox="0 0 40 40"
-              className="w-8 h-8 md:w-10 md:h-10 drop-shadow-[0_2px_6px_rgba(122,28,40,0.35)]"
+              viewBox="0 0 100 100"
+              className="w-9 h-9 md:w-11 md:h-11 drop-shadow-[0_4px_8px_rgba(122,28,40,0.45)]"
             >
-              {/* Outer Petals */}
-              <g className="origin-center">
-                {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
-                  <motion.path
-                    key={i}
-                    d="M 20 20 C 14 10 26 10 20 20"
-                    fill="var(--ruby)"
-                    stroke="var(--gold-light, #E9C96A)"
+              <defs>
+                <radialGradient id="deepRedGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#A82335" />
+                  <stop offset="70%" stopColor="#7A1C28" />
+                  <stop offset="100%" stopColor="#4A0E17" />
+                </radialGradient>
+                <radialGradient id="centerGoldGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#FFF2B2" />
+                  <stop offset="50%" stopColor="#E9C96A" />
+                  <stop offset="100%" stopColor="#B8863F" />
+                </radialGradient>
+              </defs>
+
+              {/* Outer Layer of Rich Velvet Petals */}
+              <g>
+                {[0, 60, 120, 180, 240, 300].map((angle, i) => (
+                  <path
+                    key={`outer-${i}`}
+                    d="M 50 50 C 35 15, 65 15, 50 50"
+                    fill="url(#deepRedGrad)"
+                    stroke="#D4AF37"
                     strokeWidth="0.8"
-                    style={{
-                      transformOrigin: "20px 20px",
-                      transform: `rotate(${angle}deg) scale(${1 + (i % 2 === 0 ? 0.2 : 0)})`,
-                    }}
+                    transform={`rotate(${angle} 50 50)`}
                   />
                 ))}
               </g>
 
-              {/* Inner Petals / Unfolding Layer */}
-              <g className="origin-center">
-                {[22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5].map((angle, i) => (
-                  <motion.circle
-                    key={i}
-                    cx={20 + 7 * Math.cos((angle * Math.PI) / 180)}
-                    cy={20 + 7 * Math.sin((angle * Math.PI) / 180)}
-                    r="3.5"
-                    fill="#D4AF37"
-                    opacity="0.9"
+              {/* Inner Staggered Layer of Petals */}
+              <g>
+                {[30, 90, 150, 210, 270, 330].map((angle, i) => (
+                  <path
+                    key={`inner-${i}`}
+                    d="M 50 50 C 40 25, 60 25, 50 50"
+                    fill="url(#deepRedGrad)"
+                    stroke="#E9C96A"
+                    strokeWidth="0.6"
+                    transform={`rotate(${angle} 50 50)`}
                   />
                 ))}
               </g>
 
-              {/* Center Stamens */}
-              <circle cx="20" cy="20" r="5" fill="var(--paper-white)" stroke="var(--gold)" strokeWidth="1.2" />
-              <circle cx="20" cy="20" r="2.5" fill="var(--ruby)" />
+              {/* Golden Center Stamens */}
+              <circle cx="50" cy="50" r="10" fill="url(#centerGoldGrad)" />
+              <circle cx="50" cy="50" r="5" fill="#5C101B" />
             </svg>
           </div>
         </motion.div>
 
         {/* Timeline Items */}
-        <div className="space-y-10 md:space-y-12">
-          {scheduleEvents.map((item, index) => {
-            // Target progress threshold for this item (0.0 to 1.0)
-            const itemThreshold = index / (scheduleEvents.length - 1);
-
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: 25 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="relative"
-              >
-                {/* Timeline Point Marker */}
-                <div className="absolute -right-[27px] md:-right-[35px] top-2.5 z-10 flex items-center justify-center">
-                  <motion.div
-                    className={`w-4 h-4 md:w-5 md:h-5 rounded-full border-2 border-[var(--paper-white)] shadow-md transition-colors duration-300 flex items-center justify-center ${
-                      item.featured
-                        ? "bg-[var(--ruby)] ring-4 ring-[var(--ruby)]/20"
-                        : "bg-[var(--gold)]"
-                    }`}
-                  >
-                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--paper-white)]" />
-                  </motion.div>
-                </div>
-
-                {/* Event Card Content */}
+        <div className="space-y-8 md:space-y-10">
+          {scheduleEvents.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: 25 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              className="relative"
+            >
+              {/* Timeline Point Marker */}
+              <div className="absolute -right-[27px] md:-right-[35px] top-3 z-10 flex items-center justify-center">
                 <div
-                  className={`p-5 md:p-6 rounded-2xl border transition-all duration-300 ${
+                  className={`w-4 h-4 md:w-5 md:h-5 rounded-full border-2 border-[var(--paper-white)] shadow-md flex items-center justify-center ${
                     item.featured
-                      ? "paper-card border-[var(--ruby)]/50 shadow-lg bg-gradient-to-br from-[var(--paper-white)] via-[var(--paper-white)] to-[var(--ivory)]"
-                      : "paper-card-inset hover:border-[var(--gold)]/50"
+                      ? "bg-[var(--ruby)] ring-4 ring-[var(--ruby)]/20"
+                      : "bg-[var(--gold)]"
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="text-xs md:text-sm font-bold text-[var(--ruby)] font-mono flex items-center gap-1.5">
-                      {item.icon}
-                      <span>{item.time}</span>
-                    </span>
-
-                    {item.featured && (
-                      <span className="px-3 py-0.5 rounded-full text-[10px] md:text-xs font-bold bg-[var(--ruby)] text-[var(--paper-white)] shadow-sm">
-                        لحظهٔ ویژه
-                      </span>
-                    )}
-                  </div>
-
-                  <h3 className="text-base md:text-lg font-bold text-[var(--ink)]">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-xs md:text-sm text-[var(--ink-muted)] mt-1.5 leading-relaxed">
-                    {item.description}
-                  </p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-[var(--paper-white)]" />
                 </div>
-              </motion.div>
-            );
-          })}
+              </div>
+
+              {/* Editorial Event Card */}
+              <div
+                className={`p-5 md:p-6 rounded-2xl border transition-all duration-300 ${
+                  item.featured
+                    ? "bg-gradient-to-br from-[#fffdf9] via-[var(--paper-white)] to-[#faf4e6] border-[var(--gold)] shadow-md"
+                    : "bg-[var(--paper-white)] border-[var(--line)] shadow-sm hover:border-[var(--gold)]/60"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <span className="text-xs md:text-sm font-bold text-[var(--ruby)] font-mono flex items-center gap-1.5">
+                    {item.icon}
+                    <span>{item.time}</span>
+                  </span>
+
+                  {item.featured && (
+                    <span className="px-3 py-0.5 rounded-full text-[10px] md:text-xs font-bold bg-[var(--ruby)] text-[var(--paper-white)] shadow-sm">
+                      لحظهٔ ویژه
+                    </span>
+                  )}
+                </div>
+
+                <h3 className="text-base md:text-lg font-bold text-[var(--ink)]">
+                  {item.title}
+                </h3>
+
+                <p className="text-xs md:text-sm text-[var(--ink-muted)] mt-1.5 leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Final Celebration Marker at the bottom */}
+        {/* Final Celebration Marker */}
         <motion.div
           style={{ opacity: flowerGlow }}
-          className="mt-8 pt-4 text-center pr-0 flex flex-col items-center justify-center gap-1 text-[var(--gold)]"
+          className="mt-8 pt-4 text-center pr-0 flex flex-col items-center justify-center gap-1 text-[var(--gold-dark,#8a6329)]"
         >
-          <Sparkle size={20} weight="fill" className="animate-spin" />
+          <Sparkle size={20} weight="fill" className="animate-spin text-[var(--gold)]" />
           <span className="text-xs font-bold tracking-wider">آغاز خاطره‌ای جاودان</span>
         </motion.div>
       </div>

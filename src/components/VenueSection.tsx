@@ -12,8 +12,8 @@ export default function VenueSection() {
   const hotelPhotos = [
     {
       src: "/venue/taj-exterior-night.jpg",
-      title: "نمای هتل تاج کانتیننتال",
-      desc: "ساختمان مجلل هتل تاج کانتیننتال در شب",
+      title: "نمای قصر ستاره شهر",
+      desc: "ساختمان مجلل قصر ستاره شهر در شب",
       featured: true,
     },
     {
@@ -48,21 +48,24 @@ export default function VenueSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="paper-card p-6 md:p-10 relative overflow-hidden shadow-xl border-[var(--line)]"
+        className="paper-card p-6 md:p-10 relative overflow-hidden shadow-xl border-2 border-[var(--gold)]/50 bg-gradient-to-b from-[#fffdfa] via-[#faf5e8] to-[#f4e9d5]/60"
       >
         <div className="text-center mb-8">
-          <span className="text-xs text-[var(--gold)] font-semibold tracking-widest uppercase">
+          <span className="text-xs text-[var(--gold-dark,#8a6329)] font-bold tracking-widest uppercase block">
             محل برگزاری
           </span>
-          <h2 className="text-2xl md:text-3xl font-bold text-[var(--ruby)] mt-1">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--ruby)] mt-1 font-serif">
             مکان محفل
           </h2>
-          <p className="text-sm text-[var(--ink-muted)] mt-2 font-semibold">
+          <p className="text-base sm:text-lg font-bold text-[var(--ink)] mt-2">
             {event.venueName}
+          </p>
+          <p className="text-xs text-[var(--ink-muted)] dir-ltr font-mono font-medium">
+            {event.venueNameEn}
           </p>
         </div>
 
-        {/* Hotel Image Gallery (1 Featured Large + 2 Supporting) */}
+        {/* Hotel Image Gallery */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {hotelPhotos.map((photo, index) => (
             <motion.div
@@ -72,7 +75,7 @@ export default function VenueSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               onClick={() => setSelectedImageIndex(index)}
-              className={`group relative rounded-xl overflow-hidden border border-[var(--line)] shadow-sm bg-[var(--ivory-deep)] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-md hover:border-[var(--gold)] ${
+              className={`group relative rounded-2xl overflow-hidden border border-[var(--gold)]/40 shadow-sm bg-[var(--ivory-deep)] flex flex-col cursor-pointer transition-all duration-300 hover:shadow-md hover:border-[var(--gold)] ${
                 photo.featured ? "md:col-span-2 md:row-span-2" : "md:col-span-1"
               }`}
             >
@@ -155,18 +158,18 @@ export default function VenueSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             {/* Info Cards */}
             <div className="space-y-4">
-              <div className="flex items-start gap-3 p-4 rounded-xl bg-[var(--ivory-deep)]/50 border border-[var(--line)]">
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-[var(--paper-white)] border border-[var(--gold)]/30 shadow-sm">
                 <div className="p-2.5 rounded-lg bg-[var(--ruby)]/10 text-[var(--ruby)] shrink-0 mt-0.5">
                   <Buildings size={22} />
                 </div>
                 <div>
                   <h3 className="font-bold text-sm md:text-base text-[var(--ink)]">نام تالار و هتل</h3>
-                  <p className="text-xs md:text-sm text-[var(--ink-muted)] mt-1">{event.venueName}</p>
+                  <p className="text-xs md:text-sm text-[var(--ink-muted)] mt-1">{event.venueName} ({event.venueNameEn})</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 rounded-xl bg-[var(--ivory-deep)]/50 border border-[var(--line)]">
-                <div className="p-2.5 rounded-lg bg-[var(--gold)]/15 text-[var(--gold)] shrink-0 mt-0.5">
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-[var(--paper-white)] border border-[var(--gold)]/30 shadow-sm">
+                <div className="p-2.5 rounded-lg bg-[var(--gold)]/15 text-[var(--gold-dark,#8a6329)] shrink-0 mt-0.5">
                   <MapPin size={22} />
                 </div>
                 <div>
@@ -180,7 +183,7 @@ export default function VenueSection() {
                   href={event.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl bg-[var(--ruby)] hover:bg-[var(--ruby-deep)] text-[var(--paper-white)] font-semibold text-xs md:text-sm shadow-md transition-colors w-full justify-center sm:w-auto"
+                  className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[var(--ruby)] hover:bg-[var(--ruby-deep)] text-[var(--paper-white)] font-bold text-xs md:text-sm shadow-md transition-colors w-full justify-center sm:w-auto"
                 >
                   <NavigationArrow size={18} weight="bold" />
                   <span>باز کردن مسیر در گوگل مپ</span>
@@ -188,11 +191,11 @@ export default function VenueSection() {
               </div>
             </div>
 
-            {/* Embedded Responsive Map Frame */}
+            {/* Embedded Responsive Map Frame for City Star Hotel Kabul */}
             <div className="relative rounded-2xl overflow-hidden border-2 border-[var(--gold)]/50 shadow-md h-64 md:h-72 w-full bg-[var(--ivory-deep)]">
               <iframe
-                title="Taj Continental Hotel Map Location"
-                src="https://maps.google.com/maps?q=Taj+Continental+Hotel+Kabul+Afghanistan&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                title="City Star Hotel Kabul Map Location"
+                src="https://maps.google.com/maps?q=City+Star+Hotel+Kabul+Afghanistan&t=&z=15&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

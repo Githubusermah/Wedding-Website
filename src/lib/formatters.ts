@@ -25,7 +25,7 @@ export function generateIcsContent(): string {
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Farhad and Sahar Wedding//Dari Invitation//FA",
+    "PRODID:-//Farhad and Adeeba Wedding//Dari Invitation//FA",
     "CALSCALE:GREGORIAN",
     "METHOD:REQUEST",
     "BEGIN:VEVENT",
