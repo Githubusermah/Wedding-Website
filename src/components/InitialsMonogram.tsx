@@ -4,19 +4,16 @@ import { useId } from "react";
 import { motion } from "motion/react";
 
 interface InitialsMonogramProps {
-  size?: number;
   className?: string;
-  showGlow?: boolean;
+  size?: number | string;
 }
 
 export default function InitialsMonogram({
-  size = 72,
   className = "",
-  showGlow = true,
+  size = "clamp(150px, 34vw, 280px)",
 }: InitialsMonogramProps) {
   const id = useId().replace(/:/g, "");
   const goldGradId = `monogramGoldGrad_${id}`;
-  const rubyGradId = `monogramRubyGrad_${id}`;
   const strokeGradId = `monogramStrokeGrad_${id}`;
 
   const pathD =
@@ -24,124 +21,52 @@ export default function InitialsMonogram({
 
   return (
     <div
-      className={`relative flex items-center justify-center select-none ${className}`}
-      style={{ width: size, height: size }}
+      className={`relative inline-flex items-center justify-center select-none ${className}`}
+      style={{ width: size, height: typeof size === "number" ? `${size}px` : size }}
     >
-      {/* Background Soft Glow & Rotating Halo Rings */}
-      {showGlow && (
-        <>
-          <motion.div
-            animate={{
-              scale: [1, 1.15, 1],
-              opacity: [0.35, 0.75, 0.35],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--gold-light)] via-[var(--gold)] to-[var(--ruby)] blur-md"
-          />
+      {/* Isolated SVG Monogram rendered directly on paper surface with gold gradient */}
+      <svg
+        viewBox="0 0 593 593"
+        className="w-full h-full drop-shadow-[0_1px_2px_rgba(197,160,89,0.25)]"
+      >
+        <defs>
+          <linearGradient id={goldGradId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#D8BD8A" />
+            <stop offset="50%" stopColor="#C5A059" />
+            <stop offset="100%" stopColor="#9A7736" />
+          </linearGradient>
+          <linearGradient id={strokeGradId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#E6D3A9" />
+            <stop offset="100%" stopColor="#C5A059" />
+          </linearGradient>
+        </defs>
 
-          <motion.div
-            animate={{
-              rotate: [0, 360],
-            }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            className="absolute -inset-2 rounded-full border border-dashed border-[var(--gold)]/40 pointer-events-none"
-          />
-
-          <motion.div
-            animate={{
-              rotate: [360, 0],
-            }}
-            transition={{
-              duration: 18,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            className="absolute -inset-4 rounded-full border border-[var(--gold)]/20 pointer-events-none"
-          />
-        </>
-      )}
-
-      {/* Monogram Circular Container */}
-      <div className="relative w-full h-full rounded-full bg-gradient-to-br from-[#fffdf8] via-[#faf5e8] to-[#f1e8d4] border-2 border-[var(--gold)] shadow-md flex items-center justify-center p-2.5 overflow-hidden">
-        {/* Shimmer sweep effect */}
-        <motion.div
-          animate={{
-            x: ["-100%", "200%"],
+        <motion.path
+          d={pathD}
+          fill={`url(#${goldGradId})`}
+          fillRule="evenodd"
+          stroke={`url(#${strokeGradId})`}
+          strokeWidth="2.5"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          initial={{
+            pathLength: 0,
+            fillOpacity: 0,
+            strokeOpacity: 0.8,
           }}
+          whileInView={{
+            pathLength: 1,
+            fillOpacity: 1,
+            strokeOpacity: 0.9,
+          }}
+          viewport={{ once: true }}
           transition={{
-            duration: 3.5,
-            repeat: Infinity,
-            repeatDelay: 2.5,
-            ease: "easeInOut",
+            pathLength: { duration: 1.8, ease: [0.22, 1, 0.36, 1] },
+            fillOpacity: { delay: 0.9, duration: 0.8, ease: "easeOut" },
+            strokeOpacity: { delay: 1.4, duration: 0.6 },
           }}
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none -skew-x-12"
         />
-
-        {/* Initials SVG with stroke drawing animation & multi-stop gold/ruby gradients */}
-        <svg
-          viewBox="0 0 593 593"
-          className="w-full h-full drop-shadow-[0_1px_3px_rgba(184,134,63,0.5)]"
-        >
-          <defs>
-            {/* Multi-stop Gold Linear Gradient for Fill */}
-            <linearGradient id={goldGradId} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FFE899" />
-              <stop offset="35%" stopColor="#E9C96A" />
-              <stop offset="70%" stopColor="#B8863F" />
-              <stop offset="100%" stopColor="#8A6329" />
-            </linearGradient>
-
-            {/* Rich Ruby Linear Gradient */}
-            <linearGradient id={rubyGradId} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#C4384A" />
-              <stop offset="50%" stopColor="#7A1C28" />
-              <stop offset="100%" stopColor="#4A1018" />
-            </linearGradient>
-
-            {/* Glowing Golden Stroke Gradient */}
-            <linearGradient id={strokeGradId} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FFF2B2" />
-              <stop offset="50%" stopColor="#E9C96A" />
-              <stop offset="100%" stopColor="#B8863F" />
-            </linearGradient>
-          </defs>
-
-          {/* Animated Path Drawing */}
-          <motion.path
-            d={pathD}
-            fill={`url(#${rubyGradId})`}
-            fillRule="evenodd"
-            stroke={`url(#${strokeGradId})`}
-            strokeWidth="3.5"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            initial={{
-              pathLength: 0,
-              fillOpacity: 0,
-              strokeOpacity: 1,
-            }}
-            whileInView={{
-              pathLength: 1,
-              fillOpacity: 1,
-              strokeOpacity: 0.9,
-            }}
-            viewport={{ once: true }}
-            transition={{
-              pathLength: { duration: 2.4, ease: [0.22, 1, 0.36, 1] },
-              fillOpacity: { delay: 1.5, duration: 1.0, ease: "easeOut" },
-              strokeOpacity: { delay: 2.2, duration: 0.8 },
-            }}
-          />
-        </svg>
-      </div>
+      </svg>
     </div>
   );
 }

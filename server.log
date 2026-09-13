@@ -5,12 +5,10 @@
 ▲ Next.js 16.3.4 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 589ms
-✓ Running next.config.ts took 49ms
+✓ Ready in 554ms
+✓ Running next.config.ts took 44ms
 
 ○ Compiling / ...
- GET / 200 in 4.7s (next.js: 4.3s, application-code: 428ms)
- GET / 200 in 101ms (next.js: 11ms, application-code: 90ms)
- GET / 200 in 101ms (next.js: 5ms, application-code: 96ms)
- GET / 200 in 89ms (next.js: 4ms, application-code: 85ms)
- GET / 200 in 94ms (next.js: 4ms, application-code: 90ms)
+ GET / 200 in 6.7s (next.js: 6.0s, application-code: 608ms)
+[browser] Image with src "/arvin-atelier-logo.jpg" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET / 200 in 104ms (next.js: 7ms, application-code: 97ms)
