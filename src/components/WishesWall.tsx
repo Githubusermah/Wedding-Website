@@ -51,41 +51,39 @@ export default function WishesWall() {
   };
 
   return (
-    <section className="py-12 px-4 max-w-3xl mx-auto">
+    <section className="py-14 px-4 max-w-2xl mx-auto text-center">
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="paper-card p-6 md:p-8"
+        className="space-y-8"
       >
-        <div className="text-center mb-8">
-          <span className="text-xs text-[var(--gold)] font-semibold tracking-wider uppercase">
+        <div>
+          <span className="text-xs text-[var(--gold-dark)] font-semibold tracking-widest uppercase block">
             دفتر یادبود
           </span>
-          <h2 className="text-2xl md:text-3xl font-bold text-[var(--ruby)] mt-1">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--ink)] font-serif mt-1">
             یادگاری‌های شما
           </h2>
-          <p className="text-sm text-[var(--ink-muted)] mt-2">
-            پیام تبریک و آرزوهای نیک خود را برای عروس و داماد ثبت کنید.
-          </p>
+          <div className="w-12 h-px bg-[var(--gold-muted)] mx-auto mt-3" />
         </div>
 
-        {/* Message Form */}
-        <form onSubmit={handleSubmit} className="space-y-4 mb-8 text-right">
+        {/* Form on transparent paper with subtle bottom line inputs */}
+        <form onSubmit={handleSubmit} className="space-y-4 text-right">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="نام شما"
-              className="px-4 py-2.5 rounded-xl border border-[var(--line)] bg-[var(--paper-white)] text-[var(--ink)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
+              className="px-3 py-2 bg-transparent border-b border-[var(--line)] text-[var(--ink)] text-sm focus:outline-none focus:border-[var(--gold)] transition-colors"
             />
             <button
               type="submit"
-              className="py-2.5 px-5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-dark)] text-[var(--paper-white)] font-semibold text-sm shadow-sm transition-colors flex items-center justify-center gap-2"
+              className="py-2 px-5 rounded-full bg-[var(--gold)] hover:bg-[var(--gold-dark)] text-[var(--paper-white)] font-semibold text-xs shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer self-end"
             >
-              <PaperPlaneTilt size={16} />
+              <PaperPlaneTilt size={14} />
               <span>ثبت یادگاری</span>
             </button>
           </div>
@@ -95,25 +93,25 @@ export default function WishesWall() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="متن پیام تبریک..."
-            className="w-full px-4 py-2.5 rounded-xl border border-[var(--line)] bg-[var(--paper-white)] text-[var(--ink)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
+            className="w-full px-3 py-2 bg-transparent border-b border-[var(--line)] text-[var(--ink)] text-xs focus:outline-none focus:border-[var(--gold)] transition-colors"
           />
 
           {isSent && (
-            <p className="text-xs text-[var(--sage)] font-semibold text-center">
+            <p className="text-xs text-[var(--gold-dark)] font-medium text-center pt-1">
               پیام شما با موفقیت ثبت شد. سپاس!
             </p>
           )}
         </form>
 
         {/* Wishes List */}
-        <div className="space-y-3 text-right">
+        <div className="space-y-4 text-right pt-2">
           {wishes.map((item) => (
             <div
               key={item.id}
-              className="paper-card-inset p-4 rounded-xl border border-[var(--line)] space-y-1.5"
+              className="border-b border-[var(--line-subtle)] pb-3 space-y-1"
             >
               <div className="flex items-center justify-between">
-                <span className="font-semibold text-sm text-[var(--ink)]">{item.name}</span>
+                <span className="font-semibold text-xs text-[var(--ink)]">{item.name}</span>
                 <span className="text-[10px] text-[var(--ink-muted)]">{item.date}</span>
               </div>
               <p className="text-xs text-[var(--ink-muted)] leading-relaxed">{item.message}</p>

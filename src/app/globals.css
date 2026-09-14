@@ -2,18 +2,17 @@
 
 @layer base {
   :root {
-    --ivory: #F6F0E2;
-    --ivory-deep: #ECE1CB;
-    --paper-white: #FFFDF8;
-    --ink: #241D17;
-    --ink-muted: #5E5449;
-    --ruby: #7A1C28;
-    --ruby-deep: #4F1119;
-    --gold: #B8863F;
-    --sage: #4A6B40;
-    --line: color-mix(in srgb, var(--gold) 36%, transparent);
-    --shadow-paper: 0 1px 0 rgba(70, 45, 22, 0.10), 0 14px 36px rgba(70, 45, 22, 0.07);
-    --radius-paper: 18px;
+    --ivory: #F7F4EE;
+    --ivory-deep: #EFE9DD;
+    --paper-white: #FAF8F5;
+    --ink: #2C2621;
+    --ink-muted: #6B6257;
+    --gold: #C5A059;
+    --gold-muted: #D8BD8A;
+    --gold-pale: rgba(197, 160, 89, 0.12);
+    --gold-dark: #9A7736;
+    --line: rgba(197, 160, 89, 0.25);
+    --line-subtle: rgba(197, 160, 89, 0.15);
   }
 }
 
@@ -23,6 +22,8 @@
 
 html, body {
   background-color: var(--ivory);
+  background-image: radial-gradient(ellipse at 50% -10%, #FFFFFF 0%, var(--ivory) 60%, var(--ivory-deep) 100%);
+  background-attachment: fixed;
   color: var(--ink);
   font-family: var(--font-vazir), sans-serif;
   margin: 0;
@@ -40,34 +41,21 @@ html, body {
   font-family: var(--font-vazir), sans-serif;
 }
 
-.paper-card {
-  background-color: var(--paper-white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-paper);
-  box-shadow: var(--shadow-paper);
-}
-
-.paper-card-inset {
-  background-color: var(--ivory-deep);
-  border: 1px solid var(--line);
-  border-radius: calc(var(--radius-paper) - 4px);
-}
-
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--ivory-deep);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--gold);
-  border-radius: 4px;
+  background: var(--gold-muted);
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--ruby);
+  background: var(--gold);
 }
 
 ::selection {
-  background: var(--gold);
+  background: var(--gold-muted);
   color: var(--paper-white);
 }

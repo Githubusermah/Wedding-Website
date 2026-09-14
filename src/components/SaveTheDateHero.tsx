@@ -1,225 +1,78 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import Image from "next/image";
-import styles from "./SaveTheDateHero.module.css";
+import { motion } from "motion/react";
+import InitialsMonogram from "@/components/InitialsMonogram";
 import { event } from "@/lib/event";
 
 export default function SaveTheDateHero() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    // 1. Petals creation
-    const createdPetals: HTMLDivElement[] = [];
-    const petalCount = 16;
-    for (let i = 0; i < petalCount; i++) {
-      const p = document.createElement("div");
-      p.className = styles.petal;
-      const size = 5 + Math.random() * 7;
-      p.style.width = `${size}px`;
-      p.style.height = `${size}px`;
-      p.style.left = `${Math.random() * 100}vw`;
-      p.style.setProperty("--drift-x", `${Math.random() * 120 - 60}px`);
-      p.style.animationDuration = `${14 + Math.random() * 12}s`;
-      p.style.animationDelay = `${Math.random() * 14}s`;
-      container.appendChild(p);
-      createdPetals.push(p);
-    }
-
-    // 2. Night sky canvas logic
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let w = 0;
-    let h = 0;
-    let stars: Array<{
-      x: number;
-      y: number;
-      r: number;
-      phase: number;
-      speed: number;
-    }> = [];
-    let shootingStars: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      life: number;
-      maxLife: number;
-      trail: Array<{ x: number; y: number }>;
-    }> = [];
-
-    function resize() {
-      if (!canvas || !canvas.parentElement) return;
-      w = canvas.width = canvas.parentElement.clientWidth;
-      h = canvas.height = canvas.parentElement.clientHeight;
-    }
-
-    function initStars() {
-      stars = [];
-      const count = Math.floor((w * h) / 9000);
-      for (let i = 0; i < count; i++) {
-        stars.push({
-          x: Math.random() * w,
-          y: Math.random() * h * 0.75,
-          r: Math.random() * 1.3 + 0.3,
-          phase: Math.random() * Math.PI * 2,
-          speed: 0.01 + Math.random() * 0.02,
-        });
-      }
-    }
-
-    resize();
-    initStars();
-
-    const handleResize = () => {
-      resize();
-      initStars();
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    function spawnShootingStar() {
-      const startX = Math.random() * w * 0.7 + w * 0.15;
-      const startY = Math.random() * h * 0.25;
-      const angle = Math.PI / 4 + (Math.random() * 0.3 - 0.15);
-      const speed = 9 + Math.random() * 5;
-      shootingStars.push({
-        x: startX,
-        y: startY,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        life: 0,
-        maxLife: 40 + Math.random() * 20,
-        trail: [],
-      });
-    }
-
-    let frame = 0;
-    let rafId: number;
-
-    function tick() {
-      frame++;
-      if (!ctx) return;
-      ctx.clearRect(0, 0, w, h);
-
-      for (const s of stars) {
-        s.phase += s.speed;
-        const alpha = 0.35 + 0.5 * Math.abs(Math.sin(s.phase));
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(184,134,63,${alpha * 0.7})`;
-        ctx.fill();
-      }
-
-      if (frame % 70 === 0 && Math.random() < 0.8) {
-        spawnShootingStar();
-      }
-
-      shootingStars.forEach((st) => {
-        st.x += st.vx;
-        st.y += st.vy;
-        st.life++;
-        st.trail.push({ x: st.x, y: st.y });
-        if (st.trail.length > 14) st.trail.shift();
-
-        for (let i = 0; i < st.trail.length - 1; i++) {
-          const t = i / st.trail.length;
-          ctx.beginPath();
-          ctx.moveTo(st.trail[i].x, st.trail[i].y);
-          ctx.lineTo(st.trail[i + 1].x, st.trail[i + 1].y);
-          ctx.strokeStyle = `rgba(233,201,106,${t * 0.8})`;
-          ctx.lineWidth = t * 2.2;
-          ctx.stroke();
-        }
-        ctx.beginPath();
-        ctx.arc(st.x, st.y, 1.6, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,250,235,0.95)";
-        ctx.fill();
-      });
-
-      shootingStars = shootingStars.filter((st) => st.life < st.maxLife);
-      rafId = requestAnimationFrame(tick);
-    }
-
-    tick();
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", handleResize);
-      createdPetals.forEach((p) => p.remove());
-    };
-  }, []);
-
   return (
-    <section ref={containerRef} className={styles.heroSection}>
-      <canvas ref={canvasRef} className={styles.sky} />
+    <section className="relative min-h-[90vh] sm:min-h-screen w-full flex flex-col items-center justify-center pt-12 pb-16 px-4 text-center overflow-hidden">
+      {/* Soft atmospheric background highlight */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] rounded-full bg-[var(--gold-pale)] blur-3xl pointer-events-none" />
 
-      <div className={styles.stage}>
-        <div className={styles.card}>
-          <div className={styles.eyebrowWrap}>
-            <span className={styles.eyebrow}>A MOMENT TO REMEMBER</span>
-          </div>
+      <div className="relative z-10 max-w-2xl mx-auto space-y-6 sm:space-y-8">
+        {/* Prominent, Isolated Monogram Artwork directly on paper surface */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          className="flex justify-center"
+        >
+          <InitialsMonogram size="clamp(160px, 35vw, 290px)" />
+        </motion.div>
 
-          <div className={styles.headline}>
-            <span className={`${styles.word} ${styles.wordSave}`}>
-              <span>SAVE</span>
-            </span>
-            <span className={styles.theScript}>the</span>
-            <span className={`${styles.word} ${styles.wordDate}`}>
-              <span>DATE</span>
-            </span>
-          </div>
+        {/* Ceremonial Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="space-y-2"
+        >
+          <span className="text-xs sm:text-sm font-semibold text-[var(--gold-dark)] uppercase tracking-[0.25em] block">
+            جشن پیوند فرخنده
+          </span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-[var(--ink)] font-nastaliq tracking-tight">
+            {event.coupleDisplayName}
+          </h1>
+        </motion.div>
 
-          <p className={styles.subtitle}>FOR THE WEDDING OF</p>
+        {/* English Names Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          dir="ltr"
+          className="text-xs sm:text-sm text-[var(--ink-muted)] font-mono tracking-widest uppercase"
+        >
+          {event.groomNameEn} &amp; {event.brideNameEn}
+        </motion.p>
 
-          <div className={styles.names}>
-            <span className={styles.name}>{event.groomNameEn}</span>
-            <span className={styles.amp}>&amp;</span>
-            <span className={`${styles.name} ${styles.nameBride}`}>{event.brideNameEn}</span>
-          </div>
+        {/* Fine Gold Divider */}
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent mx-auto"
+        />
 
-          <div className={styles.illustrationWrap}>
-            <div className={styles.halo}></div>
-            <Image
-              src="/venue-illustration.png"
-              alt="Illustration of the wedding venue, City Star Hotel Kabul"
-              width={480}
-              height={418}
-              className={styles.venueImg}
-              priority
-            />
-            <div className={`${styles.sparklePt} ${styles.sp1}`}></div>
-            <div className={`${styles.sparklePt} ${styles.sp2}`}></div>
-            <div className={`${styles.sparklePt} ${styles.sp3}`}></div>
-            <div className={`${styles.sparklePt} ${styles.sp4}`}></div>
-            <div className={`${styles.sparklePt} ${styles.sp5}`}></div>
-          </div>
-
-          <div className={styles.venueCaptionWrap}>
-            <span className={styles.venueCaption}>{event.venueNameEn.toUpperCase()}</span>
-          </div>
-          <div className={styles.venueCaptionRule}></div>
-
-          <div className={styles.divider}>
-            <span>&#10022;</span>
-          </div>
-
-          <p className={styles.dateLine}>{event.invitationDateGregorian}</p>
-          <p className={styles.dariDate}>{event.invitationDateFa}</p>
-        </div>
+        {/* Host Line & Date Details */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1 }}
+          className="space-y-2"
+        >
+          <p className="text-sm sm:text-base text-[var(--ink-muted)] font-medium">
+            با خوشحالی دعوت می‌نمایند از
+          </p>
+          <p className="text-xl sm:text-2xl font-bold text-[var(--ink)]">
+            {event.invitationDateFa}
+          </p>
+          <p dir="ltr" className="text-xs sm:text-sm text-[var(--ink-muted)] font-mono">
+            {event.invitationDateGregorian}
+          </p>
+        </motion.div>
       </div>
-
-      <div className={`${styles.siteCorner} ${styles.scTl}`}></div>
-      <div className={`${styles.siteCorner} ${styles.scTr}`}></div>
-      <div className={`${styles.siteCorner} ${styles.scBl}`}></div>
-      <div className={`${styles.siteCorner} ${styles.scBr}`}></div>
     </section>
   );
 }
