@@ -1,9 +1,22 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { Door, Sparkle, Heart, ForkKnife, Cake } from "@phosphor-icons/react";
 
 export default function ScheduleTimeline() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Scroll tracking for the golden blossom motion along the timeline
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 80%", "end 20%"],
+  });
+
+  // Map scroll progress to percentage height down the timeline border
+  const blossomY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const blossomRotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
+
   const scheduleEvents = [
     {
       time: "۰۶:۰۰ شام",
@@ -38,7 +51,7 @@ export default function ScheduleTimeline() {
   ];
 
   return (
-    <section className="py-14 px-4 max-w-2xl mx-auto scroll-mt-20 text-center">
+    <section className="py-14 px-4 max-w-2xl mx-auto scroll-mt-20 text-center relative overflow-hidden">
       <div className="mb-10">
         <span className="text-xs text-[var(--gold-dark)] font-semibold tracking-widest uppercase block">
           برنامه محفل
@@ -49,19 +62,55 @@ export default function ScheduleTimeline() {
         <div className="w-12 h-px bg-[var(--gold-muted)] mx-auto mt-3" />
       </div>
 
-      {/* Clean Typographic Timeline on Paper */}
-      <div className="relative text-right max-w-md mx-auto space-y-8 pr-6 border-r border-[var(--line-subtle)]">
+      {/* Clean Typographic Timeline on Paper with Animated Golden Blossom */}
+      <div
+        ref={containerRef}
+        className="relative text-right max-w-md mx-auto space-y-8 pr-8 border-r-2 border-[var(--gold-pale)]"
+      >
+        {/* Scroll-Linked Golden Blossom scrolling down the timeline line */}
+        <motion.div
+          style={{ top: blossomY, rotate: blossomRotate }}
+          className="absolute -right-[15px] -translate-y-1/2 z-20 pointer-events-none drop-shadow-[0_2px_8px_rgba(212,175,55,0.4)]"
+        >
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-7 h-7"
+          >
+            {/* Golden Flower / Blossom Petals */}
+            <path
+              d="M12 2C13.2 5 15 6.8 18 8C15 9.2 13.2 11 12 14C10.8 11 9 9.2 6 8C9 6.8 10.8 5 12 2Z"
+              fill="url(#goldBlossomGrad)"
+            />
+            <path
+              d="M12 10C13.2 13 15 14.8 18 16C15 17.2 13.2 19 12 22C10.8 19 9 17.2 6 16C9 14.8 10.8 13 12 10Z"
+              fill="url(#goldBlossomGrad)"
+            />
+            <circle cx="12" cy="12" r="3.5" fill="#D4AF37" stroke="#FFF8E7" strokeWidth="1" />
+            <defs>
+              <linearGradient id="goldBlossomGrad" x1="6" y1="2" x2="18" y2="22" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#F7E7A1" />
+                <stop offset="50%" stopColor="#C59B27" />
+                <stop offset="100%" stopColor="#997010" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </motion.div>
+
         {scheduleEvents.map((item, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, x: 10 }}
+            initial={{ opacity: 0, x: 15 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5, delay: index * 0.08 }}
             className="relative"
           >
             {/* Fine gold point marker */}
-            <div className="absolute -right-[31px] top-1.5 w-2.5 h-2.5 rounded-full bg-[var(--gold-muted)]" />
+            <div className="absolute -right-[37px] top-1.5 w-3 h-3 rounded-full bg-[var(--paper-white)] border-2 border-[var(--gold)] shadow-sm" />
 
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs font-mono font-semibold text-[var(--gold-dark)] dir-ltr justify-end">
@@ -69,7 +118,7 @@ export default function ScheduleTimeline() {
                 {item.icon}
               </div>
 
-              <h3 className="text-base font-bold text-[var(--ink)]">
+              <h3 className="text-base font-bold text-[var(--ink)] font-serif">
                 {item.title}
               </h3>
 
