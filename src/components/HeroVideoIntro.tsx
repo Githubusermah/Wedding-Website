@@ -13,6 +13,16 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
   const [isDismissed, setIsDismissed] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
+  // Ensure page is pinned to the top on load & when history scroll restoration is handled
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   // Lock document and body scrolling while opening video state is active
   useEffect(() => {
     if (!isDismissed) {
@@ -20,10 +30,16 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
       const originalBodyOverflow = document.body.style.overflow;
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
+      if (typeof window !== "undefined") {
+        window.scrollTo(0, 0);
+      }
 
       return () => {
         document.documentElement.style.overflow = originalDocOverflow;
         document.body.style.overflow = originalBodyOverflow;
+        if (typeof window !== "undefined") {
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        }
       };
     }
   }, [isDismissed]);
@@ -65,6 +81,9 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
 
   const handleEnded = () => {
     setIsDismissed(true);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
     if (onDismiss) {
       onDismiss();
     }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Door, Sparkle, Heart, ForkKnife, Cake } from "@phosphor-icons/react";
 
@@ -67,37 +68,19 @@ export default function ScheduleTimeline() {
         ref={containerRef}
         className="relative text-right max-w-md mx-auto space-y-8 pr-8 border-r-2 border-[var(--gold-pale)]"
       >
-        {/* Scroll-Linked Golden Blossom scrolling down the timeline line */}
+        {/* Scroll-Linked Pink Flower Blossom scrolling down the timeline line */}
         <motion.div
           style={{ top: blossomY, rotate: blossomRotate }}
-          className="absolute -right-[15px] -translate-y-1/2 z-20 pointer-events-none drop-shadow-[0_2px_8px_rgba(212,175,55,0.4)]"
+          className="absolute -right-[19px] -translate-y-1/2 z-20 pointer-events-none filter drop-shadow-[0_4px_12px_rgba(220,130,160,0.35)]"
         >
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-7 h-7"
-          >
-            {/* Golden Flower / Blossom Petals */}
-            <path
-              d="M12 2C13.2 5 15 6.8 18 8C15 9.2 13.2 11 12 14C10.8 11 9 9.2 6 8C9 6.8 10.8 5 12 2Z"
-              fill="url(#goldBlossomGrad)"
-            />
-            <path
-              d="M12 10C13.2 13 15 14.8 18 16C15 17.2 13.2 19 12 22C10.8 19 9 17.2 6 16C9 14.8 10.8 13 12 10Z"
-              fill="url(#goldBlossomGrad)"
-            />
-            <circle cx="12" cy="12" r="3.5" fill="#D4AF37" stroke="#FFF8E7" strokeWidth="1" />
-            <defs>
-              <linearGradient id="goldBlossomGrad" x1="6" y1="2" x2="18" y2="22" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#F7E7A1" />
-                <stop offset="50%" stopColor="#C59B27" />
-                <stop offset="100%" stopColor="#997010" />
-              </linearGradient>
-            </defs>
-          </svg>
+          <Image
+            src="/blossom.svg"
+            alt="Pink Flower Blossom"
+            width={38}
+            height={38}
+            className="w-9 h-9 object-contain"
+            priority
+          />
         </motion.div>
 
         {scheduleEvents.map((item, index) => (
