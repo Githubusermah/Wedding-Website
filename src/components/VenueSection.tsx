@@ -9,20 +9,20 @@ export default function VenueSection() {
   const venueImages = [
     {
       src: "/venue/weddingvenue1.png",
-      alt: "نمای تالار قصر ستاره شهر ۱",
+      alt: "نمای تالار تاج کانتیننتال ۱",
       caption: "تالار مجلل و ورودی اصلی",
       delay: 0.1,
     },
     {
       src: "/venue/weddingvenue2.png",
-      alt: "نمای تالار قصر ستاره شهر ۲",
-      caption: "جلوه قصر ستاره شهر کابل",
+      alt: "نمای تالار تاج کانتیننتال ۲",
+      caption: "جلوه تاج کانتیننتال کابل",
       delay: 0.2,
       isPrimary: true,
     },
     {
       src: "/venue/weddingvenue3.png",
-      alt: "نمای تالار قصر ستاره شهر ۳",
+      alt: "نمای تالار تاج کانتیننتال ۳",
       caption: "فضای تشریفات و پذیرایی",
       delay: 0.3,
     },
@@ -48,7 +48,7 @@ export default function VenueSection() {
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[var(--ink)] font-serif tracking-tight mt-2">
-            قصر ستاره شهر
+            تاج کانتیننتال
           </h2>
 
           <p className="text-sm sm:text-base text-[var(--gold-dark)] font-mono tracking-widest uppercase font-semibold">
