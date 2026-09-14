@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { motion, Variants } from "motion/react";
 import { event } from "@/lib/event";
 
 interface Petal {
@@ -11,6 +12,63 @@ interface Petal {
   driftX: number;
   duration: number;
   delay: number;
+}
+
+function TypewriterText({
+  text,
+  delay = 0,
+  stagger = 0.045,
+  className = "",
+  dir,
+}: {
+  text: string;
+  delay?: number;
+  stagger?: number;
+  className?: string;
+  dir?: "ltr" | "rtl";
+}) {
+  const letters = Array.from(text);
+
+  const containerVariants: Variants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: stagger,
+        delayChildren: delay,
+      },
+    },
+  };
+
+  const letterVariants: Variants = {
+    hidden: { opacity: 0, y: 6, filter: "blur(3px)" },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { duration: 0.18, ease: "easeOut" },
+    },
+  };
+
+  return (
+    <motion.span
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className={`inline-flex flex-wrap items-center justify-center ${className}`}
+      dir={dir}
+    >
+      {letters.map((char, index) => (
+        <motion.span
+          key={index}
+          variants={letterVariants}
+          className="inline-block whitespace-pre"
+        >
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ))}
+    </motion.span>
+  );
 }
 
 export default function SaveTheDateHero() {
@@ -190,45 +248,134 @@ export default function SaveTheDateHero() {
         />
       ))}
 
-      {/* Hero Content Container (Unboxed, direct flex layout) */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center space-y-1 sm:space-y-2">
-        {/* Eyebrow Line */}
+      {/* Hero Content Container (Enforced LTR so English headline reads Left-to-Right) */}
+      <div
+        dir="ltr"
+        className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center space-y-2"
+      >
+        {/* 1. Eyebrow Line */}
         <div className="eyebrow-wrap">
-          <span className="eyebrow">A MOMENT TO REMEMBER</span>
-        </div>
-
-        {/* Headline: SAVE the DATE */}
-        <div className="headline">
-          <span className="word save">
-            <span>SAVE</span>
-          </span>
-          <span className="the-script">the</span>
-          <span className="word date">
-            <span>DATE</span>
-          </span>
-        </div>
-
-        {/* Subtitle */}
-        <p className="subtitle">FOR THE WEDDING OF</p>
-
-        {/* Couple Names */}
-        <div className="names">
-          <span className="name groom">{event.groomNameEn}</span>
-          <span className="amp">&amp;</span>
-          <span className="name bride">{event.brideNameEn}</span>
-        </div>
-
-        {/* Palace Watercolor Illustration + Crescent-Arc Frame */}
-        <div className="illustration-wrap">
-          <div className="halo"></div>
-          <Image
-            src="/venue/herosectionweddingvenue.png"
-            alt="Palace illustration of City Star Wedding Hall framed by crescent arcs"
-            width={720}
-            height={520}
-            priority
-            className="venue-img"
+          <TypewriterText
+            text="A MOMENT TO REMEMBER"
+            delay={0.2}
+            stagger={0.035}
+            className="eyebrow"
+            dir="ltr"
           />
+        </div>
+
+        {/* 2. Main Headline: SAVE the DATE (Enforced LTR flex row so SAVE is left, DATE is right) */}
+        <div className="headline flex items-baseline justify-center gap-2 sm:gap-3 my-1" dir="ltr">
+          <TypewriterText
+            text="SAVE"
+            delay={0.8}
+            stagger={0.07}
+            className="word-save font-playfair text-3xl sm:text-5xl md:text-6xl font-semibold tracking-wider text-[var(--ink)]"
+            dir="ltr"
+          />
+
+          <motion.span
+            initial={{ opacity: 0, scale: 0.6, y: 10, rotate: -6 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0, rotate: -3 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
+            className="the-script font-tangerine text-4xl sm:text-6xl md:text-7xl text-[var(--gold-dark)] leading-none px-1 relative top-1"
+          >
+            the
+          </motion.span>
+
+          <TypewriterText
+            text="DATE"
+            delay={1.5}
+            stagger={0.07}
+            className="word-date font-playfair text-3xl sm:text-5xl md:text-6xl font-semibold tracking-wider text-[var(--ink)]"
+            dir="ltr"
+          />
+        </div>
+
+        {/* 3. Subtitle */}
+        <div className="mt-1">
+          <TypewriterText
+            text="FOR THE WEDDING OF"
+            delay={1.9}
+            stagger={0.035}
+            className="subtitle font-playfair text-xs sm:text-sm tracking-[0.28em] text-[var(--ink-muted)] font-medium"
+            dir="ltr"
+          />
+        </div>
+
+        {/* 4. Couple Names */}
+        <div className="names flex items-center justify-center gap-3 sm:gap-4 my-2" dir="ltr">
+          <TypewriterText
+            text={event.groomNameEn.toUpperCase()}
+            delay={2.4}
+            stagger={0.06}
+            className="groom-name font-playfair text-base sm:text-xl md:text-2xl tracking-[0.14em] text-[var(--ink)] font-semibold"
+            dir="ltr"
+          />
+
+          <motion.span
+            initial={{ opacity: 0, scale: 0.5, rotate: -15 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: -6 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 2.8, ease: "backOut" }}
+            className="amp font-tangerine text-4xl sm:text-5xl md:text-6xl text-[var(--oxblood,#7a1c28)] leading-none"
+          >
+            &amp;
+          </motion.span>
+
+          <TypewriterText
+            text={event.brideNameEn.toUpperCase()}
+            delay={3.0}
+            stagger={0.06}
+            className="bride-name font-playfair text-base sm:text-xl md:text-2xl tracking-[0.14em] text-[var(--ink)] font-semibold"
+            dir="ltr"
+          />
+        </div>
+
+        {/* 5. Palace Watercolor Illustration with Animated Unblur and Crescent Circle Reveal */}
+        <div className="illustration-wrap relative flex justify-center items-center my-3 w-full max-w-2xl mx-auto">
+          {/* Ambient Glow Halo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, delay: 3.5 }}
+            className="halo absolute inset-0 -m-6 z-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(233,201,106,0.38)_0%,rgba(233,201,106,0.08)_50%,transparent_70%)] blur-xl pointer-events-none"
+          />
+
+          {/* Unblurring & Circle Clip Revealing Venue Photo */}
+          <motion.div
+            initial={{
+              opacity: 0,
+              filter: "blur(20px) brightness(1.2) saturate(0.4)",
+              clipPath: "circle(6% at 50% 50%)",
+              scale: 0.92,
+            }}
+            whileInView={{
+              opacity: 1,
+              filter: "blur(0px) brightness(1) saturate(1)",
+              clipPath: "circle(80% at 50% 50%)",
+              scale: 1,
+            }}
+            viewport={{ once: true }}
+            transition={{
+              duration: 2.2,
+              delay: 3.6,
+              ease: "easeOut",
+            }}
+            className="relative z-10 w-full"
+          >
+            <Image
+              src="/venue/herosectionweddingvenue.png"
+              alt="Palace illustration of City Star Wedding Hall"
+              width={720}
+              height={520}
+              priority
+              className="venue-img w-full h-auto max-w-[720px] max-h-[52vh] object-contain mx-auto drop-shadow-[0_12px_28px_rgba(197,160,89,0.3)]"
+            />
+          </motion.div>
+
           {/* Sparkle Points */}
           <div className="sparkle-pt sp1"></div>
           <div className="sparkle-pt sp2"></div>
@@ -237,20 +384,59 @@ export default function SaveTheDateHero() {
           <div className="sparkle-pt sp5"></div>
         </div>
 
-        {/* Venue Caption + Rule */}
-        <div className="venue-caption-wrap">
-          <span className="venue-caption">{event.venueNameEn}</span>
-        </div>
-        <div className="venue-caption-rule"></div>
+        {/* 6. Venue Caption + Expanding Rule */}
+        <div className="venue-caption-wrap flex flex-col items-center justify-center space-y-1 mt-1">
+          <TypewriterText
+            text={event.venueNameEn.toUpperCase()}
+            delay={5.2}
+            stagger={0.035}
+            className="venue-caption font-playfair text-xs sm:text-sm tracking-[0.28em] text-[var(--gold-dark)] font-bold uppercase"
+            dir="ltr"
+          />
 
-        {/* Divider */}
-        <div className="divider">
-          <span>&#10022;</span>
+          <motion.div
+            initial={{ width: 0, opacity: 0 }}
+            whileInView={{ width: "55%", opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.0, delay: 6.0, ease: "easeOut" }}
+            className="h-px bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent mt-2"
+          />
         </div>
 
-        {/* Dates */}
-        <p className="date-line">{event.invitationDateGregorian}</p>
-        <p className="dari-date">{event.invitationDateFa}</p>
+        {/* 7. Divider Star */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.4, rotate: -45 }}
+          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 6.3 }}
+          className="divider flex items-center justify-center gap-3 text-[var(--gold)] my-2"
+        >
+          <span className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--gold)]" />
+          <span className="text-sm">&#10022;</span>
+          <span className="h-px w-10 bg-gradient-to-l from-transparent to-[var(--gold)]" />
+        </motion.div>
+
+        {/* 8. Gregorian Date Line */}
+        <div>
+          <TypewriterText
+            text={event.invitationDateGregorian}
+            delay={6.5}
+            stagger={0.04}
+            className="date-line font-playfair text-lg sm:text-2xl text-[var(--ink)] tracking-wider font-medium"
+            dir="ltr"
+          />
+        </div>
+
+        {/* 9. Dari Date Line */}
+        <div className="pt-1">
+          <TypewriterText
+            text={event.invitationDateFa}
+            delay={7.2}
+            stagger={0.05}
+            className="dari-date font-noto-naskh text-sm sm:text-lg text-[var(--ink-muted)] font-medium"
+            dir="rtl"
+          />
+        </div>
       </div>
 
       {/* Four Viewport Corner Brackets */}
@@ -343,231 +529,10 @@ export default function SaveTheDateHero() {
           }
         }
 
-        /* Eyebrow Line */
-        .eyebrow-wrap {
-          overflow: hidden;
-          white-space: nowrap;
-          width: 0;
-          margin: 0 auto 0.4rem;
-          animation: typeReveal 1.1s steps(24, end) 0.6s forwards;
-        }
-        @keyframes typeReveal {
-          to {
-            width: 100%;
-          }
-        }
-
-        .eyebrow {
-          font-family: var(--font-playfair), 'Playfair Display', serif;
-          font-size: clamp(0.68rem, 1.6vw, 0.85rem);
-          letter-spacing: 0.32em;
-          color: var(--gold-dark);
-          font-weight: 600;
-          white-space: nowrap;
-        }
-
-        /* Headline Block */
-        .headline {
-          position: relative;
-          display: flex;
-          align-items: baseline;
-          justify-content: center;
-          gap: 0.5rem;
-          flex-wrap: wrap;
-          margin-bottom: 0.1rem;
-        }
-
-        .word {
-          display: inline-block;
-          overflow: hidden;
-        }
-
-        .word span {
-          display: inline-block;
-          font-family: var(--font-playfair), 'Playfair Display', serif;
-          font-size: clamp(2.2rem, 7vw, 3.2rem);
-          letter-spacing: 0.06em;
-          color: var(--ink);
-          transform: translateY(115%);
-          animation: riseUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-
-        .word.save span {
-          animation-delay: 1.5s;
-        }
-        .word.date span {
-          animation-delay: 2.05s;
-        }
-
-        @keyframes riseUp {
-          to {
-            transform: translateY(0);
-          }
-        }
-
-        .the-script {
-          font-family: var(--font-tangerine), 'Tangerine', cursive;
-          font-size: clamp(3rem, 9.5vw, 4.6rem);
-          color: var(--gold-dark);
-          line-height: 1;
-          display: inline-block;
-          opacity: 0;
-          transform: translateY(10px) rotate(-3deg);
-          animation: scriptIn 1s ease-out 1.9s forwards;
-          position: relative;
-          top: 0.35rem;
-        }
-        @keyframes scriptIn {
-          to {
-            opacity: 1;
-            transform: translateY(0) rotate(-3deg);
-          }
-        }
-
-        /* Subtitle */
-        .subtitle {
-          font-family: var(--font-playfair), 'Playfair Display', serif;
-          font-size: clamp(0.72rem, 1.7vw, 0.88rem);
-          letter-spacing: 0.28em;
-          color: var(--ink-muted);
-          font-weight: 500;
-          margin: 0.5rem 0 0.5rem;
-          opacity: 0;
-          animation: fadeUp 0.9s ease-out 2.6s forwards;
-        }
-
-        @keyframes fadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        /* Couple Names */
-        .names {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 1rem;
-          flex-wrap: wrap;
-          margin-bottom: 0.4rem;
-        }
-
-        .name {
-          font-family: var(--font-playfair), 'Playfair Display', serif;
-          font-size: clamp(1rem, 2.4vw, 1.25rem);
-          letter-spacing: 0.14em;
-          color: var(--ink);
-          opacity: 0;
-          animation: fadeUp 0.9s ease-out 3.0s forwards;
-        }
-        .name.bride {
-          animation-delay: 3.25s;
-        }
-
-        .amp {
-          font-family: var(--font-tangerine), 'Tangerine', cursive;
-          font-size: clamp(2.8rem, 7vw, 3.8rem);
-          color: var(--oxblood);
-          line-height: 0.6;
-          opacity: 0;
-          transform: scale(0.7) rotate(-6deg);
-          animation: ampPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 3.55s forwards;
-        }
-        @keyframes ampPop {
-          to {
-            opacity: 1;
-            transform: scale(1) rotate(-6deg);
-          }
-        }
-
-        /* Palace Illustration + Crescent-Arc Frame */
-        .illustration-wrap {
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: 0.4rem auto 0.2rem;
-          width: 100%;
-          opacity: 0;
-          animation: fadeUp 0.8s ease-out 3.9s forwards;
-        }
-
-        .halo {
-          position: absolute;
-          inset: -8%;
-          z-index: 0;
-          background: radial-gradient(
-            circle at 50% 42%,
-            rgba(233, 201, 106, 0.35) 0%,
-            rgba(233, 201, 106, 0.08) 45%,
-            transparent 70%
-          );
-          filter: blur(8px);
-          opacity: 0;
-          animation: haloIn 2s ease-out 4.2s forwards, haloPulse 5s ease-in-out 6.2s infinite;
-        }
-        @keyframes haloIn {
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes haloPulse {
-          0%,
-          100% {
-            transform: scale(1);
-            opacity: 0.75;
-          }
-          50% {
-            transform: scale(1.08);
-            opacity: 1;
-          }
-        }
-
-        .venue-img {
-          position: relative;
-          z-index: 1;
-          display: block;
-          width: 100%;
-          height: auto;
-          max-width: min(90vw, 720px);
-          max-height: 56vh;
-          object-fit: contain;
-          margin: 0 auto;
-          filter: blur(16px) saturate(0.5) brightness(1.1);
-          clip-path: circle(4% at 50% 46%);
-          animation: venueReveal 2.6s cubic-bezier(0.22, 0.9, 0.3, 1) 4.3s forwards,
-            venueDevelop 2.2s ease-out 4.3s forwards,
-            venueFloat 7s ease-in-out 6.9s infinite;
-        }
-        @keyframes venueReveal {
-          to {
-            clip-path: circle(75% at 50% 46%);
-          }
-        }
-        @keyframes venueDevelop {
-          to {
-            filter: blur(0px) saturate(1) brightness(1);
-          }
-        }
-        @keyframes venueFloat {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-7px);
-          }
-        }
-
         /* Sparkle Points */
         .sparkle-pt {
           position: absolute;
-          z-index: 2;
+          z-index: 20;
           width: 6px;
           height: 6px;
           background: var(--gold-light);
@@ -590,147 +555,35 @@ export default function SaveTheDateHero() {
         .sp1 {
           top: 8%;
           left: 49%;
-          animation-delay: 6.8s;
+          animation-delay: 4.8s;
         }
         .sp2 {
           top: 22%;
           left: 27%;
-          animation-delay: 7.2s;
+          animation-delay: 5.2s;
         }
         .sp3 {
           top: 22%;
           left: 71%;
-          animation-delay: 7.6s;
+          animation-delay: 5.6s;
         }
         .sp4 {
           top: 40%;
           left: 14%;
-          animation-delay: 8.0s;
+          animation-delay: 6.0s;
         }
         .sp5 {
           top: 40%;
           left: 85%;
-          animation-delay: 8.4s;
-        }
-
-        /* Venue Caption + Rule */
-        .venue-caption-wrap {
-          position: relative;
-          z-index: 2;
-          overflow: hidden;
-          white-space: nowrap;
-          width: 0;
-          margin: 0.1rem auto 0;
-          animation: captionReveal 1.1s steps(22, end) 6.9s forwards;
-        }
-        @keyframes captionReveal {
-          to {
-            width: 100%;
-          }
-        }
-
-        .venue-caption {
-          display: inline-block;
-          font-family: var(--font-playfair), 'Playfair Display', serif;
-          font-size: clamp(0.72rem, 1.8vw, 0.88rem);
-          letter-spacing: 0.28em;
-          color: var(--gold-dark);
-          font-weight: 600;
-          white-space: nowrap;
-          padding: 0 0.15rem;
-          text-transform: uppercase;
-        }
-
-        .venue-caption-rule {
-          width: 0;
-          height: 1px;
-          margin: 0.25rem auto 0;
-          background: linear-gradient(90deg, transparent, var(--gold), transparent);
-          animation: ruleGrow 0.8s ease-out 8.0s forwards;
-        }
-        @keyframes ruleGrow {
-          to {
-            width: 55%;
-          }
-        }
-
-        /* Footer Details */
-        .divider {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.7rem;
-          color: var(--gold);
-          margin: 0.5rem 0 0.4rem;
-          opacity: 0;
-          animation: fadeUp 0.8s ease-out 8.3s forwards;
-        }
-        .divider::before,
-        .divider::after {
-          content: "";
-          height: 1px;
-          width: 38px;
-          background: linear-gradient(90deg, transparent, currentColor);
-        }
-        .divider::after {
-          background: linear-gradient(270deg, transparent, currentColor);
-        }
-        .divider span {
-          font-size: 0.9rem;
-          transform: translateY(-1px);
-        }
-
-        .date-line {
-          font-family: var(--font-playfair), 'Playfair Display', serif;
-          font-size: clamp(1.3rem, 4.2vw, 1.75rem);
-          letter-spacing: 0.04em;
-          color: var(--ink);
-          margin-bottom: 0.25rem;
-          opacity: 0;
-          animation: fadeUp 0.8s ease-out 8.55s forwards;
-        }
-
-        .dari-date {
-          font-family: var(--font-noto-naskh), 'Noto Naskh Arabic', serif;
-          direction: rtl;
-          font-size: clamp(0.95rem, 2.6vw, 1.1rem);
-          color: var(--ink-muted);
-          opacity: 0;
-          animation: fadeUp 0.8s ease-out 8.8s forwards;
+          animation-delay: 6.4s;
         }
 
         @media (prefers-reduced-motion: reduce) {
           * {
             animation: none !important;
           }
-          .word span,
-          .the-script,
-          .subtitle,
-          .name,
-          .amp,
-          .illustration-wrap,
-          .halo,
-          .venue-img,
-          .sparkle-pt,
-          .venue-caption-wrap,
-          .venue-caption-rule,
-          .divider,
-          .date-line,
-          .dari-date,
           .site-corner {
             opacity: 1 !important;
-            transform: none !important;
-            filter: none !important;
-          }
-          .venue-img {
-            clip-path: none !important;
-          }
-          .eyebrow-wrap,
-          .venue-caption-wrap {
-            width: 100% !important;
-          }
-          .venue-caption-rule {
-            width: 55% !important;
           }
         }
       `}</style>
