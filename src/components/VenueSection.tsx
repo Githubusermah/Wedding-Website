@@ -9,20 +9,20 @@ export default function VenueSection() {
   const venueImages = [
     {
       src: "/venue/weddingvenue1.png",
-      alt: "نمای تالار تاج کانتیننتال ۱",
+      alt: "نمای تالار سیتی استار ۱",
       caption: "تالار مجلل و ورودی اصلی",
       delay: 0.1,
     },
     {
       src: "/venue/weddingvenue2.png",
-      alt: "نمای تالار تاج کانتیننتال ۲",
-      caption: "جلوه تاج کانتیننتال کابل",
+      alt: "نمای تالار سیتی استار ۲",
+      caption: "جلوه تالار عروسی سیتی استار کابل",
       delay: 0.2,
       isPrimary: true,
     },
     {
       src: "/venue/weddingvenue3.png",
-      alt: "نمای تالار تاج کانتیننتال ۳",
+      alt: "نمای تالار سیتی استار ۳",
       caption: "فضای تشریفات و پذیرایی",
       delay: 0.3,
     },
@@ -48,7 +48,7 @@ export default function VenueSection() {
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[var(--ink)] font-serif tracking-tight mt-2">
-            تاج کانتیننتال
+            {event.venueName}
           </h2>
 
           <p className="text-sm sm:text-base text-[var(--gold-dark)] font-mono tracking-widest uppercase font-semibold">
@@ -58,43 +58,40 @@ export default function VenueSection() {
           <div className="w-16 h-px bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent mx-auto mt-4" />
         </div>
 
-        {/* Venue Image Cards - Enhanced for mobile visibility & scroll unblur animation */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 items-center justify-center my-6 px-2">
+        {/* Unboxed Venue Artworks placed directly on screen paper surface */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 items-center justify-center my-8 px-2">
           {venueImages.map((img, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, scale: 0.85, filter: "blur(12px)", y: 30 }}
+              initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)", y: 25 }}
               whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)", y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
+              viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.9, delay: img.delay, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ scale: 1.04 }}
+              whileHover={{ scale: 1.05, y: -4 }}
               className={`relative flex flex-col items-center group ${
                 img.isPrimary ? "md:-translate-y-4" : ""
               }`}
             >
+              {/* Soft Radial Gold Backglow under artwork */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-4/5 bg-radial from-[var(--gold-light)]/20 via-[var(--gold)]/5 to-transparent rounded-full blur-2xl opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none" />
+
               <div
                 className={`relative w-full ${
                   img.isPrimary
                     ? "h-[280px] sm:h-[320px] md:h-[300px]"
                     : "h-[240px] sm:h-[280px] md:h-[250px]"
-                } p-4 rounded-2xl bg-gradient-to-b from-[#FFFDF7] to-[#F9F4E8] border border-[var(--gold-muted)]/40 shadow-[0_10px_30px_rgba(197,160,89,0.12)] group-hover:border-[var(--gold)] transition-all duration-500`}
+                }`}
               >
-                {/* Subtle Corner Accents */}
-                <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-[var(--gold-dark)]/40 rounded-tr-sm" />
-                <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-[var(--gold-dark)]/40 rounded-bl-sm" />
-
-                <div className="relative w-full h-full">
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    className="object-contain filter drop-shadow-[0_8px_20px_rgba(197,160,89,0.25)] transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                </div>
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-contain filter drop-shadow-[0_12px_24px_rgba(197,160,89,0.3)] transition-transform duration-500 group-hover:brightness-105"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
               </div>
 
-              <span className="mt-3 text-xs font-semibold text-[var(--ink-muted)] group-hover:text-[var(--gold-dark)] transition-colors font-serif">
+              <span className="mt-3 text-xs font-semibold text-[var(--ink-muted)] group-hover:text-[var(--gold-dark)] transition-colors font-serif tracking-wide">
                 {img.caption}
               </span>
             </motion.div>

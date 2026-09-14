@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import HeroVideoIntro from "@/components/HeroVideoIntro";
 import SaveTheDateHero from "@/components/SaveTheDateHero";
 import FoggedCountdown from "@/components/FoggedCountdown";
@@ -24,8 +24,20 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   const handleVideoDismiss = () => {
     setIsVideoDismissed(true);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
   };
 
   return (

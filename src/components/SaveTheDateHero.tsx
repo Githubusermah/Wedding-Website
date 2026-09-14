@@ -223,7 +223,7 @@ export default function SaveTheDateHero() {
           <div className="halo"></div>
           <Image
             src="/venue/herosectionweddingvenue.png"
-            alt="Palace illustration of Taj Continental framed by crescent arcs"
+            alt="Palace illustration of City Star Wedding Hall framed by crescent arcs"
             width={720}
             height={520}
             priority
