@@ -42,27 +42,29 @@ export default function Home() {
 
   return (
     <main className="min-h-screen relative pb-20 md:pb-0">
-      {/* 1. Full-screen Video Intro Overlay (State A) */}
-      {!isVideoDismissed && (
+      {/* 1. Full-screen Video Intro View (State A) */}
+      {!isVideoDismissed ? (
         <HeroVideoIntro
           onUserGesture={handleUserGesture}
           onDismiss={handleVideoDismiss}
         />
+      ) : (
+        /* 2. Main Invitation Content View (State B revealed after video ends) */
+        <>
+          <SaveTheDateHero />
+          <FoggedCountdown />
+          <EventFacts />
+          <RsvpForm />
+          <ScheduleTimeline />
+          <GuestGuide />
+          <VenueSection />
+          <WishesWall />
+          <FooterReplay />
+          <MobileActionBar />
+        </>
       )}
 
-      {/* 2. Main Invitation Content (State B revealed when video ends) */}
-      <SaveTheDateHero />
-      <FoggedCountdown />
-      <EventFacts />
-      <RsvpForm />
-      <ScheduleTimeline />
-      <GuestGuide />
-      <VenueSection />
-      <WishesWall />
-      <FooterReplay />
-      <MobileActionBar />
-
-      {/* Background Audio Player */}
+      {/* Background Audio Player persists across states */}
       <AudioPlayer ref={audioPlayerRef} />
     </main>
   );
