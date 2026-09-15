@@ -51,7 +51,7 @@ export default function Home() {
       )}
 
       {/* 2. Main Invitation Content (State B revealed when video ends) */}
-      <SaveTheDateHero />
+      <SaveTheDateHero isStarted={isVideoDismissed} />
       <FoggedCountdown />
       <EventFacts />
       <RsvpForm />
