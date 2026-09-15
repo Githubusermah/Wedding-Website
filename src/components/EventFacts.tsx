@@ -11,7 +11,7 @@ import { Calendar, Clock, MapPin, Sparkle } from "@phosphor-icons/react";
 function TypewriterPoemLine({
   text,
   delay = 0,
-  stagger = 0.04,
+  stagger = 0.12,
   className = "",
 }: {
   text: string;
@@ -19,7 +19,7 @@ function TypewriterPoemLine({
   stagger?: number;
   className?: string;
 }) {
-  const chars = Array.from(text);
+  const words = text.split(" ");
 
   const containerVariants: Variants = {
     hidden: {},
@@ -31,13 +31,13 @@ function TypewriterPoemLine({
     },
   };
 
-  const charVariants: Variants = {
-    hidden: { opacity: 0, filter: "blur(4px)", y: 4 },
+  const wordVariants: Variants = {
+    hidden: { opacity: 0, filter: "blur(6px)", y: 8 },
     visible: {
       opacity: 1,
       filter: "blur(0px)",
       y: 0,
-      transition: { duration: 0.2, ease: "easeOut" },
+      transition: { duration: 0.4, ease: "easeOut" },
     },
   };
 
@@ -47,15 +47,16 @@ function TypewriterPoemLine({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-40px" }}
-      className={`inline-flex flex-wrap items-center justify-center ${className}`}
+      className={`inline-flex flex-wrap items-center justify-center gap-[0.35em] ${className}`}
+      dir="rtl"
     >
-      {chars.map((ch, idx) => (
+      {words.map((word, idx) => (
         <motion.span
           key={idx}
-          variants={charVariants}
-          className="inline-block whitespace-pre"
+          variants={wordVariants}
+          className="inline-block whitespace-nowrap"
         >
-          {ch === " " ? "\u00A0" : ch}
+          {word}
         </motion.span>
       ))}
     </motion.div>

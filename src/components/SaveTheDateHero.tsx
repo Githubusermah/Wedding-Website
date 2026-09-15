@@ -14,20 +14,31 @@ interface Petal {
   delay: number;
 }
 
+interface SaveTheDateHeroProps {
+  isStarted?: boolean;
+}
+
+function isArabicOrPersian(str: string) {
+  return /[\u0600-\u06FF]/.test(str);
+}
+
 function TypewriterText({
   text,
   delay = 0,
-  stagger = 0.045,
+  stagger = 0.08,
   className = "",
   dir,
+  isStarted = true,
 }: {
   text: string;
   delay?: number;
   stagger?: number;
   className?: string;
   dir?: "ltr" | "rtl";
+  isStarted?: boolean;
 }) {
-  const letters = Array.from(text);
+  const isPersian = isArabicOrPersian(text);
+  const words = text.split(" ");
 
   const containerVariants: Variants = {
     hidden: {},
@@ -39,13 +50,13 @@ function TypewriterText({
     },
   };
 
-  const letterVariants: Variants = {
-    hidden: { opacity: 0, y: 6, filter: "blur(3px)" },
+  const wordVariants: Variants = {
+    hidden: { opacity: 0, y: 8, filter: "blur(6px)" },
     visible: {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      transition: { duration: 0.18, ease: "easeOut" },
+      transition: { duration: 0.35, ease: "easeOut" },
     },
   };
 
@@ -53,25 +64,24 @@ function TypewriterText({
     <motion.span
       variants={containerVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      className={`inline-flex flex-wrap items-center justify-center ${className}`}
-      dir={dir}
+      animate={isStarted ? "visible" : "hidden"}
+      className={`inline-flex flex-wrap items-center justify-center gap-[0.35em] ${className}`}
+      dir={dir || (isPersian ? "rtl" : "ltr")}
     >
-      {letters.map((char, index) => (
+      {words.map((word, index) => (
         <motion.span
           key={index}
-          variants={letterVariants}
-          className="inline-block whitespace-pre"
+          variants={wordVariants}
+          className="inline-block whitespace-nowrap"
         >
-          {char === " " ? "\u00A0" : char}
+          {word}
         </motion.span>
       ))}
     </motion.span>
   );
 }
 
-export default function SaveTheDateHero() {
+export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [petals, setPetals] = useState<Petal[]>([]);
 
@@ -257,38 +267,56 @@ export default function SaveTheDateHero() {
         <div className="eyebrow-wrap">
           <TypewriterText
             text="A MOMENT TO REMEMBER"
-            delay={0.2}
-            stagger={0.035}
-            className="eyebrow"
+            delay={0.1}
+            stagger={0.06}
+            isStarted={isStarted}
+            className="eyebrow font-cinzel text-xs sm:text-sm tracking-[0.3em] font-bold text-[var(--gold-dark)] uppercase"
             dir="ltr"
           />
         </div>
 
-        {/* 2. Main Headline: SAVE the DATE (Enforced LTR flex row so SAVE is left, DATE is right) */}
+        {/* 2. Main Headline: SAVE the DATE */}
         <div className="headline flex items-baseline justify-center gap-2 sm:gap-3 my-1" dir="ltr">
           <TypewriterText
             text="SAVE"
-            delay={0.8}
-            stagger={0.07}
-            className="word-save font-playfair text-3xl sm:text-5xl md:text-6xl font-semibold tracking-wider text-[var(--ink)]"
+            delay={0.4}
+            stagger={0.08}
+            isStarted={isStarted}
+            className="word-save font-cinzel text-3xl sm:text-5xl md:text-6xl font-bold tracking-widest text-[var(--ink)]"
             dir="ltr"
           />
 
           <motion.span
-            initial={{ opacity: 0, scale: 0.6, y: 10, rotate: -6 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0, rotate: -3 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
-            className="the-script font-tangerine text-4xl sm:text-6xl md:text-7xl text-[var(--gold-dark)] leading-none px-1 relative top-1"
+            initial={{
+              opacity: 0,
+              scale: 0.7,
+              clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
+              y: 4,
+              rotate: -4,
+            }}
+            animate={
+              isStarted
+                ? {
+                    opacity: 1,
+                    scale: 1,
+                    clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+                    y: 0,
+                    rotate: -2,
+                  }
+                : { opacity: 0, scale: 0.7 }
+            }
+            transition={{ duration: 0.9, delay: 0.7, ease: "easeInOut" }}
+            className="the-script font-alex-brush text-3xl sm:text-5xl md:text-6xl text-[var(--gold-dark)] relative -top-1 px-1 sm:px-2 inline-block leading-none select-none"
           >
             the
           </motion.span>
 
           <TypewriterText
             text="DATE"
-            delay={1.5}
-            stagger={0.07}
-            className="word-date font-playfair text-3xl sm:text-5xl md:text-6xl font-semibold tracking-wider text-[var(--ink)]"
+            delay={1.1}
+            stagger={0.08}
+            isStarted={isStarted}
+            className="word-date font-cinzel text-3xl sm:text-5xl md:text-6xl font-bold tracking-widest text-[var(--ink)]"
             dir="ltr"
           />
         </div>
@@ -297,9 +325,10 @@ export default function SaveTheDateHero() {
         <div className="mt-1">
           <TypewriterText
             text="FOR THE WEDDING OF"
-            delay={1.9}
-            stagger={0.035}
-            className="subtitle font-playfair text-xs sm:text-sm tracking-[0.28em] text-[var(--ink-muted)] font-medium"
+            delay={1.4}
+            stagger={0.06}
+            isStarted={isStarted}
+            className="subtitle font-cinzel text-xs sm:text-sm tracking-[0.28em] text-[var(--ink-muted)] font-semibold"
             dir="ltr"
           />
         </div>
@@ -308,27 +337,28 @@ export default function SaveTheDateHero() {
         <div className="names flex items-center justify-center gap-3 sm:gap-4 my-2" dir="ltr">
           <TypewriterText
             text={event.groomNameEn.toUpperCase()}
-            delay={2.4}
-            stagger={0.06}
-            className="groom-name font-playfair text-base sm:text-xl md:text-2xl tracking-[0.14em] text-[var(--ink)] font-semibold"
+            delay={1.7}
+            stagger={0.08}
+            isStarted={isStarted}
+            className="groom-name font-cinzel text-base sm:text-xl md:text-2xl tracking-[0.16em] text-[var(--ink)] font-bold"
             dir="ltr"
           />
 
           <motion.span
             initial={{ opacity: 0, scale: 0.5, rotate: -15 }}
-            whileInView={{ opacity: 1, scale: 1, rotate: -6 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 2.8, ease: "backOut" }}
-            className="amp font-tangerine text-4xl sm:text-5xl md:text-6xl text-[var(--oxblood,#7a1c28)] leading-none"
+            animate={isStarted ? { opacity: 1, scale: 1, rotate: -4 } : { opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.6, delay: 2.0, ease: "backOut" }}
+            className="amp font-alex-brush text-3xl sm:text-4xl md:text-5xl text-[var(--oxblood,#7a1c28)] leading-none"
           >
             &amp;
           </motion.span>
 
           <TypewriterText
             text={event.brideNameEn.toUpperCase()}
-            delay={3.0}
-            stagger={0.06}
-            className="bride-name font-playfair text-base sm:text-xl md:text-2xl tracking-[0.14em] text-[var(--ink)] font-semibold"
+            delay={2.2}
+            stagger={0.08}
+            isStarted={isStarted}
+            className="bride-name font-cinzel text-base sm:text-xl md:text-2xl tracking-[0.16em] text-[var(--ink)] font-bold"
             dir="ltr"
           />
         </div>
@@ -338,9 +368,8 @@ export default function SaveTheDateHero() {
           {/* Ambient Glow Halo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5, delay: 3.5 }}
+            animate={isStarted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+            transition={{ duration: 1.5, delay: 2.4 }}
             className="halo absolute inset-0 -m-6 z-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(233,201,106,0.38)_0%,rgba(233,201,106,0.08)_50%,transparent_70%)] blur-xl pointer-events-none"
           />
 
@@ -348,21 +377,29 @@ export default function SaveTheDateHero() {
           <motion.div
             initial={{
               opacity: 0,
-              filter: "blur(20px) brightness(1.2) saturate(0.4)",
-              clipPath: "circle(6% at 50% 50%)",
+              filter: "blur(22px) brightness(1.2) saturate(0.3)",
+              clipPath: "circle(5% at 50% 50%)",
               scale: 0.92,
             }}
-            whileInView={{
-              opacity: 1,
-              filter: "blur(0px) brightness(1) saturate(1)",
-              clipPath: "circle(80% at 50% 50%)",
-              scale: 1,
-            }}
-            viewport={{ once: true }}
+            animate={
+              isStarted
+                ? {
+                    opacity: 1,
+                    filter: "blur(0px) brightness(1) saturate(1)",
+                    clipPath: "circle(85% at 50% 50%)",
+                    scale: 1,
+                  }
+                : {
+                    opacity: 0,
+                    filter: "blur(22px) brightness(1.2)",
+                    clipPath: "circle(5% at 50% 50%)",
+                    scale: 0.92,
+                  }
+            }
             transition={{
-              duration: 2.2,
-              delay: 3.6,
-              ease: "easeOut",
+              duration: 1.8,
+              delay: 2.5,
+              ease: [0.16, 1, 0.3, 1],
             }}
             className="relative z-10 w-full"
           >
@@ -388,17 +425,17 @@ export default function SaveTheDateHero() {
         <div className="venue-caption-wrap flex flex-col items-center justify-center space-y-1 mt-1">
           <TypewriterText
             text={event.venueNameEn.toUpperCase()}
-            delay={5.2}
-            stagger={0.035}
-            className="venue-caption font-playfair text-xs sm:text-sm tracking-[0.28em] text-[var(--gold-dark)] font-bold uppercase"
+            delay={3.8}
+            stagger={0.06}
+            isStarted={isStarted}
+            className="venue-caption font-cinzel text-xs sm:text-sm tracking-[0.28em] text-[var(--gold-dark)] font-bold uppercase"
             dir="ltr"
           />
 
           <motion.div
             initial={{ width: 0, opacity: 0 }}
-            whileInView={{ width: "55%", opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.0, delay: 6.0, ease: "easeOut" }}
+            animate={isStarted ? { width: "55%", opacity: 1 } : { width: 0, opacity: 0 }}
+            transition={{ duration: 1.0, delay: 4.2, ease: "easeOut" }}
             className="h-px bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent mt-2"
           />
         </div>
@@ -406,9 +443,8 @@ export default function SaveTheDateHero() {
         {/* 7. Divider Star */}
         <motion.div
           initial={{ opacity: 0, scale: 0.4, rotate: -45 }}
-          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 6.3 }}
+          animate={isStarted ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.4 }}
+          transition={{ duration: 0.6, delay: 4.3 }}
           className="divider flex items-center justify-center gap-3 text-[var(--gold)] my-2"
         >
           <span className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--gold)]" />
@@ -420,9 +456,10 @@ export default function SaveTheDateHero() {
         <div>
           <TypewriterText
             text={event.invitationDateGregorian}
-            delay={6.5}
-            stagger={0.04}
-            className="date-line font-playfair text-lg sm:text-2xl text-[var(--ink)] tracking-wider font-medium"
+            delay={4.5}
+            stagger={0.06}
+            isStarted={isStarted}
+            className="date-line font-cinzel text-lg sm:text-2xl text-[var(--ink)] tracking-wider font-semibold"
             dir="ltr"
           />
         </div>
@@ -431,8 +468,9 @@ export default function SaveTheDateHero() {
         <div className="pt-1">
           <TypewriterText
             text={event.invitationDateFa}
-            delay={7.2}
-            stagger={0.05}
+            delay={4.8}
+            stagger={0.08}
+            isStarted={isStarted}
             className="dari-date font-noto-naskh text-sm sm:text-lg text-[var(--ink-muted)] font-medium"
             dir="rtl"
           />

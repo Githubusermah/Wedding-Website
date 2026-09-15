@@ -4,7 +4,9 @@ import {
   Noto_Nastaliq_Urdu,
   Cormorant_Garamond,
   Playfair_Display,
-  Tangerine,
+  Cinzel,
+  Great_Vibes,
+  Alex_Brush,
   Noto_Naskh_Arabic,
 } from "next/font/google";
 import "./globals.css";
@@ -25,22 +27,38 @@ const nastaliq = Noto_Nastaliq_Urdu({
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-cormorant",
   display: "swap",
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["500", "600"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-playfair",
   display: "swap",
 });
 
-const tangerine = Tangerine({
+const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: "700",
-  variable: "--font-tangerine",
+  weight: ["400", "600", "700"],
+  variable: "--font-cinzel",
+  display: "swap",
+});
+
+const greatVibes = Great_Vibes({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-great-vibes",
+  display: "swap",
+});
+
+const alexBrush = Alex_Brush({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-alex-brush",
   display: "swap",
 });
 
@@ -75,7 +93,7 @@ export default function RootLayout({
     <html
       lang="fa-AF"
       dir="rtl"
-      className={`${vazirmatn.variable} ${nastaliq.variable} ${cormorant.variable} ${playfair.variable} ${tangerine.variable} ${notoNaskh.variable}`}
+      className={`${vazirmatn.variable} ${nastaliq.variable} ${cormorant.variable} ${playfair.variable} ${cinzel.variable} ${greatVibes.variable} ${alexBrush.variable} ${notoNaskh.variable}`}
     >
       <body className="bg-[var(--ivory)] text-[var(--ink)] antialiased font-vazir">
         {children}
