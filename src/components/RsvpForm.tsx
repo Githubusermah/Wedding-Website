@@ -348,6 +348,7 @@ export default function RsvpForm() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           <label
+                            htmlFor="attending-yes"
                             className={`flex items-center gap-2 p-2 rounded-lg border transition-colors cursor-pointer ${
                               formData.attending === "yes"
                                 ? "border-[var(--gold)] bg-[var(--gold-pale)] text-[var(--ink)] font-semibold"
@@ -355,6 +356,7 @@ export default function RsvpForm() {
                             }`}
                           >
                             <input
+                              id="attending-yes"
                               type="radio"
                               name="attending"
                               value="yes"
@@ -366,6 +368,7 @@ export default function RsvpForm() {
                           </label>
 
                           <label
+                            htmlFor="attending-no"
                             className={`flex items-center gap-2 p-2 rounded-lg border transition-colors cursor-pointer ${
                               formData.attending === "no"
                                 ? "border-[var(--gold)] bg-[var(--gold-pale)] text-[var(--ink)] font-semibold"
@@ -373,6 +376,7 @@ export default function RsvpForm() {
                             }`}
                           >
                             <input
+                              id="attending-no"
                               type="radio"
                               name="attending"
                               value="no"
