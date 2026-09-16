@@ -66,13 +66,18 @@ export default function RsvpForm() {
   const fireGoldConfetti = () => {
     try {
       const count = 150;
-      const defaults = {
+      const defaults: confetti.Options = {
         origin: { y: 0.6 },
         colors: ["#C5A059", "#D8BD8A", "#9A7736", "#FAF8F5", "#EFE9DD"],
       };
 
+      const customConfetti = confetti.create(undefined, {
+        useWorker: false,
+        resize: true,
+      });
+
       const fire = (particleRatio: number, opts: confetti.Options) => {
-        confetti({
+        customConfetti({
           ...defaults,
           ...opts,
           particleCount: Math.floor(count * particleRatio),
