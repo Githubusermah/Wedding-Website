@@ -72,13 +72,18 @@ export default function WishesWall() {
         {/* Form on transparent paper with subtle bottom line inputs */}
         <form onSubmit={handleSubmit} className="space-y-4 text-right">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="نام شما"
-              className="px-3 py-2 bg-transparent border-b border-[var(--line)] text-[var(--ink)] text-sm focus:outline-none focus:border-[var(--gold)] transition-colors"
-            />
+            <div>
+              <label htmlFor="wish-name" className="sr-only">نام شما</label>
+              <input
+                id="wish-name"
+                name="wish-name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="نام شما"
+                className="w-full px-3 py-2 bg-transparent border-b border-[var(--line)] text-[var(--ink)] text-sm focus:outline-none focus:border-[var(--gold)] transition-colors"
+              />
+            </div>
             <button
               type="submit"
               className="py-2 px-5 rounded-full bg-[var(--gold)] hover:bg-[var(--gold-dark)] text-[var(--paper-white)] font-semibold text-xs shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer self-end"
@@ -88,13 +93,18 @@ export default function WishesWall() {
             </button>
           </div>
 
-          <textarea
-            rows={2}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="متن پیام تبریک..."
-            className="w-full px-3 py-2 bg-transparent border-b border-[var(--line)] text-[var(--ink)] text-xs focus:outline-none focus:border-[var(--gold)] transition-colors"
-          />
+          <div>
+            <label htmlFor="wish-message" className="sr-only">متن پیام تبریک</label>
+            <textarea
+              id="wish-message"
+              name="wish-message"
+              rows={2}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="متن پیام تبریک..."
+              className="w-full px-3 py-2 bg-transparent border-b border-[var(--line)] text-[var(--ink)] text-xs focus:outline-none focus:border-[var(--gold)] transition-colors"
+            />
+          </div>
 
           {isSent && (
             <p className="text-xs text-[var(--gold-dark)] font-medium text-center pt-1">

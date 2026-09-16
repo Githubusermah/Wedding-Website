@@ -37,17 +37,14 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
     }
   }, []);
 
-  // Lock document and body scrolling while the intro is active
+  // Lock document body scrolling while the intro is active
   useEffect(() => {
     if (!isDismissed) {
-      const originalDocOverflow = document.documentElement.style.overflow;
       const originalBodyOverflow = document.body.style.overflow;
-      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
       window.scrollTo(0, 0);
 
       return () => {
-        document.documentElement.style.overflow = originalDocOverflow;
         document.body.style.overflow = originalBodyOverflow;
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       };
@@ -118,22 +115,35 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
         role="button"
         tabIndex={0}
         aria-label="باز کردن کارت عروسی"
-        className="fixed inset-0 z-50 w-full h-[100dvh] bg-black cursor-pointer overflow-hidden select-none focus:outline-none"
+        className="fixed inset-0 z-50 w-full h-[100dvh] bg-[var(--ivory,#f7f4ee)] cursor-pointer overflow-hidden select-none focus:outline-none flex items-center justify-center"
       >
+        {/* 1. Explicit High-Quality Frame Poster Background Image */}
+        {!hasStarted && (
+          <div className="absolute inset-0 w-full h-full z-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/envelope-poster.jpg"
+              alt="کارت دعوت عروسی"
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
+        )}
+
+        {/* 2. Video Element with mandatory iOS WebKit attributes */}
         <video
           ref={videoRef}
           src="/media/envelope-opening.mp4"
-          // Shown instantly on any connection, before the video itself has
-          // downloaded a single byte — this is what actually fixes the
-          // black-first-frame issue on mobile. Generate it with:
-          //   ffmpeg -i "envelope opening.mp4" -frames:v 1 -q:v 2 public/media/envelope-poster.jpg
           poster="/media/envelope-poster.jpg"
+          muted
           playsInline
+          {...({ "webkit-playsinline": "true" } as React.VideoHTMLAttributes<HTMLVideoElement>)}
           preload="auto"
           onLoadedMetadata={handleLoadedMetadata}
           onError={handleVideoError}
           onEnded={dismiss}
-          className="w-full h-full object-cover object-center"
+          className={`relative z-10 w-full h-full object-cover object-center transition-opacity duration-300 ${
+            hasStarted ? "opacity-100" : "opacity-90"
+          }`}
         />
       </motion.div>
     </AnimatePresence>

@@ -102,33 +102,46 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
   const dateGregorian = safeText(event?.invitationDateGregorian);
   const dateFa = safeText(event?.invitationDateFa);
 
-  // Respect prefers-reduced-motion at the JS level too — the CSS media query
-  // below stops CSS animations but does NOT stop the canvas rAF loop, which
-  // was still burning GPU/CPU on devices that requested reduced motion.
+  // Initialize and handle reduced motion / petal generation on client mount
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    if (mq.matches) {
+      setReducedMotion(true);
+    } else {
+      setPetals(
+        Array.from({ length: PETAL_COUNT }, (_, i) => ({
+          id: i,
+          size: 5 + Math.random() * 7,
+          left: Math.random() * 100,
+          driftX: Math.random() * 120 - 60,
+          duration: 14 + Math.random() * 12,
+          delay: Math.random() * 14,
+        }))
+      );
+    }
+
+    const handler = (e: MediaQueryListEvent) => {
+      setReducedMotion(e.matches);
+      if (e.matches) {
+        setPetals([]);
+      } else {
+        setPetals(
+          Array.from({ length: PETAL_COUNT }, (_, i) => ({
+            id: i,
+            size: 5 + Math.random() * 7,
+            left: Math.random() * 100,
+            driftX: Math.random() * 120 - 60,
+            duration: 14 + Math.random() * 12,
+            delay: Math.random() * 14,
+          }))
+        );
+      }
+    };
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, []);
-
-  // Generate petals on mount
-  useEffect(() => {
-    if (reducedMotion) {
-      setPetals([]);
-      return;
-    }
-    const generated: Petal[] = Array.from({ length: PETAL_COUNT }, (_, i) => ({
-      id: i,
-      size: 5 + Math.random() * 7,
-      left: Math.random() * 100,
-      driftX: Math.random() * 120 - 60,
-      duration: 14 + Math.random() * 12,
-      delay: Math.random() * 14,
-    }));
-    setPetals(generated);
-  }, [reducedMotion]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Sky canvas animation (twinkling stars & shooting stars)
   useEffect(() => {
@@ -161,7 +174,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
     }
 
     let stars: Star[] = [];
-    let shootingStars: ShootingStar[] = [];
+    const shootingStars: ShootingStar[] = [];
 
     const handleResize = () => {
       if (!canvas) return;
@@ -409,28 +422,16 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           />
 
           <motion.div
-            initial={{
-              opacity: 0,
-              clipPath: "circle(5% at 50% 50%)",
-              scale: 0.95,
-            }}
+            initial={{ opacity: 0, scale: 0.92, y: 10 }}
             animate={
               isStarted
-                ? {
-                    opacity: 1,
-                    clipPath: "circle(85% at 50% 50%)",
-                    scale: 1,
-                  }
-                : {
-                    opacity: 0,
-                    clipPath: "circle(5% at 50% 50%)",
-                    scale: 0.95,
-                  }
+                ? { opacity: 1, scale: 1, y: 0 }
+                : { opacity: 0, scale: 0.92, y: 10 }
             }
             transition={{
-              duration: 1.4,
+              duration: 1.2,
               delay: 2.5,
-              ease: [0.16, 1, 0.3, 1],
+              ease: "easeOut",
             }}
             className="relative z-10 w-full"
           >
