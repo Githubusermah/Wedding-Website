@@ -1,14 +1,9 @@
 
-> wedding-app@0.1.0 dev
-> next dev
+> wedding-app@0.1.0 start
+> next start
 
-▲ Next.js 16.3.4 (Turbopack)
+▲ Next.js 16.3.4
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 550ms
-✓ Running next.config.ts took 45ms
-
-○ Compiling / ...
- GET / 200 in 6.1s (next.js: 5.5s, application-code: 545ms)
-[browser] Image with src "/venue/herosectionweddingvenue.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
-[browser] Image with src "/arvin-atelier-logo.jpg" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+✓ Ready in 190ms
+✓ Running next.config.ts took 37ms
