@@ -18,8 +18,15 @@ interface SaveTheDateHeroProps {
   isStarted?: boolean;
 }
 
+const PETAL_COUNT = 10; // was 16 — fewer concurrent CSS animations on low-power devices
+
 function isArabicOrPersian(str: string) {
   return /[\u0600-\u06FF]/.test(str);
+}
+
+/** Safe accessor so a missing/undefined event field can never crash the render. */
+function safeText(value: unknown, fallback = ""): string {
+  return typeof value === "string" && value.length > 0 ? value : fallback;
 }
 
 function TypewriterText({
@@ -37,6 +44,8 @@ function TypewriterText({
   dir?: "ltr" | "rtl";
   isStarted?: boolean;
 }) {
+  if (!text) return null;
+
   const isPersian = isArabicOrPersian(text);
   const words = text.split(" ");
 
@@ -70,7 +79,7 @@ function TypewriterText({
     >
       {words.map((word, index) => (
         <motion.span
-          key={index}
+          key={`${word}-${index}`}
           variants={wordVariants}
           className="inline-block whitespace-nowrap"
         >
@@ -84,26 +93,46 @@ function TypewriterText({
 export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [petals, setPetals] = useState<Petal[]>([]);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  // Defensive reads — a missing field in event.ts can no longer throw during render.
+  const groomName = safeText(event?.groomNameEn).toUpperCase();
+  const brideName = safeText(event?.brideNameEn).toUpperCase();
+  const venueName = safeText(event?.venueNameEn).toUpperCase();
+  const dateGregorian = safeText(event?.invitationDateGregorian);
+  const dateFa = safeText(event?.invitationDateFa);
+
+  // Respect prefers-reduced-motion at the JS level too — the CSS media query
+  // below stops CSS animations but does NOT stop the canvas rAF loop, which
+  // was still burning GPU/CPU on devices that requested reduced motion.
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   // Generate petals on mount
   useEffect(() => {
-    const generatedPetals: Petal[] = [];
-    const petalCount = 16;
-    for (let i = 0; i < petalCount; i++) {
-      generatedPetals.push({
-        id: i,
-        size: 5 + Math.random() * 7,
-        left: Math.random() * 100,
-        driftX: Math.random() * 120 - 60,
-        duration: 14 + Math.random() * 12,
-        delay: Math.random() * 14,
-      });
+    if (reducedMotion) {
+      setPetals([]);
+      return;
     }
-    setPetals(generatedPetals);
-  }, []);
+    const generated: Petal[] = Array.from({ length: PETAL_COUNT }, (_, i) => ({
+      id: i,
+      size: 5 + Math.random() * 7,
+      left: Math.random() * 100,
+      driftX: Math.random() * 120 - 60,
+      duration: 14 + Math.random() * 12,
+      delay: Math.random() * 14,
+    }));
+    setPetals(generated);
+  }, [reducedMotion]);
 
   // Sky canvas animation (twinkling stars & shooting stars)
   useEffect(() => {
+    if (reducedMotion) return; // don't even start the rAF loop
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -143,7 +172,9 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
 
     const initStars = () => {
       stars = [];
-      const count = Math.floor((width * height) / 9000);
+      // Cap star count so very large/high-DPR mobile viewports don't spawn
+      // an unbounded number of particles.
+      const count = Math.min(180, Math.floor((width * height) / 9000));
       for (let i = 0; i < count; i++) {
         stars.push({
           x: Math.random() * width,
@@ -179,7 +210,6 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
       frame++;
       ctx.clearRect(0, 0, width, height);
 
-      // Render static ambient stars
       stars.forEach((s) => {
         s.phase += s.speed;
         const alpha = 0.35 + 0.5 * Math.abs(Math.sin(s.phase));
@@ -189,12 +219,10 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
         ctx.fill();
       });
 
-      // Spawn shooting stars periodically
       if (frame % 70 === 0 && Math.random() < 0.8) {
         spawnShootingStar();
       }
 
-      // Render shooting stars
       for (let i = shootingStars.length - 1; i >= 0; i--) {
         const st = shootingStars[i];
         st.x += st.vx;
@@ -232,20 +260,20 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <section className="heroSection relative min-h-[100dvh] w-full flex flex-col items-center justify-center py-6 px-4 text-center overflow-hidden z-10">
-      {/* Background Sky Canvas */}
       <canvas
         ref={canvasRef}
+        aria-hidden="true"
         className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-90"
       />
 
-      {/* Drifting Gold Dust Petals */}
       {petals.map((p) => (
         <div
           key={p.id}
+          aria-hidden="true"
           className="petal"
           style={{
             width: `${p.size}px`,
@@ -258,7 +286,6 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
         />
       ))}
 
-      {/* Hero Content Container (Enforced LTR so English headline reads Left-to-Right) */}
       <div
         dir="ltr"
         className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center space-y-2"
@@ -336,7 +363,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
         {/* 4. Couple Names */}
         <div className="names flex items-center justify-center gap-3 sm:gap-4 my-2" dir="ltr">
           <TypewriterText
-            text={event.groomNameEn.toUpperCase()}
+            text={groomName}
             delay={1.7}
             stagger={0.08}
             isStarted={isStarted}
@@ -354,7 +381,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           </motion.span>
 
           <TypewriterText
-            text={event.brideNameEn.toUpperCase()}
+            text={brideName}
             delay={2.2}
             stagger={0.08}
             isStarted={isStarted}
@@ -363,41 +390,45 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           />
         </div>
 
-        {/* 5. Palace Watercolor Illustration with Animated Unblur and Crescent Circle Reveal */}
+        {/* 5. Palace Illustration — simplified reveal.
+            NOTE: the previous version animated `filter: blur()` and
+            `clip-path: circle()` on this image AT THE SAME TIME. That
+            combination is a known cause of the WebKit compositor giving up
+            on iOS Safari (renders as a blank/frozen page), while desktop
+            Chromium tolerates it fine — which matches "works on my laptop,
+            fails on iPhone" exactly. Now only one GPU-heavy property
+            (clip-path) animates; the blur/brightness/saturate stack is gone
+            in favor of a plain opacity+scale fade. */}
         <div className="illustration-wrap relative flex justify-center items-center my-3 w-full max-w-2xl mx-auto">
-          {/* Ambient Glow Halo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isStarted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
             transition={{ duration: 1.5, delay: 2.4 }}
+            aria-hidden="true"
             className="halo absolute inset-0 -m-6 z-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(233,201,106,0.38)_0%,rgba(233,201,106,0.08)_50%,transparent_70%)] blur-xl pointer-events-none"
           />
 
-          {/* Unblurring & Circle Clip Revealing Venue Photo */}
           <motion.div
             initial={{
               opacity: 0,
-              filter: "blur(22px) brightness(1.2) saturate(0.3)",
               clipPath: "circle(5% at 50% 50%)",
-              scale: 0.92,
+              scale: 0.95,
             }}
             animate={
               isStarted
                 ? {
                     opacity: 1,
-                    filter: "blur(0px) brightness(1) saturate(1)",
                     clipPath: "circle(85% at 50% 50%)",
                     scale: 1,
                   }
                 : {
                     opacity: 0,
-                    filter: "blur(22px) brightness(1.2)",
                     clipPath: "circle(5% at 50% 50%)",
-                    scale: 0.92,
+                    scale: 0.95,
                   }
             }
             transition={{
-              duration: 1.8,
+              duration: 1.4,
               delay: 2.5,
               ease: [0.16, 1, 0.3, 1],
             }}
@@ -409,22 +440,22 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
               width={720}
               height={520}
               priority
+              sizes="(max-width: 768px) 90vw, 720px"
               className="venue-img w-full h-auto max-w-[720px] max-h-[52vh] object-contain mx-auto drop-shadow-[0_12px_28px_rgba(197,160,89,0.3)]"
             />
           </motion.div>
 
-          {/* Sparkle Points */}
-          <div className="sparkle-pt sp1"></div>
-          <div className="sparkle-pt sp2"></div>
-          <div className="sparkle-pt sp3"></div>
-          <div className="sparkle-pt sp4"></div>
-          <div className="sparkle-pt sp5"></div>
+          <div className="sparkle-pt sp1" aria-hidden="true" />
+          <div className="sparkle-pt sp2" aria-hidden="true" />
+          <div className="sparkle-pt sp3" aria-hidden="true" />
+          <div className="sparkle-pt sp4" aria-hidden="true" />
+          <div className="sparkle-pt sp5" aria-hidden="true" />
         </div>
 
         {/* 6. Venue Caption + Expanding Rule */}
         <div className="venue-caption-wrap flex flex-col items-center justify-center space-y-1 mt-1">
           <TypewriterText
-            text={event.venueNameEn.toUpperCase()}
+            text={venueName}
             delay={3.8}
             stagger={0.06}
             isStarted={isStarted}
@@ -445,6 +476,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           initial={{ opacity: 0, scale: 0.4, rotate: -45 }}
           animate={isStarted ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.4 }}
           transition={{ duration: 0.6, delay: 4.3 }}
+          aria-hidden="true"
           className="divider flex items-center justify-center gap-3 text-[var(--gold)] my-2"
         >
           <span className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--gold)]" />
@@ -455,7 +487,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
         {/* 8. Gregorian Date Line */}
         <div>
           <TypewriterText
-            text={event.invitationDateGregorian}
+            text={dateGregorian}
             delay={4.5}
             stagger={0.06}
             isStarted={isStarted}
@@ -467,7 +499,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
         {/* 9. Dari Date Line */}
         <div className="pt-1">
           <TypewriterText
-            text={event.invitationDateFa}
+            text={dateFa}
             delay={4.8}
             stagger={0.08}
             isStarted={isStarted}
@@ -477,13 +509,11 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
         </div>
       </div>
 
-      {/* Four Viewport Corner Brackets */}
-      <div className="site-corner sc-tl" />
-      <div className="site-corner sc-tr" />
-      <div className="site-corner sc-bl" />
-      <div className="site-corner sc-br" />
+      <div className="site-corner sc-tl" aria-hidden="true" />
+      <div className="site-corner sc-tr" aria-hidden="true" />
+      <div className="site-corner sc-bl" aria-hidden="true" />
+      <div className="site-corner sc-br" aria-hidden="true" />
 
-      {/* Scoped CSS for Keyframes and Timings */}
       <style jsx global>{`
         :root {
           --ivory: #faf5e8;
@@ -496,7 +526,6 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           --oxblood: #7a1c28;
         }
 
-        /* Viewport Corner Brackets */
         .site-corner {
           position: fixed;
           width: 56px;
@@ -537,7 +566,6 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           }
         }
 
-        /* Drifting Petals */
         .petal {
           position: fixed;
           top: -5%;
@@ -549,6 +577,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           animation-name: drift;
           animation-timing-function: linear;
           animation-iteration-count: infinite;
+          will-change: transform;
         }
         @keyframes drift {
           0% {
@@ -567,7 +596,6 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           }
         }
 
-        /* Sparkle Points */
         .sparkle-pt {
           position: absolute;
           z-index: 20;
