@@ -24,20 +24,20 @@ export default function InitialsMonogram({
       className={`relative inline-flex items-center justify-center select-none ${className}`}
       style={{ width: size, height: typeof size === "number" ? `${size}px` : size }}
     >
-      {/* Isolated SVG Monogram rendered directly on paper surface with gold gradient */}
+      {/* Isolated SVG Monogram rendered directly on paper surface with pistachio mint gradient */}
       <svg
         viewBox="0 0 593 593"
-        className="w-full h-full drop-shadow-[0_1px_2px_rgba(197,160,89,0.25)]"
+        className="w-full h-full drop-shadow-[0_1px_2px_rgba(115,150,124,0.25)]"
       >
         <defs>
           <linearGradient id={goldGradId} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#D8BD8A" />
-            <stop offset="50%" stopColor="#C5A059" />
-            <stop offset="100%" stopColor="#9A7736" />
+            <stop offset="0%" stopColor="#9DBA9F" />
+            <stop offset="50%" stopColor="#73967C" />
+            <stop offset="100%" stopColor="#4A6E53" />
           </linearGradient>
           <linearGradient id={strokeGradId} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#E6D3A9" />
-            <stop offset="100%" stopColor="#C5A059" />
+            <stop offset="0%" stopColor="#C2D8C6" />
+            <stop offset="100%" stopColor="#73967C" />
           </linearGradient>
         </defs>
 
