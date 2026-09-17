@@ -63,12 +63,12 @@ export default function RsvpForm() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
-  const fireMintConfetti = () => {
+  const fireGoldConfetti = () => {
     try {
       const count = 150;
       const defaults: confetti.Options = {
         origin: { y: 0.6 },
-        colors: ["#73967C", "#9DBA9F", "#4A6E53", "#FCFDFB", "#E8EFE8"],
+        colors: ["#C5A059", "#D8BD8A", "#9A7736", "#FAF8F5", "#EFE9DD"],
       };
 
       const customConfetti = confetti.create(undefined, {
@@ -118,7 +118,7 @@ export default function RsvpForm() {
       setIsSubmitting(false);
       setIsSubmitted(true);
       if (formData.attending === "yes") {
-        fireMintConfetti();
+        fireGoldConfetti();
       }
     }, 600);
   };

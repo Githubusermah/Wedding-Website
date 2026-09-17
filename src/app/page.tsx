@@ -13,7 +13,6 @@ import WishesWall from "@/components/WishesWall";
 import FooterReplay from "@/components/FooterReplay";
 import MobileActionBar from "@/components/MobileActionBar";
 import AudioPlayer, { AudioPlayerHandle } from "@/components/AudioPlayer";
-import TornPaperDivider from "@/components/TornPaperDivider";
 
 export default function Home() {
   const [isVideoDismissed, setIsVideoDismissed] = useState(false);
@@ -53,29 +52,13 @@ export default function Home() {
 
       {/* 2. Main Invitation Content (State B revealed when video ends) */}
       <SaveTheDateHero isStarted={isVideoDismissed} />
-
-      <TornPaperDivider variant="top" className="-mt-3 mb-2" />
       <FoggedCountdown />
-
-      <TornPaperDivider variant="bottom" flipHorizontal className="-mb-2 mt-2" />
       <EventFacts />
-
-      <TornPaperDivider variant="top" className="-mt-3 mb-2" />
       <RsvpForm />
-
-      <TornPaperDivider variant="bottom" flipHorizontal className="-mb-2 mt-2" />
       <ScheduleTimeline />
-
-      <TornPaperDivider variant="top" className="-mt-3 mb-2" />
       <GuestGuide />
-
-      <TornPaperDivider variant="bottom" flipHorizontal className="-mb-2 mt-2" />
       <VenueSection />
-
-      <TornPaperDivider variant="top" className="-mt-3 mb-2" />
       <WishesWall />
-
-      <TornPaperDivider variant="bottom" flipHorizontal className="-mb-2 mt-2" />
       <FooterReplay />
       <MobileActionBar />
 

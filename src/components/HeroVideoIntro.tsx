@@ -76,17 +76,8 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
     }
   };
 
-  const handleVideoError = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
-    console.log("Envelope intro webm fallback triggered:", e);
-    // If envelopegreen.webm fails to load or play, fallback gracefully to envelope-opening.mp4
-    if (videoRef.current && videoRef.current.src.includes("envelopegreen.webm")) {
-      videoRef.current.src = "/media/envelope-opening.mp4";
-      videoRef.current.load();
-      if (hasStarted) {
-        videoRef.current.play().catch(() => dismiss());
-      }
-      return;
-    }
+  const handleVideoError = () => {
+    console.log("Envelope intro video failed to load — skipping intro.");
     dismiss();
   };
 
@@ -141,7 +132,7 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
         {/* 2. Video Element with mandatory iOS WebKit attributes */}
         <video
           ref={videoRef}
-          src="/media/envelopegreen.webm"
+          src="/media/envelope-opening.mp4"
           poster="/media/envelope-poster.jpg"
           muted
           playsInline
