@@ -2,20 +2,17 @@
 
 @layer base {
   :root {
-    --ivory: #F5F7F4;
-    --ivory-deep: #E8EFE8;
-    --paper-white: #FCFDFB;
+    --ivory: #F7F4EE;
+    --ivory-deep: #EFE9DD;
+    --paper-white: #FAF8F5;
     --ink: #2C2621;
-    --ink-muted: #5D665E;
-    /* Premium Chic Pistachio Mint Green Palette */
-    --gold: #73967C; /* Pistachio Mint primary accent */
-    --gold-muted: #9BB8A3; /* Soft pistachio sage shimmer */
-    --gold-pale: rgba(115, 150, 124, 0.12); /* Delicate mint glow */
-    --gold-dark: #4A6E53; /* Deep forest pistachio green */
-    --line: rgba(115, 150, 124, 0.28);
-    --line-subtle: rgba(115, 150, 124, 0.15);
-    --pistachio-leaf: #5F8369;
-    --pistachio-glow: rgba(157, 184, 163, 0.3);
+    --ink-muted: #6B6257;
+    --gold: #C5A059;
+    --gold-muted: #D8BD8A;
+    --gold-pale: rgba(197, 160, 89, 0.12);
+    --gold-dark: #9A7736;
+    --line: rgba(197, 160, 89, 0.25);
+    --line-subtle: rgba(197, 160, 89, 0.15);
   }
 }
 
@@ -26,10 +23,10 @@
 html, body {
   background-color: var(--ivory);
   background-image:
-    radial-gradient(circle at 50% 0%, rgba(252, 253, 251, 0.95) 0%, rgba(245, 247, 244, 0.85) 45%, var(--ivory-deep) 100%),
-    radial-gradient(ellipse at 85% 15%, rgba(157, 184, 163, 0.12) 0%, transparent 55%),
-    radial-gradient(ellipse at 15% 85%, rgba(115, 150, 124, 0.12) 0%, transparent 55%),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+    radial-gradient(circle at 50% 0%, rgba(255, 253, 247, 0.9) 0%, rgba(247, 244, 238, 0.75) 45%, var(--ivory-deep) 100%),
+    radial-gradient(ellipse at 85% 15%, rgba(216, 189, 138, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 85%, rgba(197, 160, 89, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
   background-attachment: fixed;
   color: var(--ink);
   font-family: var(--font-vazir), sans-serif;

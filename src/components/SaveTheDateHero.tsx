@@ -228,7 +228,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
         const alpha = 0.35 + 0.5 * Math.abs(Math.sin(s.phase));
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(115, 150, 124, ${alpha * 0.7})`;
+        ctx.fillStyle = `rgba(197, 160, 89, ${alpha * 0.7})`;
         ctx.fill();
       });
 
@@ -249,14 +249,14 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           ctx.beginPath();
           ctx.moveTo(st.trail[j].x, st.trail[j].y);
           ctx.lineTo(st.trail[j + 1].x, st.trail[j + 1].y);
-          ctx.strokeStyle = `rgba(157, 184, 163, ${t * 0.8})`;
+          ctx.strokeStyle = `rgba(216, 189, 138, ${t * 0.8})`;
           ctx.lineWidth = t * 2.2;
           ctx.stroke();
         }
 
         ctx.beginPath();
         ctx.arc(st.x, st.y, 1.6, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(245, 252, 247, 0.95)";
+        ctx.fillStyle = "rgba(255, 250, 235, 0.95)";
         ctx.fill();
 
         if (st.life >= st.maxLife) {
@@ -418,7 +418,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             animate={isStarted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
             transition={{ duration: 1.5, delay: 2.4 }}
             aria-hidden="true"
-            className="halo absolute inset-0 -m-6 z-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(157,184,163,0.38)_0%,rgba(115,150,124,0.08)_50%,transparent_70%)] blur-xl pointer-events-none"
+            className="halo absolute inset-0 -m-6 z-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(233,201,106,0.38)_0%,rgba(233,201,106,0.08)_50%,transparent_70%)] blur-xl pointer-events-none"
           />
 
           <motion.div
@@ -517,14 +517,14 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
 
       <style jsx global>{`
         :root {
-          --ivory: #F5F7F4;
-          --ivory-deep: #E8EFE8;
-          --ink: #2C2621;
-          --ink-soft: #5D665E;
-          --gold: #73967C;
-          --gold-light: #9DBA9F;
-          --gold-dark: #4A6E53;
-          --oxblood: #4A6E53;
+          --ivory: #faf5e8;
+          --ivory-deep: #f1e8d4;
+          --ink: #241d17;
+          --ink-soft: #6b5f4f;
+          --gold: #b8863f;
+          --gold-light: #e9c96a;
+          --gold-dark: #8a6329;
+          --oxblood: #7a1c28;
         }
 
         .site-corner {
