@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "motion/react";
 
 interface HeroVideoIntroProps {
   onDismiss?: () => void;
-  onUserGesture?: () => void;
 }
 
 // If the video hasn't been able to play within this long (broken URL, dead
@@ -13,18 +12,23 @@ interface HeroVideoIntroProps {
 // full-screen black overlay blocking the rest of the site forever.
 const MAX_WAIT_MS = 8000;
 
-export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIntroProps) {
+const STALL_TIMEOUT_MS = 4500;
+
+export default function HeroVideoIntro({ onDismiss }: HeroVideoIntroProps) {
   const [hasStarted, setHasStarted] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const watchdogRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastProgressRef = useRef(0);
 
   const dismiss = useCallback(() => {
-    setIsDismissed(true);
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    }
-    onDismiss?.();
+    requestAnimationFrame(() => {
+      setIsDismissed(true);
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      }
+      onDismiss?.();
+    });
   }, [onDismiss]);
 
   // Ensure page is pinned to the top on load & when history scroll restoration is handled
@@ -63,18 +67,23 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
     };
   }, [isDismissed, hasStarted, dismiss]);
 
-  // Frame seek strategy: nudge to ~frame 3-4 once metadata is available, as
-  // a belt-and-braces measure on top of the poster image (which handles the
-  // frame that shows before this can possibly run).
-  const handleLoadedMetadata = () => {
-    if (videoRef.current && !hasStarted) {
-      try {
-        videoRef.current.currentTime = 0.12;
-      } catch {
-        // Ignore seek error if the browser restricts pre-play seeking
+  // A video can enter `playing` and then stop emitting progress without
+  // firing `error` or `ended` on iOS. Give it a short grace period, then
+  // reveal the invitation instead of leaving the overlay permanently stuck.
+  useEffect(() => {
+    if (!hasStarted || isDismissed) return;
+
+    lastProgressRef.current = Date.now();
+    const interval = window.setInterval(() => {
+      const video = videoRef.current;
+      if (!video || video.ended || video.paused) return;
+      if (Date.now() - lastProgressRef.current >= STALL_TIMEOUT_MS) {
+        dismiss();
       }
-    }
-  };
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, [hasStarted, isDismissed, dismiss]);
 
   const handleVideoError = () => {
     console.log("Envelope intro video failed to load — skipping intro.");
@@ -85,8 +94,7 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
     if (hasStarted) return;
     setHasStarted(true);
     if (watchdogRef.current) clearTimeout(watchdogRef.current);
-
-    onUserGesture?.();
+    lastProgressRef.current = Date.now();
 
     videoRef.current?.play().catch((err) => {
       console.log("Video play error:", err);
@@ -137,8 +145,10 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
           muted
           playsInline
           {...({ "webkit-playsinline": "true" } as React.VideoHTMLAttributes<HTMLVideoElement>)}
-          preload="auto"
-          onLoadedMetadata={handleLoadedMetadata}
+          preload="metadata"
+          onTimeUpdate={() => {
+            lastProgressRef.current = Date.now();
+          }}
           onError={handleVideoError}
           onEnded={dismiss}
           className={`relative z-10 w-full h-full object-cover object-center transition-opacity duration-300 ${

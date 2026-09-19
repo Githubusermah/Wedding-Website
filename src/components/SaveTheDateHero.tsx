@@ -60,7 +60,7 @@ function TypewriterText({
   };
 
   const wordVariants: Variants = {
-    hidden: { opacity: 0, y: 8, filter: "blur(6px)" },
+    hidden: { opacity: 1, y: 8, filter: "blur(6px)" },
     visible: {
       opacity: 1,
       y: 0,
@@ -106,8 +106,9 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mq.matches) {
+    if (mq.matches || !isStarted) {
       setReducedMotion(true);
+      setPetals([]);
     } else {
       setPetals(
         Array.from({ length: PETAL_COUNT }, (_, i) => ({
@@ -123,7 +124,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
 
     const handler = (e: MediaQueryListEvent) => {
       setReducedMotion(e.matches);
-      if (e.matches) {
+      if (e.matches || !isStarted) {
         setPetals([]);
       } else {
         setPetals(
@@ -140,12 +141,12 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
     };
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
-  }, []);
+  }, [isStarted]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   // Sky canvas animation (twinkling stars & shooting stars)
   useEffect(() => {
-    if (reducedMotion) return; // don't even start the rAF loop
+    if (!isStarted || reducedMotion) return; // don't compete with intro video
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -273,7 +274,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [reducedMotion]);
+  }, [isStarted, reducedMotion]);
 
   return (
     <section className="heroSection relative min-h-[100dvh] w-full flex flex-col items-center justify-center py-6 px-4 text-center overflow-hidden z-10">
@@ -328,7 +329,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
 
           <motion.span
             initial={{
-              opacity: 0,
+              opacity: 1,
               scale: 0.7,
               clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
               y: 4,
@@ -343,7 +344,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
                     y: 0,
                     rotate: -2,
                   }
-                : { opacity: 0, scale: 0.7 }
+                : { opacity: 1, scale: 0.7 }
             }
             transition={{ duration: 0.9, delay: 0.7, ease: "easeInOut" }}
             className="the-script font-alex-brush text-3xl sm:text-5xl md:text-6xl text-[var(--gold-dark)] relative -top-1 px-1 sm:px-2 inline-block leading-none select-none"
@@ -385,8 +386,8 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           />
 
           <motion.span
-            initial={{ opacity: 0, scale: 0.5, rotate: -15 }}
-            animate={isStarted ? { opacity: 1, scale: 1, rotate: -4 } : { opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 1, scale: 0.5, rotate: -15 }}
+            animate={isStarted ? { opacity: 1, scale: 1, rotate: -4 } : { opacity: 1, scale: 0.5 }}
             transition={{ duration: 0.6, delay: 2.0, ease: "backOut" }}
             className="amp font-alex-brush text-3xl sm:text-4xl md:text-5xl text-[var(--oxblood,#7a1c28)] leading-none"
           >
@@ -414,19 +415,19 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             in favor of a plain opacity+scale fade. */}
         <div className="illustration-wrap relative flex justify-center items-center my-3 w-full max-w-2xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isStarted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 1, scale: 0.8 }}
+            animate={isStarted ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 0.8 }}
             transition={{ duration: 1.5, delay: 2.4 }}
             aria-hidden="true"
             className="halo absolute inset-0 -m-6 z-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(233,201,106,0.38)_0%,rgba(233,201,106,0.08)_50%,transparent_70%)] blur-xl pointer-events-none"
           />
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 10 }}
+            initial={{ opacity: 1, scale: 0.92, y: 10 }}
             animate={
               isStarted
                 ? { opacity: 1, scale: 1, y: 0 }
-                : { opacity: 0, scale: 0.92, y: 10 }
+                : { opacity: 1, scale: 0.92, y: 10 }
             }
             transition={{
               duration: 1.2,
@@ -440,7 +441,6 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
               alt="Palace illustration of City Star Wedding Hall"
               width={720}
               height={520}
-              priority
               sizes="(max-width: 768px) 90vw, 720px"
               className="venue-img w-full h-auto max-w-[720px] max-h-[52vh] object-contain mx-auto drop-shadow-[0_12px_28px_rgba(197,160,89,0.3)]"
             />
@@ -465,8 +465,8 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           />
 
           <motion.div
-            initial={{ width: 0, opacity: 0 }}
-            animate={isStarted ? { width: "55%", opacity: 1 } : { width: 0, opacity: 0 }}
+            initial={{ width: 0, opacity: 1 }}
+            animate={isStarted ? { width: "55%", opacity: 1 } : { width: 0, opacity: 1 }}
             transition={{ duration: 1.0, delay: 4.2, ease: "easeOut" }}
             className="h-px bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent mt-2"
           />
@@ -474,8 +474,8 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
 
         {/* 7. Divider Star */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.4, rotate: -45 }}
-          animate={isStarted ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.4 }}
+          initial={{ opacity: 1, scale: 0.4, rotate: -45 }}
+          animate={isStarted ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 1, scale: 0.4 }}
           transition={{ duration: 0.6, delay: 4.3 }}
           aria-hidden="true"
           className="divider flex items-center justify-center gap-3 text-[var(--gold)] my-2"

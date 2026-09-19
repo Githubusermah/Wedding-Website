@@ -97,8 +97,6 @@ export default function RootLayout({
     >
       <body className="bg-[var(--ivory)] text-[var(--ink)] antialiased font-vazir">
         {children}
-        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-        <script>eruda.init();</script>
       </body>
     </html>
   );

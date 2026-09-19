@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import HeroVideoIntro from "@/components/HeroVideoIntro";
 import SaveTheDateHero from "@/components/SaveTheDateHero";
 import FoggedCountdown from "@/components/FoggedCountdown";
@@ -12,17 +12,10 @@ import VenueSection from "@/components/VenueSection";
 import WishesWall from "@/components/WishesWall";
 import FooterReplay from "@/components/FooterReplay";
 import MobileActionBar from "@/components/MobileActionBar";
-import AudioPlayer, { AudioPlayerHandle } from "@/components/AudioPlayer";
+import AudioPlayer from "@/components/AudioPlayer";
 
 export default function Home() {
   const [isVideoDismissed, setIsVideoDismissed] = useState(false);
-  const audioPlayerRef = useRef<AudioPlayerHandle | null>(null);
-
-  const handleUserGesture = () => {
-    if (audioPlayerRef.current) {
-      audioPlayerRef.current.playAudio();
-    }
-  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -45,7 +38,6 @@ export default function Home() {
       {/* 1. Full-screen Video Intro Overlay (State A) */}
       {!isVideoDismissed && (
         <HeroVideoIntro
-          onUserGesture={handleUserGesture}
           onDismiss={handleVideoDismiss}
         />
       )}
@@ -63,7 +55,7 @@ export default function Home() {
       <MobileActionBar />
 
       {/* Background Audio Player */}
-      <AudioPlayer ref={audioPlayerRef} />
+      <AudioPlayer />
     </main>
   );
 }
