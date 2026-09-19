@@ -45,7 +45,6 @@ export default function Home() {
       {/* 1. Full-screen Video Intro Overlay (State A) */}
       {!isVideoDismissed && (
         <HeroVideoIntro
-          onUserGesture={handleUserGesture}
           onDismiss={handleVideoDismiss}
         />
       )}

@@ -13,18 +13,22 @@ interface HeroVideoIntroProps {
 // full-screen black overlay blocking the rest of the site forever.
 const MAX_WAIT_MS = 8000;
 
-export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIntroProps) {
+export default function HeroVideoIntro({ onDismiss }: HeroVideoIntroProps) {
   const [hasStarted, setHasStarted] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const watchdogRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastTimeRef = useRef<number>(0);
+  const lastProgressTimeRef = useRef<number>(0);
 
   const dismiss = useCallback(() => {
-    setIsDismissed(true);
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    }
-    onDismiss?.();
+    requestAnimationFrame(() => {
+      setIsDismissed(true);
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      }
+      onDismiss?.();
+    });
   }, [onDismiss]);
 
   // Ensure page is pinned to the top on load & when history scroll restoration is handled
@@ -63,30 +67,50 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
     };
   }, [isDismissed, hasStarted, dismiss]);
 
-  // Frame seek strategy: nudge to ~frame 3-4 once metadata is available, as
-  // a belt-and-braces measure on top of the poster image (which handles the
-  // frame that shows before this can possibly run).
-  const handleLoadedMetadata = () => {
-    if (videoRef.current && !hasStarted) {
-      try {
-        videoRef.current.currentTime = 0.12;
-      } catch {
-        // Ignore seek error if the browser restricts pre-play seeking
+  // Playback stall watchdog: once started, detect if playback has stalled for 4-5s
+  useEffect(() => {
+    if (!hasStarted || isDismissed) return;
+
+    const interval = setInterval(() => {
+      const v = videoRef.current;
+      if (!v) return;
+      if (v.ended) return;
+
+      if (v.currentTime > lastTimeRef.current + 0.01) {
+        lastTimeRef.current = v.currentTime;
+        lastProgressTimeRef.current = Date.now();
+      } else if (!v.paused && Date.now() - lastProgressTimeRef.current > 4500) {
+        console.log("Envelope intro video playback stalled — skipping intro.");
+        dismiss();
       }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [hasStarted, isDismissed, dismiss]);
+
+  const handleTimeUpdate = () => {
+    const v = videoRef.current;
+    if (v && v.currentTime > lastTimeRef.current + 0.01) {
+      lastTimeRef.current = v.currentTime;
+      lastProgressTimeRef.current = Date.now();
     }
   };
 
   const handleVideoError = () => {
-    console.log("Envelope intro video failed to load — skipping intro.");
+    const err = videoRef.current?.error;
+    console.log("Envelope intro video failed to load — skipping intro.", {
+      code: err?.code,
+      message: err?.message,
+    });
     dismiss();
   };
 
   const handleScreenClick = () => {
     if (hasStarted) return;
     setHasStarted(true);
+    lastProgressTimeRef.current = Date.now();
+    lastTimeRef.current = 0;
     if (watchdogRef.current) clearTimeout(watchdogRef.current);
-
-    onUserGesture?.();
 
     videoRef.current?.play().catch((err) => {
       console.log("Video play error:", err);
@@ -137,8 +161,8 @@ export default function HeroVideoIntro({ onDismiss, onUserGesture }: HeroVideoIn
           muted
           playsInline
           {...({ "webkit-playsinline": "true" } as React.VideoHTMLAttributes<HTMLVideoElement>)}
-          preload="auto"
-          onLoadedMetadata={handleLoadedMetadata}
+          preload="metadata"
+          onTimeUpdate={handleTimeUpdate}
           onError={handleVideoError}
           onEnded={dismiss}
           className={`relative z-10 w-full h-full object-cover object-center transition-opacity duration-300 ${

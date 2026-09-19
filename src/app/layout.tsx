@@ -95,10 +95,11 @@ export default function RootLayout({
       dir="rtl"
       className={`${vazirmatn.variable} ${nastaliq.variable} ${cormorant.variable} ${playfair.variable} ${cinzel.variable} ${greatVibes.variable} ${alexBrush.variable} ${notoNaskh.variable}`}
     >
+      <head>
+        <link rel="preload" as="image" href="/venue/herosectionweddingvenue.png" />
+      </head>
       <body className="bg-[var(--ivory)] text-[var(--ink)] antialiased font-vazir">
         {children}
-        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-        <script>eruda.init();</script>
       </body>
     </html>
   );
