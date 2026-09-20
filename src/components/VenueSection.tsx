@@ -9,21 +9,18 @@ export default function VenueSection() {
   const venueImages = [
     {
       src: "/venue/weddingvenue1.png",
-      alt: "نمای تالار سیتی استار ۱",
-      caption: "تالار مجلل و ورودی اصلی",
+      alt: "نمای تالار ۱",
       delay: 0.1,
     },
     {
       src: "/venue/weddingvenue2.png",
-      alt: "نمای تالار سیتی استار ۲",
-      caption: "جلوه تالار عروسی سیتی استار کابل",
+      alt: "نمای تالار ۲",
       delay: 0.2,
       isPrimary: true,
     },
     {
       src: "/venue/weddingvenue3.png",
-      alt: "نمای تالار سیتی استار ۳",
-      caption: "فضای تشریفات و پذیرایی",
+      alt: "نمای تالار ۳",
       delay: 0.3,
     },
   ];
@@ -90,10 +87,6 @@ export default function VenueSection() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
-
-              <span className="mt-3 text-xs font-semibold text-[var(--ink-muted)] group-hover:text-[var(--gold-dark)] transition-colors font-serif tracking-wide">
-                {img.caption}
-              </span>
             </motion.div>
           ))}
         </div>

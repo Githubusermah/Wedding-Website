@@ -11,20 +11,7 @@ interface Wish {
   date: string;
 }
 
-const initialWishes: Wish[] = [
-  {
-    id: 1,
-    name: "احمد شکیب",
-    message: "با صمیمانه‌ترین آرزوهای خوشبختی برای فرهاد و ادیبه عزیز. پیوندتان خجسته باد!",
-    date: "۱۳ میزان",
-  },
-  {
-    id: 2,
-    name: "فامیلی رضایی",
-    message: "آغاز زندگی مشترک‌تان مبارک باد. با آرزوی روزهای پر از عشق و شادکامی.",
-    date: "۱۳ میزان",
-  },
-];
+const initialWishes: Wish[] = [];
 
 export default function WishesWall() {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes);
