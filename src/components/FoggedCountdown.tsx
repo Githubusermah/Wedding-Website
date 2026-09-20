@@ -44,9 +44,6 @@ export default function FoggedCountdown() {
   return (
     <section className="py-12 px-4 max-w-3xl mx-auto text-center">
       <div className="space-y-4">
-        <span className="text-xs font-semibold text-[var(--gold-dark)] tracking-widest uppercase block">
-          شمارش معکوس
-        </span>
         <h2 className="text-xl sm:text-2xl font-bold text-[var(--ink)]">
           زمان باقی‌مانده تا آغاز محفل
         </h2>
@@ -63,7 +60,7 @@ export default function FoggedCountdown() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 pt-4 pb-2 items-center justify-center">
+          <div className="grid grid-cols-4 gap-2 sm:gap-8 pt-4 pb-2 items-center justify-center">
             {/* Days */}
             <div className="flex flex-col items-center">
               <span className="text-3xl sm:text-5xl font-serif text-[var(--ink)] font-bold tracking-tight">
