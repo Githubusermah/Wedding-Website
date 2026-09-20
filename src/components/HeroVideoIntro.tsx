@@ -5,21 +5,13 @@ import { motion, AnimatePresence } from "motion/react";
 
 interface HeroVideoIntroProps {
   onDismiss?: () => void;
+  onStart?: () => void;
 }
 
-// If the video hasn't been able to play within this long (broken URL, dead
-// CDN edge, offline, etc.) we skip the intro entirely rather than leave a
-// full-screen black overlay blocking the rest of the site forever.
-const MAX_WAIT_MS = 8000;
-
-const STALL_TIMEOUT_MS = 4500;
-
-export default function HeroVideoIntro({ onDismiss }: HeroVideoIntroProps) {
+export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroProps) {
   const [hasStarted, setHasStarted] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const watchdogRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastProgressRef = useRef(0);
 
   const dismiss = useCallback(() => {
     requestAnimationFrame(() => {
@@ -55,46 +47,14 @@ export default function HeroVideoIntro({ onDismiss }: HeroVideoIntroProps) {
     }
   }, [isDismissed]);
 
-  // Safety net: if the video never becomes playable (404, offline, stalled
-  // connection) don't hold the whole site hostage behind a black screen.
-  useEffect(() => {
-    if (isDismissed) return;
-    watchdogRef.current = setTimeout(() => {
-      if (!hasStarted) dismiss();
-    }, MAX_WAIT_MS);
-    return () => {
-      if (watchdogRef.current) clearTimeout(watchdogRef.current);
-    };
-  }, [isDismissed, hasStarted, dismiss]);
-
-  // A video can enter `playing` and then stop emitting progress without
-  // firing `error` or `ended` on iOS. Give it a short grace period, then
-  // reveal the invitation instead of leaving the overlay permanently stuck.
-  useEffect(() => {
-    if (!hasStarted || isDismissed) return;
-
-    lastProgressRef.current = Date.now();
-    const interval = window.setInterval(() => {
-      const video = videoRef.current;
-      if (!video || video.ended || video.paused) return;
-      if (Date.now() - lastProgressRef.current >= STALL_TIMEOUT_MS) {
-        dismiss();
-      }
-    }, 1000);
-
-    return () => window.clearInterval(interval);
-  }, [hasStarted, isDismissed, dismiss]);
-
   const handleVideoError = () => {
-    console.log("Envelope intro video failed to load — skipping intro.");
-    dismiss();
+    console.log("Envelope intro video failed to load — keeping intro open.");
   };
 
   const handleScreenClick = () => {
     if (hasStarted) return;
     setHasStarted(true);
-    if (watchdogRef.current) clearTimeout(watchdogRef.current);
-    lastProgressRef.current = Date.now();
+    onStart?.();
 
     videoRef.current?.play().catch((err) => {
       console.log("Video play error:", err);
@@ -146,9 +106,6 @@ export default function HeroVideoIntro({ onDismiss }: HeroVideoIntroProps) {
           playsInline
           {...({ "webkit-playsinline": "true" } as React.VideoHTMLAttributes<HTMLVideoElement>)}
           preload="metadata"
-          onTimeUpdate={() => {
-            lastProgressRef.current = Date.now();
-          }}
           onError={handleVideoError}
           onEnded={dismiss}
           className={`relative z-10 w-full h-full object-cover object-center transition-opacity duration-300 ${

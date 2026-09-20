@@ -4,6 +4,7 @@ import { useState, useRef, useImperativeHandle, forwardRef } from "react";
 import { SpeakerHigh, SpeakerX, MusicNotes } from "@phosphor-icons/react";
 
 export interface AudioPlayerHandle {
+  prepareAudio: () => void;
   playAudio: () => void;
 }
 
@@ -12,9 +13,21 @@ const AudioPlayer = forwardRef<AudioPlayerHandle>((_, ref) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useImperativeHandle(ref, () => ({
+    prepareAudio: () => {
+      if (!audioRef.current) return;
+      const audio = audioRef.current;
+      audio.currentTime = 0;
+      audio.muted = true;
+      audio
+        .play()
+        .catch((err) => console.log("Audio unlock blocked by browser policy:", err));
+    },
     playAudio: () => {
       if (!audioRef.current) return;
-      audioRef.current
+      const audio = audioRef.current;
+      audio.currentTime = 0;
+      audio.muted = false;
+      audio
         .play()
         .then(() => setIsPlaying(true))
         .catch((err) => console.log("Audio autoplay blocked by browser policy:", err));

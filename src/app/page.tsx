@@ -35,12 +35,17 @@ export default function Home() {
     }
   };
 
+  const handleVideoStart = () => {
+    audioPlayerRef.current?.prepareAudio();
+  };
+
   return (
     <main className="min-h-screen relative pb-20 md:pb-0">
       {/* 1. Full-screen Video Intro Overlay (State A) */}
       {!isVideoDismissed && (
         <HeroVideoIntro
           onDismiss={handleVideoDismiss}
+          onStart={handleVideoStart}
         />
       )}
 

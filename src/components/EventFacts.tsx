@@ -90,13 +90,18 @@ export default function EventFacts() {
   return (
     <section id="event-facts" className="py-14 px-4 max-w-3xl mx-auto scroll-mt-20 text-center">
       <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, x: 72, y: 10 }}
+        whileInView={{ opacity: 1, x: 0, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
         className="space-y-8"
       >
-        <div>
+        <motion.div
+          initial={{ opacity: 0, x: 28 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.65, delay: 0.12, ease: "easeOut" }}
+        >
           <span className="text-xs font-semibold text-[var(--gold-dark)] tracking-widest uppercase block">
             مشخصات محفل
           </span>
@@ -104,33 +109,51 @@ export default function EventFacts() {
             زمان و مکان
           </h2>
           <div className="w-12 h-px bg-[var(--gold-muted)] mx-auto mt-3" />
-        </div>
+        </motion.div>
 
         {/* 3 Column Information Listing directly on paper */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center pt-2">
           {/* Fact 1: Date */}
-          <div className="space-y-2 flex flex-col items-center">
+          <motion.div
+            initial={{ opacity: 0, x: 36 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.65, delay: 0.12, ease: "easeOut" }}
+            className="space-y-2 flex flex-col items-center"
+          >
             <Calendar size={24} className="text-[var(--gold-dark)]" />
             <h3 className="font-bold text-sm text-[var(--ink)] uppercase tracking-wider">تاریخ برگزاری</h3>
             <p className="font-bold text-base text-[var(--ink)]">{event.invitationDateFa}</p>
             <p className="text-xs text-[var(--ink-muted)] font-mono dir-ltr">{event.invitationDateGregorian}</p>
-          </div>
+          </motion.div>
 
           {/* Fact 2: Time & Hosts */}
-          <div className="space-y-2 flex flex-col items-center">
+          <motion.div
+            initial={{ opacity: 0, x: 36 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.65, delay: 0.24, ease: "easeOut" }}
+            className="space-y-2 flex flex-col items-center"
+          >
             <Clock size={24} className="text-[var(--gold-dark)]" />
             <h3 className="font-bold text-sm text-[var(--ink)] uppercase tracking-wider">ساعت و میزبانان</h3>
             <p className="font-bold text-base text-[var(--ink)]">{event.startTimeFa} تا {event.endTimeFa}</p>
             <p className="text-xs text-[var(--ink-muted)]">{event.familyLine}</p>
-          </div>
+          </motion.div>
 
           {/* Fact 3: Venue & City */}
-          <div className="space-y-2 flex flex-col items-center">
+          <motion.div
+            initial={{ opacity: 0, x: 36 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.65, delay: 0.36, ease: "easeOut" }}
+            className="space-y-2 flex flex-col items-center"
+          >
             <MapPin size={24} className="text-[var(--gold-dark)]" />
             <h3 className="font-bold text-sm text-[var(--ink)] uppercase tracking-wider">مکان برگزاری</h3>
             <p className="font-bold text-base text-[var(--ink)]">{event.venueName}</p>
             <p className="text-xs text-[var(--ink-muted)]">{event.venueAddressFa}</p>
-          </div>
+          </motion.div>
         </div>
 
         {/* Chic Dari Wedding Poem Section under "زمان و مکان" */}
