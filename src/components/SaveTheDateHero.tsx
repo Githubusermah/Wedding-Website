@@ -311,7 +311,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             delay={0.1}
             stagger={0.06}
             isStarted={isStarted}
-            className="eyebrow font-cinzel text-[10px] sm:text-sm tracking-[0.22em] sm:tracking-[0.3em] font-bold text-[var(--gold-dark)] uppercase"
+            className="eyebrow font-cinzel text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] font-bold text-[var(--gold-dark)] uppercase"
             dir="ltr"
           />
         </div>
@@ -323,7 +323,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             delay={0.4}
             stagger={0.08}
             isStarted={isStarted}
-            className="word-save font-cinzel text-2xl sm:text-5xl md:text-6xl font-bold tracking-widest text-[var(--ink)]"
+            className="word-save font-cinzel text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest text-[var(--ink)]"
             dir="ltr"
           />
 
@@ -347,7 +347,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
                 : { opacity: 1, scale: 0.7 }
             }
             transition={{ duration: 0.9, delay: 0.7, ease: "easeInOut" }}
-            className="the-script font-alex-brush text-2xl sm:text-5xl md:text-6xl text-[var(--gold-dark)] relative -top-0.5 sm:-top-1 px-1 sm:px-2 inline-block leading-none select-none"
+            className="the-script font-alex-brush text-4xl sm:text-5xl md:text-6xl text-[var(--gold-dark)] relative -top-0.5 sm:-top-1 px-1 sm:px-2 inline-block leading-none select-none"
           >
             the
           </motion.span>
@@ -357,7 +357,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             delay={1.1}
             stagger={0.08}
             isStarted={isStarted}
-            className="word-date font-cinzel text-2xl sm:text-5xl md:text-6xl font-bold tracking-widest text-[var(--ink)]"
+            className="word-date font-cinzel text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest text-[var(--ink)]"
             dir="ltr"
           />
         </div>
@@ -369,7 +369,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             delay={1.4}
             stagger={0.06}
             isStarted={isStarted}
-            className="subtitle font-cinzel text-[10px] sm:text-sm tracking-[0.22em] sm:tracking-[0.28em] text-[var(--ink-muted)] font-semibold"
+            className="subtitle font-cinzel text-xs sm:text-sm tracking-[0.18em] sm:tracking-[0.28em] text-[var(--ink-muted)] font-semibold"
             dir="ltr"
           />
         </div>
@@ -381,7 +381,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             delay={1.7}
             stagger={0.08}
             isStarted={isStarted}
-            className="groom-name font-cinzel text-sm sm:text-xl md:text-2xl tracking-[0.14em] sm:tracking-[0.16em] text-[var(--ink)] font-bold"
+            className="groom-name font-cinzel text-lg sm:text-xl md:text-2xl tracking-[0.12em] sm:tracking-[0.16em] text-[var(--ink)] font-bold"
             dir="ltr"
           />
 
@@ -389,7 +389,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             initial={{ opacity: 1, scale: 0.5, rotate: -15 }}
             animate={isStarted ? { opacity: 1, scale: 1, rotate: -4 } : { opacity: 1, scale: 0.5 }}
             transition={{ duration: 0.6, delay: 2.0, ease: "backOut" }}
-            className="amp font-alex-brush text-2xl sm:text-4xl md:text-5xl text-[var(--oxblood,#7a1c28)] leading-none"
+            className="amp font-alex-brush text-3xl sm:text-4xl md:text-5xl text-[var(--oxblood,#7a1c28)] leading-none"
           >
             &amp;
           </motion.span>
@@ -399,7 +399,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             delay={2.2}
             stagger={0.08}
             isStarted={isStarted}
-            className="bride-name font-cinzel text-sm sm:text-xl md:text-2xl tracking-[0.14em] sm:tracking-[0.16em] text-[var(--ink)] font-bold"
+            className="bride-name font-cinzel text-lg sm:text-xl md:text-2xl tracking-[0.12em] sm:tracking-[0.16em] text-[var(--ink)] font-bold"
             dir="ltr"
           />
         </div>
@@ -434,7 +434,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
               width={720}
               height={520}
               sizes="(max-width: 768px) 90vw, 720px"
-              className="venue-img w-full h-auto max-w-[720px] max-h-[20vh] sm:max-h-[52vh] object-contain mx-auto drop-shadow-[0_12px_28px_rgba(197,160,89,0.3)]"
+              className="venue-img w-full h-auto max-w-[720px] max-h-[35vh] sm:max-h-[52vh] object-contain mx-auto drop-shadow-[0_12px_28px_rgba(197,160,89,0.3)]"
             />
           </motion.div>
 
@@ -452,7 +452,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             delay={3.8}
             stagger={0.06}
             isStarted={isStarted}
-            className="venue-caption font-cinzel text-[10px] sm:text-sm tracking-[0.22em] sm:tracking-[0.28em] text-[var(--gold-dark)] font-bold uppercase"
+            className="venue-caption font-cinzel text-xs sm:text-sm tracking-[0.18em] sm:tracking-[0.28em] text-[var(--gold-dark)] font-bold uppercase"
             dir="ltr"
           />
         </div>
@@ -475,7 +475,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             delay={4.5}
             stagger={0.06}
             isStarted={isStarted}
-            className="date-line font-cinzel text-xs sm:text-2xl text-[var(--ink)] tracking-wider font-semibold"
+            className="date-line font-cinzel text-base sm:text-2xl text-[var(--ink)] tracking-wider font-semibold"
             dir="ltr"
           />
         </div>
@@ -487,7 +487,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             delay={4.8}
             stagger={0.08}
             isStarted={isStarted}
-            className="dari-date font-noto-naskh text-xs sm:text-lg text-[var(--ink-muted)] font-medium"
+            className="dari-date font-noto-naskh text-sm sm:text-lg text-[var(--ink-muted)] font-medium"
             dir="rtl"
           />
         </div>
