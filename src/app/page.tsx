@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import HeroVideoIntro from "@/components/HeroVideoIntro";
 import SaveTheDateHero from "@/components/SaveTheDateHero";
 import FoggedCountdown from "@/components/FoggedCountdown";
@@ -12,10 +12,11 @@ import VenueSection from "@/components/VenueSection";
 import WishesWall from "@/components/WishesWall";
 import FooterReplay from "@/components/FooterReplay";
 import MobileActionBar from "@/components/MobileActionBar";
-import AudioPlayer from "@/components/AudioPlayer";
+import AudioPlayer, { AudioPlayerHandle } from "@/components/AudioPlayer";
 
 export default function Home() {
   const [isVideoDismissed, setIsVideoDismissed] = useState(false);
+  const audioPlayerRef = useRef<AudioPlayerHandle>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -27,6 +28,7 @@ export default function Home() {
   }, []);
 
   const handleVideoDismiss = () => {
+    audioPlayerRef.current?.playAudio();
     setIsVideoDismissed(true);
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -55,7 +57,7 @@ export default function Home() {
       <MobileActionBar />
 
       {/* Background Audio Player */}
-      <AudioPlayer />
+      <AudioPlayer ref={audioPlayerRef} />
     </main>
   );
 }
