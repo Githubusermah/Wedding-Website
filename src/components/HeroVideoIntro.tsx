@@ -90,7 +90,7 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
           <div className="absolute inset-0 w-full h-full z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/envelope-poster.jpg"
+              src="/media/envelopegreen-poster.jpg"
               alt="کارت دعوت عروسی"
               className="w-full h-full object-cover object-center"
             />
@@ -101,7 +101,7 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
         <video
           ref={videoRef}
           src="/media/envelopegreen.webm"
-          poster="/media/envelope-poster.jpg"
+          poster="/media/envelopegreen-poster.jpg"
           muted
           playsInline
           {...({ "webkit-playsinline": "true" } as React.VideoHTMLAttributes<HTMLVideoElement>)}

@@ -63,7 +63,7 @@ export default function ScheduleTimeline() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/chandelier.png"
+          src="/chandelier-removebg-preview.png"
           alt=""
           aria-hidden="true"
           className="w-24 sm:w-32 h-auto object-contain drop-shadow-[0_4px_12px_rgba(95,125,100,0.15)]"
