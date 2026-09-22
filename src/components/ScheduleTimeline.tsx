@@ -61,12 +61,14 @@ export default function ScheduleTimeline() {
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex justify-center -mt-6 mb-4 pointer-events-none"
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/chandelier-removebg-preview.png"
           alt=""
           aria-hidden="true"
-          className="w-24 sm:w-32 h-auto object-contain drop-shadow-[0_4px_12px_rgba(95,125,100,0.15)]"
+          width={128}
+          height={128}
+          priority
+          className="w-24 sm:w-32 h-auto object-contain"
         />
       </motion.div>
       <div className="mb-10">

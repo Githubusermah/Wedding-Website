@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 
 interface HeroVideoIntroProps {
@@ -87,31 +88,35 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
       >
         {/* 1. Explicit High-Quality Frame Poster Background Image */}
         {!hasStarted && (
-          <div className="absolute inset-0 w-full h-full z-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+            <Image
               src="/media/envelopegreen-poster.jpg"
               alt="کارت دعوت عروسی"
-              className="w-full h-full object-cover object-center"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
             />
           </div>
         )}
 
-        {/* 2. Video Element with mandatory iOS WebKit attributes */}
+        {/* 2. Video Element with mandatory iOS WebKit & cross-browser attributes and MP4/WebM fallbacks */}
         <video
           ref={videoRef}
-          src="/media/envelopegreen.webm"
           poster="/media/envelopegreen-poster.jpg"
           muted
           playsInline
           {...({ "webkit-playsinline": "true" } as React.VideoHTMLAttributes<HTMLVideoElement>)}
-          preload="metadata"
+          preload="auto"
           onError={handleVideoError}
           onEnded={dismiss}
           className={`relative z-10 w-full h-full object-cover object-center transition-opacity duration-300 ${
             hasStarted ? "opacity-100" : "opacity-90"
           }`}
-        />
+        >
+          <source src="/media/envelopegreen.webm" type="video/webm" />
+          <source src="/media/envelope-opening.mp4" type="video/mp4" />
+        </video>
       </motion.div>
     </AnimatePresence>
   );
