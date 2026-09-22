@@ -415,11 +415,11 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           />
 
           <motion.div
-            initial={{ opacity: 1, scale: 0.92, y: 10 }}
+            initial={{ opacity: 1, scale: 0.92, y: 10, filter: "blur(12px)" }}
             animate={
               isStarted
-                ? { opacity: 1, scale: 1, y: 0 }
-                : { opacity: 1, scale: 0.92, y: 10 }
+                ? { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }
+                : { opacity: 1, scale: 0.92, y: 10, filter: "blur(12px)" }
             }
             transition={{
               duration: 1.2,
