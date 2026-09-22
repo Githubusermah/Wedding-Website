@@ -83,14 +83,14 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
         role="button"
         tabIndex={0}
         aria-label="باز کردن کارت عروسی"
-        className="fixed inset-0 z-50 w-full h-[100dvh] bg-[var(--ivory,#f7f4ee)] cursor-pointer overflow-hidden select-none focus:outline-none flex items-center justify-center"
+        className="fixed inset-0 z-50 w-full h-[100dvh] bg-[#ece6d8] cursor-pointer overflow-hidden select-none focus:outline-none flex items-center justify-center"
       >
         {/* 1. Explicit High-Quality Frame Poster Background Image */}
         {!hasStarted && (
           <div className="absolute inset-0 w-full h-full z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/envelopegreen-poster.jpg"
+              src="/variation2vid-poster.jpg"
               alt="کارت دعوت عروسی"
               className="w-full h-full object-cover object-center"
             />
@@ -100,8 +100,8 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
         {/* 2. Video Element with mandatory iOS WebKit attributes */}
         <video
           ref={videoRef}
-          src="/media/envelopegreen.webm"
-          poster="/media/envelopegreen-poster.jpg"
+          src="/variation2vid.mp4"
+          poster="/variation2vid-poster.jpg"
           muted
           playsInline
           {...({ "webkit-playsinline": "true" } as React.VideoHTMLAttributes<HTMLVideoElement>)}
