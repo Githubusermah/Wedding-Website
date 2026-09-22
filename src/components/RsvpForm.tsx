@@ -68,7 +68,7 @@ export default function RsvpForm() {
       const count = 150;
       const defaults: confetti.Options = {
         origin: { y: 0.6 },
-        colors: ["#C5A059", "#D8BD8A", "#9A7736", "#FAF8F5", "#EFE9DD"],
+        colors: ["#5F7D64", "#7E9F83", "#3F5844", "#FAFBF9", "#EAF0EB"],
       };
 
       const customConfetti = confetti.create(undefined, {
@@ -124,7 +124,12 @@ export default function RsvpForm() {
   };
 
   return (
-    <section id="rsvp" className="py-14 px-4 max-w-2xl mx-auto scroll-mt-20 text-center">
+    <section id="rsvp" className="relative py-14 px-4 max-w-2xl mx-auto scroll-mt-20 text-center overflow-hidden">
+      {/* Subtle Botanical Leaf Accent - Upper Right */}
+      <div className="absolute top-0 right-0 w-28 sm:w-40 opacity-20 pointer-events-none z-0 transform translate-x-4 -translate-y-2 rotate-45">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/leaves.webp" alt="" aria-hidden="true" className="w-full h-auto object-contain" />
+      </div>
       {/* RSVP Section on shared paper */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}

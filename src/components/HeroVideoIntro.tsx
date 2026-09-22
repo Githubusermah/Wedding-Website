@@ -100,7 +100,7 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
         {/* 2. Video Element with mandatory iOS WebKit attributes */}
         <video
           ref={videoRef}
-          src="/media/envelope-opening.mp4"
+          src="/media/envelopegreen.webm"
           poster="/media/envelope-poster.jpg"
           muted
           playsInline

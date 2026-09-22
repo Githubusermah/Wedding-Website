@@ -229,7 +229,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
         const alpha = 0.35 + 0.5 * Math.abs(Math.sin(s.phase));
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(197, 160, 89, ${alpha * 0.7})`;
+        ctx.fillStyle = `rgba(95, 125, 100, ${alpha * 0.7})`;
         ctx.fill();
       });
 
@@ -250,7 +250,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           ctx.beginPath();
           ctx.moveTo(st.trail[j].x, st.trail[j].y);
           ctx.lineTo(st.trail[j + 1].x, st.trail[j + 1].y);
-          ctx.strokeStyle = `rgba(216, 189, 138, ${t * 0.8})`;
+          ctx.strokeStyle = `rgba(126, 159, 131, ${t * 0.8})`;
           ctx.lineWidth = t * 2.2;
           ctx.stroke();
         }
@@ -389,7 +389,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             initial={{ opacity: 1, scale: 0.5, rotate: -15 }}
             animate={isStarted ? { opacity: 1, scale: 1, rotate: -4 } : { opacity: 1, scale: 0.5 }}
             transition={{ duration: 0.6, delay: 2.0, ease: "backOut" }}
-            className="amp font-alex-brush text-3xl sm:text-4xl md:text-5xl text-[var(--oxblood,#7a1c28)] leading-none"
+            className="amp font-alex-brush text-3xl sm:text-4xl md:text-5xl text-[var(--gold-dark)] leading-none"
           >
             &amp;
           </motion.span>
@@ -411,7 +411,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             animate={isStarted ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 0.8 }}
             transition={{ duration: 1.5, delay: 2.4 }}
             aria-hidden="true"
-            className="halo absolute inset-0 -m-6 z-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(233,201,106,0.38)_0%,rgba(233,201,106,0.08)_50%,transparent_70%)] blur-xl pointer-events-none"
+            className="halo absolute inset-0 -m-6 z-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(126,159,131,0.25)_0%,rgba(95,125,100,0.08)_50%,transparent_70%)] blur-xl pointer-events-none"
           />
 
           <motion.div
@@ -429,12 +429,12 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             className="relative z-10 w-full"
           >
             <Image
-              src="/venue/herosectionweddingvenue.png"
-              alt="Palace illustration of City Star Wedding Hall"
+              src="/venue/variation1weddinghero.png"
+              alt="Illustration of Sulaiman Wedding Hall"
               width={720}
               height={520}
               sizes="(max-width: 768px) 90vw, 720px"
-              className="venue-img w-full h-auto max-w-[720px] max-h-[35vh] sm:max-h-[52vh] object-contain mx-auto drop-shadow-[0_12px_28px_rgba(197,160,89,0.3)]"
+              className="venue-img w-full h-auto max-w-[720px] max-h-[35vh] sm:max-h-[52vh] object-contain mx-auto drop-shadow-[0_12px_28px_rgba(95,125,100,0.25)]"
             />
           </motion.div>
 
@@ -500,14 +500,13 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
 
       <style jsx global>{`
         :root {
-          --ivory: #faf5e8;
-          --ivory-deep: #f1e8d4;
-          --ink: #241d17;
-          --ink-soft: #6b5f4f;
-          --gold: #b8863f;
-          --gold-light: #e9c96a;
-          --gold-dark: #8a6329;
-          --oxblood: #7a1c28;
+          --ivory: #FFFFFF;
+          --ivory-deep: #F7F9F7;
+          --ink: #202922;
+          --ink-soft: #566459;
+          --gold: #5F7D64;
+          --gold-light: #7E9F83;
+          --gold-dark: #3F5844;
         }
 
         .site-corner {
@@ -587,7 +586,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           height: 6px;
           background: var(--gold-light);
           border-radius: 50%;
-          box-shadow: 0 0 6px 2px rgba(233, 201, 106, 0.7);
+          box-shadow: 0 0 6px 2px rgba(126, 159, 131, 0.7);
           opacity: 0;
           animation: sparkleTwinkle 3s ease-in-out infinite;
         }
