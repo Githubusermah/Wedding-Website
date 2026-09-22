@@ -27,17 +27,17 @@ export default function InitialsMonogram({
       {/* Isolated SVG Monogram rendered directly on paper surface with gold gradient */}
       <svg
         viewBox="0 0 593 593"
-        className="w-full h-full drop-shadow-[0_1px_2px_rgba(197,160,89,0.25)]"
+        className="w-full h-full drop-shadow-[0_1px_2px_rgba(95,125,100,0.25)]"
       >
         <defs>
           <linearGradient id={goldGradId} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#D8BD8A" />
-            <stop offset="50%" stopColor="#C5A059" />
-            <stop offset="100%" stopColor="#9A7736" />
+            <stop offset="0%" stopColor="#7E9F83" />
+            <stop offset="50%" stopColor="#5F7D64" />
+            <stop offset="100%" stopColor="#3F5844" />
           </linearGradient>
           <linearGradient id={strokeGradId} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#E6D3A9" />
-            <stop offset="100%" stopColor="#C5A059" />
+            <stop offset="0%" stopColor="#A3BEA7" />
+            <stop offset="100%" stopColor="#5F7D64" />
           </linearGradient>
         </defs>
 

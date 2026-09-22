@@ -52,7 +52,23 @@ export default function ScheduleTimeline() {
   ];
 
   return (
-    <section className="py-14 px-4 max-w-2xl mx-auto scroll-mt-20 text-center relative overflow-hidden">
+    <section id="schedule" className="relative py-16 px-4 max-w-xl mx-auto scroll-mt-20 text-center">
+      {/* Decorative Chandelier Asset */}
+      <motion.div
+        initial={{ opacity: 0, y: -15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex justify-center -mt-6 mb-4 pointer-events-none"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/chandelier.png"
+          alt=""
+          aria-hidden="true"
+          className="w-24 sm:w-32 h-auto object-contain drop-shadow-[0_4px_12px_rgba(95,125,100,0.15)]"
+        />
+      </motion.div>
       <div className="mb-10">
         <span className="text-xs text-[var(--gold-dark)] font-semibold tracking-widest uppercase block">
           برنامه محفل
