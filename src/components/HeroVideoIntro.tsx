@@ -90,7 +90,7 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
           <div className="absolute inset-0 w-full h-full z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/envelope-poster.jpg"
+              src="/media/envelopegreen-poster.jpg"
               alt="کارت دعوت عروسی"
               className="w-full h-full object-cover object-center"
             />
@@ -100,8 +100,8 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
         {/* 2. Video Element with mandatory iOS WebKit attributes */}
         <video
           ref={videoRef}
-          src="/media/envelope-opening.mp4"
-          poster="/media/envelope-poster.jpg"
+          src="/media/envelopegreen.mp4"
+          poster="/media/envelopegreen-poster.jpg"
           muted
           playsInline
           {...({ "webkit-playsinline": "true" } as React.VideoHTMLAttributes<HTMLVideoElement>)}
@@ -111,7 +111,10 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
           className={`relative z-10 w-full h-full object-cover object-center transition-opacity duration-300 ${
             hasStarted ? "opacity-100" : "opacity-90"
           }`}
-        />
+        >
+          <source src="/media/envelopegreen.mp4" type="video/mp4" />
+          <source src="/media/envelopegreen.webm" type="video/webm" />
+        </video>
       </motion.div>
     </AnimatePresence>
   );

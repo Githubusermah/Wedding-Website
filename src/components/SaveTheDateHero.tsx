@@ -304,6 +304,23 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
         dir="ltr"
         className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center space-y-0.5 sm:space-y-2"
       >
+        {/* Hanging Chandelier */}
+        <motion.div
+          initial={{ opacity: 0, y: -20, scale: 0.9 }}
+          animate={isStarted ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: -20, scale: 0.9 }}
+          transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
+          className="chandelier-wrap relative z-20 mx-auto -mt-2 sm:-mt-4 mb-1 pointer-events-none"
+        >
+          <Image
+            src="/chandelier-removebg-preview.png"
+            alt="Chandelier"
+            width={220}
+            height={220}
+            priority
+            className="w-24 sm:w-36 md:w-44 h-auto object-contain mx-auto drop-shadow-[0_4px_16px_rgba(197,160,89,0.35)]"
+          />
+        </motion.div>
+
         {/* 1. Eyebrow Line */}
         <div className="eyebrow-wrap my-0.5">
           <TypewriterText
@@ -415,14 +432,14 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           />
 
           <motion.div
-            initial={{ opacity: 1, scale: 0.92, y: 10 }}
+            initial={{ opacity: 1, scale: 0.92, y: 10, filter: "blur(14px) saturate(0.5)" }}
             animate={
               isStarted
-                ? { opacity: 1, scale: 1, y: 0 }
-                : { opacity: 1, scale: 0.92, y: 10 }
+                ? { opacity: 1, scale: 1, y: 0, filter: "blur(0px) saturate(1)" }
+                : { opacity: 1, scale: 0.92, y: 10, filter: "blur(14px) saturate(0.5)" }
             }
             transition={{
-              duration: 1.2,
+              duration: 2.0,
               delay: 2.5,
               ease: "easeOut",
             }}
