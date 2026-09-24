@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { event } from "@/lib/event";
-import { toEasternArabicNumerals } from "@/lib/formatters";
 
 interface TimeLeft {
   days: number;
@@ -24,7 +23,7 @@ function calculateTimeLeft(difference: number): TimeLeft {
 }
 
 function formatNumber(value: number) {
-  return toEasternArabicNumerals(String(value).padStart(2, "0"));
+  return String(value).padStart(2, "0");
 }
 
 export default function FoggedCountdown() {
@@ -132,7 +131,7 @@ export default function FoggedCountdown() {
 
               {timeLeft ? (
                 <div
-                  className="flex w-full max-w-3xl items-baseline justify-center gap-1.5 sm:gap-4 whitespace-nowrap overflow-x-auto px-1"
+                  className="flex w-full max-w-3xl flex-nowrap items-baseline justify-between gap-0 whitespace-nowrap overflow-visible px-0.5 sm:justify-center sm:gap-4"
                   dir="rtl"
                   aria-label="شمارش معکوس تا آغاز جشن عروسی"
                 >
@@ -141,19 +140,19 @@ export default function FoggedCountdown() {
                     { label: "ساعت", value: timeLeft.hours },
                     { label: "دقیقه", value: timeLeft.minutes },
                   ].map((item, index) => (
-                    <span key={item.label} className="inline-flex items-baseline gap-1 sm:gap-2">
-                      <span className="text-2xl sm:text-4xl md:text-5xl font-light font-serif tracking-tight text-[var(--ink)]">
+                    <span key={item.label} className="inline-flex min-w-0 items-baseline gap-0.5 sm:gap-2">
+                      <span className="text-xl sm:text-4xl md:text-5xl font-light font-serif tracking-tight text-[var(--ink)]">
                         {formatNumber(item.value)}
                       </span>
-                      <span className="text-[11px] sm:text-sm text-[var(--gold-dark)] font-[family-name:var(--font-noto-naskh)]">
+                      <span className="text-[9px] sm:text-sm text-[var(--gold-dark)] font-[family-name:var(--font-noto-naskh)]">
                         {item.label}
                       </span>
-                      {index < 2 && <span className="mx-0.5 sm:mx-1 text-xl sm:text-3xl text-[var(--gold-muted)]/70">:</span>}
+                      {index < 2 && <span className="mx-0.5 sm:mx-1 text-base sm:text-3xl text-[var(--gold-muted)]/70">:</span>}
                     </span>
                   ))}
 
-                  <span className="inline-flex items-baseline gap-1 sm:gap-2">
-                    <span className="relative inline-flex h-9 w-9 sm:h-14 sm:w-14 items-center justify-center overflow-hidden">
+                  <span className="inline-flex min-w-0 items-baseline gap-0.5 sm:gap-2">
+                    <span className="relative inline-flex h-8 w-8 sm:h-14 sm:w-14 items-center justify-center overflow-hidden">
                       <AnimatePresence mode="popLayout" initial={false}>
                         <motion.span
                           key={timeLeft.seconds}
@@ -161,13 +160,13 @@ export default function FoggedCountdown() {
                           animate={{ y: "0%", opacity: 1 }}
                           exit={{ y: "-110%", opacity: 0 }}
                           transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-                          className="absolute text-2xl sm:text-4xl md:text-5xl font-medium font-serif tracking-tight text-[#5f7d64]"
+                          className="absolute text-xl sm:text-4xl md:text-5xl font-medium font-serif tracking-tight text-[#5f7d64]"
                         >
                           {formatNumber(timeLeft.seconds)}
                         </motion.span>
                       </AnimatePresence>
                     </span>
-                    <span className="text-[11px] sm:text-sm text-[#5f7d64] font-[family-name:var(--font-noto-naskh)]">
+                    <span className="text-[9px] sm:text-sm text-[#5f7d64] font-[family-name:var(--font-noto-naskh)]">
                       ثانیه
                     </span>
                   </span>
