@@ -3,24 +3,24 @@
 import { motion } from "motion/react";
 import Image from "next/image";
 import { event } from "@/lib/event";
-import { NavigationArrow, MapPin, Sparkle } from "@phosphor-icons/react";
+import { NavigationArrow, MapPin, Sparkle, Phone } from "@phosphor-icons/react";
 
 export default function VenueSection() {
   const venueImages = [
     {
       src: "/venue/weddingvenue1.png",
-      alt: "نمای تالار ۱",
+      alt: "نمای تالار عروسی تاج کانتیننتال ۱",
       delay: 0.1,
     },
     {
-      src: "/venue/weddingvenue2.png",
-      alt: "نمای تالار ۲",
+      src: "/venue/tajcontinental-removebg-preview.png",
+      alt: "نمای تالار عروسی تاج کانتیننتال ۲",
       delay: 0.2,
       isPrimary: true,
     },
     {
       src: "/venue/weddingvenue3.png",
-      alt: "نمای تالار ۳",
+      alt: "نمای تالار عروسی تاج کانتیننتال ۳",
       delay: 0.3,
     },
   ];
@@ -91,14 +91,41 @@ export default function VenueSection() {
           ))}
         </div>
 
+        {/* Interactive Google Maps Embed for Taj Continental Wedding Hall */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-[var(--gold-muted)]/30 bg-[var(--paper-white)] p-2 sm:p-3"
+        >
+          <div className="relative w-full h-[280px] sm:h-[360px] rounded-xl overflow-hidden">
+            <iframe
+              title="نقشه تالار عروسی تاج کانتیننتال"
+              src="https://maps.google.com/maps?q=Taj+Continental+Wedding+Hall+Baraki+Square+Kabul+Afghanistan&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              className="w-full h-full border-0 rounded-xl"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </motion.div>
+
         {/* Address Details & Interactive Navigation Button */}
-        <div className="space-y-4 max-w-lg mx-auto pt-4">
+        <div className="space-y-4 max-w-lg mx-auto pt-2">
           <div className="flex items-center justify-center gap-2 text-sm sm:text-base text-[var(--ink)] font-medium">
             <MapPin size={20} className="text-[var(--gold-dark)] shrink-0" />
             <span>{event.venueAddressFa}</span>
           </div>
 
-          <div>
+          <div className="flex items-center justify-center gap-2 text-xs sm:text-sm text-[var(--ink-muted)]">
+            <Phone size={16} className="text-[var(--gold-dark)] shrink-0" />
+            <a href={event.contactPhoneHref} className="hover:underline font-mono dir-ltr">
+              {event.contactPhoneDisplay}
+            </a>
+          </div>
+
+          <div className="pt-2">
             <a
               href={event.mapsUrl}
               target="_blank"

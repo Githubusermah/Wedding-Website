@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { event } from "@/lib/event";
 import { toEasternArabicNumerals } from "@/lib/formatters";
+import { Sparkle, Heart, CalendarBlank } from "@phosphor-icons/react";
 
 export default function FoggedCountdown() {
   const [timeLeft, setTimeLeft] = useState({
@@ -44,21 +45,42 @@ export default function FoggedCountdown() {
   return (
     <section className="py-12 px-4 max-w-3xl mx-auto text-center">
       <div className="space-y-4">
-        <h2 className="text-xl sm:text-2xl font-bold text-[var(--ink)]">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--gold-pale)]/50 border border-[var(--gold-muted)]/30 text-[var(--gold-dark)] text-xs font-semibold tracking-widest uppercase">
+          <CalendarBlank size={14} className="text-[var(--gold)]" />
+          <span>شمارش معکوس</span>
+        </div>
+
+        <h2 className="text-xl sm:text-2xl font-bold text-[var(--ink)] font-serif">
           زمان باقی‌مانده تا آغاز محفل
         </h2>
 
         <div className="w-16 h-px bg-[var(--gold-muted)] mx-auto my-4" />
 
         {isEventCompleted ? (
-          <div className="py-6 space-y-2">
-            <h3 className="text-xl font-bold text-[var(--gold-dark)]">
-              محفل با موفقیت برگزار شد
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="py-8 px-6 space-y-4 rounded-2xl bg-gradient-to-b from-[var(--gold-pale)]/30 via-[#FDF8EB] to-transparent border border-[var(--gold-muted)]/40 shadow-sm"
+          >
+            <div className="flex items-center justify-center gap-2 text-[var(--oxblood,#7a1c28)]">
+              <Sparkle size={20} className="animate-pulse" />
+              <Heart size={22} weight="fill" className="text-[var(--oxblood,#7a1c28)]" />
+              <Sparkle size={20} className="animate-pulse" />
+            </div>
+
+            <h3 className="text-2xl sm:text-3xl font-black text-[var(--ink)] font-serif tracking-tight">
+              امروز روز خجستهٔ محفل است!
             </h3>
-            <p className="text-xs text-[var(--ink-muted)]">
-              با سپاس فراوان از همراهی و تشریف‌فرمایی شما
+
+            <p className="text-base sm:text-lg text-[var(--gold-dark)] font-medium leading-relaxed max-w-xl mx-auto">
+              محفل با شکوه پیوند {event.coupleDisplayName} امروز در {event.venueName} برگزار می‌گردد.
             </p>
-          </div>
+
+            <p className="text-xs text-[var(--ink-muted)] pt-2 font-mono">
+              مقدم تمام مهمانان و عزیزان گرامی گلباران باد
+            </p>
+          </motion.div>
         ) : (
           <div className="grid grid-cols-4 gap-2 sm:gap-8 pt-4 pb-2 items-center justify-center">
             {/* Days */}

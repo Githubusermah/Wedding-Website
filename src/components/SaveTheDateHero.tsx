@@ -18,7 +18,7 @@ interface SaveTheDateHeroProps {
   isStarted?: boolean;
 }
 
-const PETAL_COUNT = 10; // was 16 — fewer concurrent CSS animations on low-power devices
+const PETAL_COUNT = 10; // fewer concurrent CSS animations on low-power devices
 
 function isArabicOrPersian(str: string) {
   return /[\u0600-\u06FF]/.test(str);
@@ -186,8 +186,6 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
 
     const initStars = () => {
       stars = [];
-      // Cap star count so very large/high-DPR mobile viewports don't spawn
-      // an unbounded number of particles.
       const count = Math.min(180, Math.floor((width * height) / 9000));
       for (let i = 0; i < count; i++) {
         stars.push({
@@ -429,8 +427,8 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             className="relative z-10 w-full"
           >
             <Image
-              src="/venue/herosectionweddingvenue.png"
-              alt="Palace illustration of City Star Wedding Hall"
+              src="/venue/tajcontinental-removebg-preview.png"
+              alt="Palace illustration of Taj Continental Wedding Hall"
               width={720}
               height={520}
               sizes="(max-width: 768px) 90vw, 720px"
@@ -445,7 +443,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           <div className="sparkle-pt sp5" aria-hidden="true" />
         </div>
 
-        {/* 6. Venue Caption (Pulled higher up, lines removed) */}
+        {/* 6. Venue Caption */}
         <div className="venue-caption-wrap flex flex-col items-center justify-center space-y-0.5 -mt-3 sm:mt-1">
           <TypewriterText
             text={venueName}
