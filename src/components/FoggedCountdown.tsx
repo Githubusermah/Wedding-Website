@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface TimeLeft {
@@ -18,70 +18,32 @@ const KABUL_DAY_AFTER_ISO = "2026-10-17T00:00:00+04:30";
 const targetTime = new Date(KABUL_TARGET_ISO).getTime();
 const afterTime = new Date(KABUL_DAY_AFTER_ISO).getTime();
 
-const emptySubscribe = () => () => {};
-let currentTimeSnapshot = Date.now();
-let currentTimeTimer: ReturnType<typeof setInterval> | null = null;
-const currentTimeSubscribers = new Set<() => void>();
-
-function subscribeToCurrentTime(callback: () => void) {
-  currentTimeSubscribers.add(callback);
-
-  if (currentTimeSubscribers.size === 1) {
-    currentTimeTimer = setInterval(() => {
-      currentTimeSnapshot = Date.now();
-      currentTimeSubscribers.forEach((subscriber) => subscriber());
-    }, 1000);
-  }
-
-  return () => {
-    currentTimeSubscribers.delete(callback);
-    if (currentTimeSubscribers.size === 0 && currentTimeTimer !== null) {
-      clearInterval(currentTimeTimer);
-      currentTimeTimer = null;
-    }
-  };
-}
-
-function useIsMounted() {
-  return useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
-}
-
-function useCurrentTime() {
-  return useSyncExternalStore(
-    subscribeToCurrentTime,
-    () => currentTimeSnapshot,
-    () => 0
-  );
-}
-
-function useTestTime() {
-  return useSyncExternalStore(
-    emptySubscribe,
-    () => {
-      if (typeof window !== "undefined") {
-        const params = new URLSearchParams(window.location.search);
-        const testParam = params.get("testDate");
-        if (testParam) {
-          const parsed = Date.parse(testParam);
-          if (!isNaN(parsed)) return parsed;
-        }
-      }
-      return null;
-    },
-    () => null
-  );
-}
-
 export default function FoggedCountdown() {
-  const isMounted = useIsMounted();
-  const currentTime = useCurrentTime();
-  const testTime = useTestTime();
+  const [currentTime, setCurrentTime] = useState<number | null>(null);
+  const [testTime, setTestTime] = useState<number | null>(null);
 
-  const effectiveNow = testTime !== null ? testTime : currentTime;
+  useEffect(() => {
+    const initializeClock = () => {
+      setCurrentTime(Date.now());
+
+      const params = new URLSearchParams(window.location.search);
+      const testParam = params.get("testDate");
+      if (testParam) {
+        const parsed = Date.parse(testParam);
+        if (!isNaN(parsed)) setTestTime(parsed);
+      }
+    };
+
+    const initialTimer = setTimeout(initializeClock, 0);
+    const timer = setInterval(() => setCurrentTime(Date.now()), 1000);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(timer);
+    };
+  }, []);
+
+  const effectiveNow = testTime !== null ? testTime : currentTime ?? 0;
 
   let eventState: EventState = "BEFORE_EVENT";
   if (effectiveNow >= afterTime) {
@@ -111,7 +73,7 @@ export default function FoggedCountdown() {
 
   const timeLeft = calculateTimeLeft();
 
-  if (!isMounted) {
+  if (currentTime === null) {
     return (
       <section
         id="countdown"
