@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import HeroVideoIntro from "@/components/HeroVideoIntro";
-import WeddingInvitation from "@/components/WeddingInvitation";
+import SaveTheDateHero from "@/components/SaveTheDateHero";
 import FoggedCountdown from "@/components/FoggedCountdown";
 import EventFacts from "@/components/EventFacts";
 import RsvpForm from "@/components/RsvpForm";
@@ -41,7 +41,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen relative pb-20 md:pb-0">
-      {/* 1. Full-screen Video Intro Overlay (State A) */}
+      {/* 1. Full-screen Video Intro Overlay */}
       {!isVideoDismissed && (
         <HeroVideoIntro
           onDismiss={handleVideoDismiss}
@@ -49,8 +49,8 @@ export default function Home() {
         />
       )}
 
-      {/* 2. Main Invitation Content (State B revealed when video ends) */}
-      <WeddingInvitation />
+      {/* 2. Hero Section revealed with real-time text animations when video ends */}
+      <SaveTheDateHero isStarted={isVideoDismissed} />
       <FoggedCountdown />
       <EventFacts />
       <RsvpForm />
