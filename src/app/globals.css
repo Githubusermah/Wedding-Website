@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
 @import "tailwindcss";
 
 @layer base {
@@ -71,6 +72,10 @@ body::before {
 
 .font-cormorant {
   font-family: var(--font-cormorant), serif;
+}
+
+.font-pinyon {
+  font-family: 'Pinyon Script', var(--font-great-vibes), 'Great Vibes', cursive;
 }
 
 .font-great-vibes {

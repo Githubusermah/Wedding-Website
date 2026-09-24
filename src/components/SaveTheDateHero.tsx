@@ -90,14 +90,127 @@ function TypewriterText({
   );
 }
 
+function HandwrittenNames({
+  groom,
+  bride,
+  isStarted,
+}: {
+  groom: string;
+  bride: string;
+  isStarted: boolean;
+}) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isInView, setIsInView] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) {
+      setReducedMotion(true);
+      setIsInView(true);
+      return;
+    }
+
+    const element = containerRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  const active = (isInView && isStarted) || reducedMotion;
+
+  return (
+    <div
+      ref={containerRef}
+      className="couple-names-wrap flex flex-row items-center justify-center gap-1.5 sm:gap-3 my-1 sm:my-3 text-center select-none max-w-full px-2"
+      dir="ltr"
+    >
+      {/* 1. Groom Name - AMINULLAH OBAIDI */}
+      <div className="relative inline-block overflow-hidden py-1 px-1 sm:px-2">
+        <motion.span
+          initial={
+            reducedMotion
+              ? { opacity: 1, clipPath: "inset(0 0% 0 0)" }
+              : { opacity: 1, clipPath: "inset(0 100% 0 0)" }
+          }
+          animate={
+            active
+              ? { clipPath: "inset(0 0% 0 0)" }
+              : { clipPath: "inset(0 100% 0 0)" }
+          }
+          transition={
+            reducedMotion
+              ? { duration: 0 }
+              : { duration: 1.3, ease: [0.25, 1, 0.5, 1], delay: 1.6 }
+          }
+          className="font-pinyon text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-wide text-[var(--gold-dark)] inline-block drop-shadow-[0_1px_2px_rgba(95,125,100,0.2)] leading-none"
+        >
+          {groom}
+        </motion.span>
+      </div>
+
+      {/* Ampersand & */}
+      <motion.span
+        initial={reducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+        animate={active ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+        transition={
+          reducedMotion
+            ? { duration: 0 }
+            : { duration: 0.5, delay: 2.8, ease: "backOut" }
+        }
+        className="amp font-alex-brush text-2xl sm:text-3xl md:text-4xl text-[var(--gold-dark)] px-1 leading-none shrink-0"
+      >
+        &amp;
+      </motion.span>
+
+      {/* 2. Bride Name - BAHARA HABIBI */}
+      <div className="relative inline-block overflow-hidden py-1 px-1 sm:px-2">
+        <motion.span
+          initial={
+            reducedMotion
+              ? { opacity: 1, clipPath: "inset(0 0% 0 0)" }
+              : { opacity: 1, clipPath: "inset(0 100% 0 0)" }
+          }
+          animate={
+            active
+              ? { clipPath: "inset(0 0% 0 0)" }
+              : { clipPath: "inset(0 100% 0 0)" }
+          }
+          transition={
+            reducedMotion
+              ? { duration: 0 }
+              : { duration: 1.3, ease: [0.25, 1, 0.5, 1], delay: 3.2 }
+          }
+          className="font-pinyon text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-wide text-[var(--gold-dark)] inline-block drop-shadow-[0_1px_2px_rgba(95,125,100,0.2)] leading-none"
+        >
+          {bride}
+        </motion.span>
+      </div>
+    </div>
+  );
+}
+
 export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [petals, setPetals] = useState<Petal[]>([]);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   // Defensive reads — a missing field in event.ts can no longer throw during render.
-  const groomName = safeText(event?.groomNameEn).toUpperCase();
-  const brideName = safeText(event?.brideNameEn).toUpperCase();
+  const groomName = safeText(event?.groomNameEn, "AMINULLAH OBAIDI");
+  const brideName = safeText(event?.brideNameEn, "BAHARA HABIBI");
   const venueName = safeText(event?.venueNameEn).toUpperCase();
   const dateGregorian = safeText(event?.invitationDateGregorian);
   const dateFa = safeText(event?.invitationDateFa);
@@ -374,35 +487,8 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           />
         </div>
 
-        {/* 4. Couple Names */}
-        <div className="names flex items-center justify-center gap-2 sm:gap-4 my-0.5 sm:my-2" dir="ltr">
-          <TypewriterText
-            text={groomName}
-            delay={1.7}
-            stagger={0.08}
-            isStarted={isStarted}
-            className="groom-name font-cinzel text-lg sm:text-xl md:text-2xl tracking-[0.12em] sm:tracking-[0.16em] text-[var(--ink)] font-bold"
-            dir="ltr"
-          />
-
-          <motion.span
-            initial={{ opacity: 1, scale: 0.5, rotate: -15 }}
-            animate={isStarted ? { opacity: 1, scale: 1, rotate: -4 } : { opacity: 1, scale: 0.5 }}
-            transition={{ duration: 0.6, delay: 2.0, ease: "backOut" }}
-            className="amp font-alex-brush text-3xl sm:text-4xl md:text-5xl text-[var(--gold-dark)] leading-none"
-          >
-            &amp;
-          </motion.span>
-
-          <TypewriterText
-            text={brideName}
-            delay={2.2}
-            stagger={0.08}
-            isStarted={isStarted}
-            className="bride-name font-cinzel text-lg sm:text-xl md:text-2xl tracking-[0.12em] sm:tracking-[0.16em] text-[var(--ink)] font-bold"
-            dir="ltr"
-          />
-        </div>
+        {/* 4. Couple Names in Pinyon Script with Real-Time Reveal */}
+        <HandwrittenNames groom={groomName} bride={brideName} isStarted={isStarted} />
 
         {/* 5. Palace Illustration */}
         <div className="illustration-wrap relative flex justify-center items-center my-0 sm:my-2 w-full max-w-2xl mx-auto">

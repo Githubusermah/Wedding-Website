@@ -28,15 +28,38 @@ function useIsMounted() {
   );
 }
 
+let cachedTime = typeof window !== "undefined" ? Date.now() : 0;
+const timeListeners = new Set<() => void>();
+let timeInterval: ReturnType<typeof setInterval> | null = null;
+
+function subscribeTime(callback: () => void) {
+  timeListeners.add(callback);
+  if (!timeInterval) {
+    cachedTime = Date.now();
+    timeInterval = setInterval(() => {
+      cachedTime = Date.now();
+      timeListeners.forEach((cb) => cb());
+    }, 1000);
+  }
+  return () => {
+    timeListeners.delete(callback);
+    if (timeListeners.size === 0 && timeInterval) {
+      clearInterval(timeInterval);
+      timeInterval = null;
+    }
+  };
+}
+
+function getTimeSnapshot() {
+  return cachedTime;
+}
+
+function getServerTimeSnapshot() {
+  return 0;
+}
+
 function useCurrentTime() {
-  return useSyncExternalStore(
-    (callback) => {
-      const timer = setInterval(callback, 1000);
-      return () => clearInterval(timer);
-    },
-    () => Date.now(),
-    () => 0
-  );
+  return useSyncExternalStore(subscribeTime, getTimeSnapshot, getServerTimeSnapshot);
 }
 
 function useTestTime() {
@@ -54,6 +77,26 @@ function useTestTime() {
       return null;
     },
     () => null
+  );
+}
+
+function AnimatedNumber({ value }: { value: number }) {
+  const formatted = String(value).padStart(2, "0");
+  return (
+    <div className="relative overflow-hidden h-[1.1em] inline-flex items-center justify-center">
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={formatted}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="inline-block"
+        >
+          {formatted}
+        </motion.span>
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -96,9 +139,9 @@ export default function FoggedCountdown() {
     return (
       <section
         id="countdown"
-        className="relative py-20 px-4 bg-[var(--paper-white)] text-[var(--gold)] flex flex-col items-center justify-center border-y border-[var(--gold)]/10 overflow-hidden"
+        className="relative py-10 sm:py-14 px-4 text-[var(--gold-dark)] flex flex-col items-center justify-center overflow-hidden"
       >
-        <div className="w-full max-w-4xl min-h-[160px]" />
+        <div className="w-full max-w-4xl min-h-[80px]" />
       </section>
     );
   }
@@ -106,103 +149,47 @@ export default function FoggedCountdown() {
   return (
     <section
       id="countdown"
-      className="relative py-20 px-4 bg-[var(--paper-white)] text-[var(--gold)] flex flex-col items-center justify-center border-y border-[var(--gold)]/10 overflow-hidden"
+      className="relative py-8 sm:py-12 px-4 text-[var(--gold-dark)] flex flex-col items-center justify-center overflow-hidden select-none"
     >
       <div className="w-full max-w-4xl relative z-10 flex flex-col items-center text-center">
         <AnimatePresence mode="wait">
           {eventState === "EVENT_DAY" && (
             <motion.div
               key="event-day"
-              initial={{ opacity: 0, y: 20, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center w-full py-6 px-4"
+              className="flex flex-col items-center justify-center w-full py-4 px-4"
             >
-              {/* Floating golden sparkle effects behind celebration card */}
-              <div className="absolute inset-0 pointer-events-none flex justify-center items-center opacity-60">
-                <motion.div
-                  animate={{
-                    scale: [0.95, 1.05, 0.95],
-                    opacity: [0.3, 0.7, 0.3],
-                  }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="w-72 h-72 rounded-full bg-[var(--gold)]/10 blur-3xl"
-                />
-              </div>
-
-              {/* Shimmering Header Accent */}
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: "80px" }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className="h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent mb-6"
-              />
-
-              {/* Big Dari Headline */}
               <h2
                 dir="rtl"
-                className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-wide text-[var(--gold)] mb-4 leading-relaxed font-[family-name:var(--font-noto-naskh)] drop-shadow-sm"
+                className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-wide text-[var(--gold-dark)] mb-2 font-noto-naskh"
               >
-                امروز روز عروسی ماست
+                امروز روز عروسی ماست - خوش آمدید
               </h2>
-
-              {/* Dari Subline */}
-              <p
-                dir="rtl"
-                className="text-lg sm:text-xl md:text-2xl text-[var(--gold)]/90 mb-8 font-[family-name:var(--font-noto-naskh)] tracking-wide"
-              >
-                به مراسم عروسی ما خوش آمدید
+              <p className="text-xs sm:text-sm tracking-[0.25em] uppercase font-light text-[var(--gold-dark)]/80">
+                Today is the day
               </p>
-
-              {/* Divider ornament */}
-              <div className="flex items-center justify-center gap-3 my-2 opacity-80">
-                <span className="w-12 h-[1px] bg-[var(--gold)]/40" />
-                <span className="text-[var(--gold)] text-xs font-serif">♦</span>
-                <span className="w-12 h-[1px] bg-[var(--gold)]/40" />
-              </div>
-
-              {/* English Lines */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="mt-6 flex flex-col items-center space-y-2"
-              >
-                <p className="text-sm sm:text-base tracking-[0.25em] uppercase font-light text-[var(--gold)]/90">
-                  Today is the day
-                </p>
-                <p className="text-xs sm:text-sm tracking-[0.15em] font-serif text-[var(--gold)]/75 italic">
-                  Taj Continental Wedding Hall, Kabul
-                </p>
-              </motion.div>
-
-              {/* Shimmering Bottom Accent */}
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: "80px" }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className="h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent mt-8"
-              />
             </motion.div>
           )}
 
           {eventState === "AFTER_EVENT" && (
             <motion.div
               key="after-event"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.8 }}
-              className="flex flex-col items-center justify-center w-full py-8 px-4 text-center"
+              className="flex flex-col items-center justify-center w-full py-4 px-4 text-center"
             >
               <h2
                 dir="rtl"
-                className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--gold)] mb-4 font-[family-name:var(--font-noto-naskh)]"
+                className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--gold-dark)] mb-2 font-noto-naskh"
               >
                 از حضور گرم‌تان در مراسم عروسی ما سپاسگزاریم
               </h2>
-              <p className="text-sm sm:text-base md:text-lg tracking-[0.2em] uppercase font-light text-[var(--gold)]/80 mt-2">
+              <p className="text-xs sm:text-sm tracking-[0.2em] uppercase font-light text-[var(--gold-dark)]/80">
                 Thank you for celebrating with us
               </p>
             </motion.div>
@@ -215,36 +202,37 @@ export default function FoggedCountdown() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6 }}
-              className="w-full flex flex-col items-center"
+              className="w-full flex flex-col items-center justify-center"
             >
-              <h3 className="text-xs sm:text-sm tracking-[0.3em] uppercase text-[var(--gold)]/80 mb-8 font-light">
-                Counting Down To The Big Day
-              </h3>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 w-full max-w-3xl">
+              {/* One-Line Sleek Borderless Countdown */}
+              <div
+                dir="ltr"
+                className="flex flex-row items-center justify-center gap-3 sm:gap-6 md:gap-10 w-full max-w-3xl mx-auto py-2"
+              >
                 {[
-                  { label: "Days", value: timeLeft.days, labelFa: "روز" },
-                  { label: "Hours", value: timeLeft.hours, labelFa: "ساعت" },
-                  { label: "Minutes", value: timeLeft.minutes, labelFa: "دقیقه" },
-                  { label: "Seconds", value: timeLeft.seconds, labelFa: "ثانیه" },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex flex-col items-center justify-center p-4 sm:p-6 rounded-lg bg-[var(--ivory)]/40 border border-[var(--gold)]/20 shadow-sm backdrop-blur-[2px]"
-                  >
-                    <span className="text-3xl sm:text-4xl md:text-5xl font-light font-serif tracking-tight text-[var(--gold)]">
-                      {String(item.value).padStart(2, "0")}
-                    </span>
-                    <span className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-[var(--gold)]/70 mt-2">
-                      {item.label}
-                    </span>
-                    <span
-                      dir="rtl"
-                      className="text-[10px] sm:text-xs text-[var(--gold)]/60 font-[family-name:var(--font-noto-naskh)] mt-0.5"
-                    >
-                      {item.labelFa}
-                    </span>
-                  </div>
+                  { label: "DAYS", value: timeLeft.days, labelFa: "روز" },
+                  { label: "HOURS", value: timeLeft.hours, labelFa: "ساعت" },
+                  { label: "MINS", value: timeLeft.minutes, labelFa: "دقیقه" },
+                  { label: "SECS", value: timeLeft.seconds, labelFa: "ثانیه" },
+                ].map((item, index) => (
+                  <React.Fragment key={item.label}>
+                    {index > 0 && (
+                      <span className="text-lg sm:text-2xl md:text-3xl font-serif text-[var(--gold-dark)]/30 font-light select-none pb-4">
+                        :
+                      </span>
+                    )}
+                    <div className="flex flex-col items-center justify-center min-w-[50px] sm:min-w-[75px]">
+                      <div className="text-3xl sm:text-5xl md:text-6xl font-cinzel font-semibold tracking-tight text-[var(--gold-dark)]">
+                        <AnimatedNumber value={item.value} />
+                      </div>
+                      <div className="flex items-center gap-1 mt-1 text-[10px] sm:text-xs tracking-[0.18em] uppercase text-[var(--gold-dark)]/70 font-medium">
+                        <span>{item.label}</span>
+                        <span className="text-[9px] sm:text-[10px] text-[var(--gold-dark)]/50 font-noto-naskh">
+                          ({item.labelFa})
+                        </span>
+                      </div>
+                    </div>
+                  </React.Fragment>
                 ))}
               </div>
             </motion.div>
