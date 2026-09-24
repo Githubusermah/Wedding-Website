@@ -429,8 +429,8 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             className="relative z-10 w-full"
           >
             <Image
-              src="/venue/variation1weddinghero.png"
-              alt="Illustration of Sulaiman Wedding Hall"
+              src="/venue/tajcontinental-removebg-preview.png"
+              alt="Taj Continental Wedding Hall"
               width={720}
               height={520}
               sizes="(max-width: 768px) 90vw, 720px"
