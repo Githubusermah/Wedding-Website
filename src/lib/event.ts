@@ -1,8 +1,8 @@
 export const event = {
-  brideName: "بهارا",
-  brideNameEn: "BAHARA",
-  groomName: "امین‌الله",
-  groomNameEn: "AMINULLAH",
+  brideName: "امین‌الله",
+  brideNameEn: "AMINULLAH",
+  groomName: "بهارا",
+  groomNameEn: "BAHARA",
   coupleDisplayName: "بهارا و امین‌الله",
   pageTitle: "جشن پیوند بهارا و امین‌الله",
   invitationDateFa: "جمعه، ۲۴ میزان ۱۴۰۵",
