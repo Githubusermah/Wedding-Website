@@ -34,9 +34,12 @@ export default function FoggedCountdown() {
   useEffect(() => {
     const target = new Date(event.startDateTimeISO).getTime();
     const end = new Date(event.endDateTimeISO).getTime();
+    const testParam = new URLSearchParams(window.location.search).get("testDate");
+    const parsedTestTime = testParam ? Date.parse(testParam) : NaN;
+    const testTime = Number.isNaN(parsedTestTime) ? null : parsedTestTime;
 
     const updateTime = () => {
-      const now = Date.now();
+      const now = testTime ?? Date.now();
       const difference = target - now;
 
       if (now >= end) {
