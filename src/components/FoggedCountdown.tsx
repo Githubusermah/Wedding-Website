@@ -19,6 +19,28 @@ const targetTime = new Date(KABUL_TARGET_ISO).getTime();
 const afterTime = new Date(KABUL_DAY_AFTER_ISO).getTime();
 
 const emptySubscribe = () => () => {};
+let currentTimeSnapshot = Date.now();
+let currentTimeTimer: ReturnType<typeof setInterval> | null = null;
+const currentTimeSubscribers = new Set<() => void>();
+
+function subscribeToCurrentTime(callback: () => void) {
+  currentTimeSubscribers.add(callback);
+
+  if (currentTimeSubscribers.size === 1) {
+    currentTimeTimer = setInterval(() => {
+      currentTimeSnapshot = Date.now();
+      currentTimeSubscribers.forEach((subscriber) => subscriber());
+    }, 1000);
+  }
+
+  return () => {
+    currentTimeSubscribers.delete(callback);
+    if (currentTimeSubscribers.size === 0 && currentTimeTimer !== null) {
+      clearInterval(currentTimeTimer);
+      currentTimeTimer = null;
+    }
+  };
+}
 
 function useIsMounted() {
   return useSyncExternalStore(
@@ -30,11 +52,8 @@ function useIsMounted() {
 
 function useCurrentTime() {
   return useSyncExternalStore(
-    (callback) => {
-      const timer = setInterval(callback, 1000);
-      return () => clearInterval(timer);
-    },
-    () => Date.now(),
+    subscribeToCurrentTime,
+    () => currentTimeSnapshot,
     () => 0
   );
 }
