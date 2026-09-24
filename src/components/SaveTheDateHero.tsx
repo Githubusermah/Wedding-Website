@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, Variants } from "motion/react";
+import { motion } from "motion/react";
 import { event } from "@/lib/event";
 
 interface Petal {
@@ -18,7 +18,7 @@ interface SaveTheDateHeroProps {
   isStarted?: boolean;
 }
 
-const PETAL_COUNT = 10; // was 16 — fewer concurrent CSS animations on low-power devices
+const PETAL_COUNT = 10;
 
 function isArabicOrPersian(str: string) {
   return /[\u0600-\u06FF]/.test(str);
@@ -29,64 +29,105 @@ function safeText(value: unknown, fallback = ""): string {
   return typeof value === "string" && value.length > 0 ? value : fallback;
 }
 
-function TypewriterText({
+function toTitleCase(str: string): string {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+/**
+ * RealtimeWriteText component:
+ * Animates text character-by-character (for English) or word-by-word (for Persian/Arabic)
+ * to give an authentic real-time ink writing/typewriter effect when video ends.
+ */
+function RealtimeWriteText({
   text,
   delay = 0,
-  stagger = 0.08,
+  charSpeed = 45,
   className = "",
   dir,
   isStarted = true,
+  showCursor = true,
 }: {
   text: string;
-  delay?: number;
-  stagger?: number;
+  delay?: number; // in seconds
+  charSpeed?: number; // ms per character
   className?: string;
   dir?: "ltr" | "rtl";
   isStarted?: boolean;
+  showCursor?: boolean;
 }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    if (!isStarted || !text) {
+      setDisplayedText("");
+      setIsTyping(false);
+      return;
+    }
+
+    const isPersian = isArabicOrPersian(text);
+    let interval: NodeJS.Timeout;
+
+    const timer = setTimeout(() => {
+      setIsTyping(true);
+
+      if (isPersian) {
+        // Persian/Arabic: reveal word-by-word to preserve OpenType ligatures & glyph shaping
+        const words = text.split(" ");
+        let wordIndex = 0;
+
+        interval = setInterval(() => {
+          wordIndex++;
+          setDisplayedText(words.slice(0, wordIndex).join(" "));
+          if (wordIndex >= words.length) {
+            clearInterval(interval);
+            setIsTyping(false);
+          }
+        }, charSpeed * 2.5);
+      } else {
+        // English: character-by-character real time typewriter writing
+        let charIndex = 0;
+
+        interval = setInterval(() => {
+          charIndex++;
+          setDisplayedText(text.slice(0, charIndex));
+          if (charIndex >= text.length) {
+            clearInterval(interval);
+            setIsTyping(false);
+          }
+        }, charSpeed);
+      }
+    }, delay * 1000);
+
+    return () => {
+      clearTimeout(timer);
+      if (interval) clearInterval(interval);
+    };
+  }, [text, delay, charSpeed, isStarted]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
   if (!text) return null;
 
   const isPersian = isArabicOrPersian(text);
-  const words = text.split(" ");
-
-  const containerVariants: Variants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: stagger,
-        delayChildren: delay,
-      },
-    },
-  };
-
-  const wordVariants: Variants = {
-    hidden: { opacity: 1, y: 8, filter: "blur(6px)" },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: { duration: 0.35, ease: "easeOut" },
-    },
-  };
 
   return (
-    <motion.span
-      variants={containerVariants}
-      initial="hidden"
-      animate={isStarted ? "visible" : "hidden"}
-      className={`inline-flex flex-wrap items-center justify-center gap-[0.35em] ${className}`}
+    <span
+      className={`inline-flex items-baseline justify-center transition-opacity duration-300 ${
+        displayedText ? "opacity-100" : "opacity-0"
+      } ${className}`}
       dir={dir || (isPersian ? "rtl" : "ltr")}
     >
-      {words.map((word, index) => (
-        <motion.span
-          key={`${word}-${index}`}
-          variants={wordVariants}
-          className="inline-block whitespace-nowrap"
-        >
-          {word}
-        </motion.span>
-      ))}
-    </motion.span>
+      <span>{displayedText}</span>
+      {showCursor && isTyping && (
+        <span className="inline-block w-[2px] h-[0.75em] bg-[var(--gold)] animate-pulse ml-0.5 align-baseline self-center" />
+      )}
+    </span>
   );
 }
 
@@ -95,14 +136,17 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
   const [petals, setPetals] = useState<Petal[]>([]);
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  // Defensive reads — a missing field in event.ts can no longer throw during render.
-  const groomName = safeText(event?.groomNameEn).toUpperCase();
-  const brideName = safeText(event?.brideNameEn).toUpperCase();
-  const venueName = safeText(event?.venueNameEn).toUpperCase();
-  const dateGregorian = safeText(event?.invitationDateGregorian);
-  const dateFa = safeText(event?.invitationDateFa);
+  // Defensive reads
+  const groomNameRaw = safeText(event?.groomNameEn, "FARHAD");
+  const brideNameRaw = safeText(event?.brideNameEn, "ADEEBA");
+  const groomName = toTitleCase(groomNameRaw);
+  const brideName = toTitleCase(brideNameRaw);
 
-  // Initialize and handle reduced motion / petal generation on client mount
+  const venueName = safeText(event?.venueNameEn, "Sulaiman Wedding Hall").toUpperCase();
+  const dateGregorian = safeText(event?.invitationDateGregorian, "13 October 2026");
+  const dateFa = safeText(event?.invitationDateFa, "دوشنبه، ۱۳ میزان ۱۴۰۵");
+
+  // Initialize petals and handle reduced motion
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -144,9 +188,9 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
   }, [isStarted]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
-  // Sky canvas animation (twinkling stars & shooting stars)
+  // Sky canvas animation
   useEffect(() => {
-    if (!isStarted || reducedMotion) return; // don't compete with intro video
+    if (!isStarted || reducedMotion) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -186,8 +230,6 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
 
     const initStars = () => {
       stars = [];
-      // Cap star count so very large/high-DPR mobile viewports don't spawn
-      // an unbounded number of particles.
       const count = Math.min(180, Math.floor((width * height) / 9000));
       for (let i = 0; i < count; i++) {
         stars.push({
@@ -277,7 +319,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
   }, [isStarted, reducedMotion]);
 
   return (
-    <section className="heroSection relative h-[100dvh] min-h-[100dvh] w-full flex flex-col items-center justify-center sm:justify-center py-2 sm:py-6 px-3 sm:px-4 text-center overflow-hidden z-10">
+    <section className="heroSection relative min-h-[100dvh] w-full flex flex-col items-center justify-center py-6 sm:py-10 px-4 text-center overflow-hidden z-10">
       <canvas
         ref={canvasRef}
         aria-hidden="true"
@@ -302,128 +344,116 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
 
       <div
         dir="ltr"
-        className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center space-y-0.5 sm:space-y-2"
+        className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center justify-center text-center space-y-2 sm:space-y-3"
       >
         {/* 1. Eyebrow Line */}
         <div className="eyebrow-wrap my-0.5">
-          <TypewriterText
+          <RealtimeWriteText
             text="A MOMENT TO REMEMBER"
             delay={0.1}
-            stagger={0.06}
+            charSpeed={35}
             isStarted={isStarted}
-            className="eyebrow font-cinzel text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] font-bold text-[var(--gold-dark)] uppercase"
+            className="eyebrow font-cinzel text-xs sm:text-sm tracking-[0.22em] sm:tracking-[0.32em] font-bold text-[var(--gold-dark)] uppercase"
             dir="ltr"
           />
         </div>
 
         {/* 2. Main Headline: SAVE the DATE */}
-        <div className="headline flex items-baseline justify-center gap-1.5 sm:gap-3 my-0.5 sm:my-1" dir="ltr">
-          <TypewriterText
+        <div className="headline flex items-baseline justify-center gap-2 sm:gap-3.5 my-1" dir="ltr">
+          <RealtimeWriteText
             text="SAVE"
-            delay={0.4}
-            stagger={0.08}
+            delay={0.6}
+            charSpeed={60}
             isStarted={isStarted}
-            className="word-save font-cinzel text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest text-[var(--ink)]"
+            className="word-save font-cinzel text-4xl sm:text-6xl md:text-7xl font-bold tracking-widest text-[var(--ink)]"
             dir="ltr"
           />
 
           <motion.span
-            initial={{
-              opacity: 1,
-              scale: 0.7,
-              clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
-              y: 4,
-              rotate: -4,
-            }}
+            initial={{ opacity: 0, scale: 0.6, y: 4, rotate: -6 }}
             animate={
               isStarted
-                ? {
-                    opacity: 1,
-                    scale: 1,
-                    clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-                    y: 0,
-                    rotate: -2,
-                  }
-                : { opacity: 1, scale: 0.7 }
+                ? { opacity: 1, scale: 1, y: 0, rotate: -2 }
+                : { opacity: 0, scale: 0.6 }
             }
-            transition={{ duration: 0.9, delay: 0.7, ease: "easeInOut" }}
-            className="the-script font-alex-brush text-4xl sm:text-5xl md:text-6xl text-[var(--gold-dark)] relative -top-0.5 sm:-top-1 px-1 sm:px-2 inline-block leading-none select-none"
+            transition={{ duration: 0.7, delay: 1.1, ease: "easeOut" }}
+            className="the-script font-alex-brush text-4xl sm:text-6xl md:text-7xl text-[var(--gold-dark)] relative -top-1 px-1 sm:px-2 inline-block leading-none select-none"
           >
             the
           </motion.span>
 
-          <TypewriterText
+          <RealtimeWriteText
             text="DATE"
-            delay={1.1}
-            stagger={0.08}
+            delay={1.4}
+            charSpeed={60}
             isStarted={isStarted}
-            className="word-date font-cinzel text-4xl sm:text-5xl md:text-6xl font-bold tracking-widest text-[var(--ink)]"
+            className="word-date font-cinzel text-4xl sm:text-6xl md:text-7xl font-bold tracking-widest text-[var(--ink)]"
             dir="ltr"
           />
         </div>
 
         {/* 3. Subtitle */}
         <div className="my-0.5">
-          <TypewriterText
+          <RealtimeWriteText
             text="FOR THE WEDDING OF"
-            delay={1.4}
-            stagger={0.06}
+            delay={1.9}
+            charSpeed={35}
             isStarted={isStarted}
-            className="subtitle font-cinzel text-xs sm:text-sm tracking-[0.18em] sm:tracking-[0.28em] text-[var(--ink-muted)] font-semibold"
+            className="subtitle font-cinzel text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] text-[var(--ink-muted)] font-semibold"
             dir="ltr"
           />
         </div>
 
-        {/* 4. Couple Names */}
-        <div className="names flex items-center justify-center gap-2 sm:gap-4 my-0.5 sm:my-2" dir="ltr">
-          <TypewriterText
+        {/* 4. Couple Names (Upgraded to Cormorant Garamond for supreme legibility & luxury look) */}
+        <div className="names flex flex-wrap items-center justify-center gap-2 sm:gap-5 my-1 sm:my-3" dir="ltr">
+          <RealtimeWriteText
             text={groomName}
-            delay={1.7}
-            stagger={0.08}
+            delay={2.4}
+            charSpeed={50}
             isStarted={isStarted}
-            className="groom-name font-cinzel text-lg sm:text-xl md:text-2xl tracking-[0.12em] sm:tracking-[0.16em] text-[var(--ink)] font-bold"
+            className="groom-name font-cormorant font-bold italic text-3xl sm:text-5xl md:text-6xl tracking-wide text-[var(--ink)] drop-shadow-xs"
             dir="ltr"
           />
 
           <motion.span
-            initial={{ opacity: 1, scale: 0.5, rotate: -15 }}
-            animate={isStarted ? { opacity: 1, scale: 1, rotate: -4 } : { opacity: 1, scale: 0.5 }}
-            transition={{ duration: 0.6, delay: 2.0, ease: "backOut" }}
-            className="amp font-alex-brush text-3xl sm:text-4xl md:text-5xl text-[var(--gold-dark)] leading-none"
+            initial={{ opacity: 0, scale: 0.5, rotate: -15 }}
+            animate={isStarted ? { opacity: 1, scale: 1, rotate: -4 } : { opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.5, delay: 2.9, ease: "backOut" }}
+            className="amp font-cormorant font-normal italic text-3xl sm:text-5xl md:text-6xl text-[var(--gold-dark)] px-1 leading-none select-none"
           >
             &amp;
           </motion.span>
 
-          <TypewriterText
+          <RealtimeWriteText
             text={brideName}
-            delay={2.2}
-            stagger={0.08}
+            delay={3.2}
+            charSpeed={50}
             isStarted={isStarted}
-            className="bride-name font-cinzel text-lg sm:text-xl md:text-2xl tracking-[0.12em] sm:tracking-[0.16em] text-[var(--ink)] font-bold"
+            className="bride-name font-cormorant font-bold italic text-3xl sm:text-5xl md:text-6xl tracking-wide text-[var(--ink)] drop-shadow-xs"
             dir="ltr"
           />
         </div>
 
         {/* 5. Palace Illustration */}
-        <div className="illustration-wrap relative flex justify-center items-center my-0 sm:my-2 w-full max-w-2xl mx-auto">
+        <div className="illustration-wrap relative flex justify-center items-center my-2 sm:my-4 w-full max-w-2xl mx-auto">
           <motion.div
-            initial={{ opacity: 1, scale: 0.8 }}
-            animate={isStarted ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 0.8 }}
-            transition={{ duration: 1.5, delay: 2.4 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={isStarted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+            transition={{ duration: 1.4, delay: 3.7 }}
             aria-hidden="true"
             className="halo absolute inset-0 -m-6 z-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(126,159,131,0.25)_0%,rgba(95,125,100,0.08)_50%,transparent_70%)] blur-xl pointer-events-none"
           />
 
           <motion.div
-            initial={{ opacity: 1, scale: 0.92, y: 10, filter: "blur(12px)" }}
+            initial={{ opacity: 0, scale: 0.92, y: 12 }}
             animate={
               isStarted
-                ? { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }
-                : { opacity: 1, scale: 0.92, y: 10, filter: "blur(12px)" }
+                ? { opacity: 1, scale: 1, y: 0 }
+                : { opacity: 0, scale: 0.92, y: 12 }
             }
             transition={{
               duration: 1.2,
-              delay: 2.5,
+              delay: 3.8,
               ease: "easeOut",
             }}
             className="relative z-10 w-full"
@@ -434,7 +464,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
               width={720}
               height={520}
               sizes="(max-width: 768px) 90vw, 720px"
-              className="venue-img w-full h-auto max-w-[720px] max-h-[35vh] sm:max-h-[52vh] object-contain mx-auto drop-shadow-[0_12px_28px_rgba(95,125,100,0.25)]"
+              className="venue-img w-full h-auto max-w-[720px] max-h-[35vh] sm:max-h-[50vh] object-contain mx-auto drop-shadow-[0_12px_28px_rgba(95,125,100,0.22)]"
             />
           </motion.div>
 
@@ -445,35 +475,35 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           <div className="sparkle-pt sp5" aria-hidden="true" />
         </div>
 
-        {/* 6. Venue Caption (Pulled higher up, lines removed) */}
-        <div className="venue-caption-wrap flex flex-col items-center justify-center space-y-0.5 -mt-3 sm:mt-1">
-          <TypewriterText
+        {/* 6. Venue Caption */}
+        <div className="venue-caption-wrap flex flex-col items-center justify-center space-y-0.5 -mt-2 sm:mt-1">
+          <RealtimeWriteText
             text={venueName}
-            delay={3.8}
-            stagger={0.06}
+            delay={4.4}
+            charSpeed={40}
             isStarted={isStarted}
-            className="venue-caption font-cinzel text-xs sm:text-sm tracking-[0.18em] sm:tracking-[0.28em] text-[var(--gold-dark)] font-bold uppercase"
+            className="venue-caption font-cinzel text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] text-[var(--gold-dark)] font-bold uppercase"
             dir="ltr"
           />
         </div>
 
         {/* 7. Divider Star */}
         <motion.div
-          initial={{ opacity: 1, scale: 0.4, rotate: -45 }}
-          animate={isStarted ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 1, scale: 0.4 }}
-          transition={{ duration: 0.6, delay: 4.3 }}
+          initial={{ opacity: 0, scale: 0.4, rotate: -45 }}
+          animate={isStarted ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.4 }}
+          transition={{ duration: 0.5, delay: 5.0 }}
           aria-hidden="true"
-          className="divider flex items-center justify-center gap-2 text-[var(--gold)] my-0.5 sm:my-2 text-xs sm:text-sm"
+          className="divider flex items-center justify-center gap-2 text-[var(--gold)] my-1 sm:my-2 text-xs sm:text-sm"
         >
           <span>✦</span>
         </motion.div>
 
         {/* 8. Gregorian Date Line */}
         <div>
-          <TypewriterText
+          <RealtimeWriteText
             text={dateGregorian}
-            delay={4.5}
-            stagger={0.06}
+            delay={5.3}
+            charSpeed={45}
             isStarted={isStarted}
             className="date-line font-cinzel text-base sm:text-2xl text-[var(--ink)] tracking-wider font-semibold"
             dir="ltr"
@@ -482,10 +512,10 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
 
         {/* 9. Dari Date Line */}
         <div className="pt-0.5">
-          <TypewriterText
+          <RealtimeWriteText
             text={dateFa}
-            delay={4.8}
-            stagger={0.08}
+            delay={5.9}
+            charSpeed={50}
             isStarted={isStarted}
             className="dari-date font-noto-naskh text-sm sm:text-lg text-[var(--ink-muted)] font-medium"
             dir="rtl"
