@@ -5,7 +5,7 @@ export const event = {
   groomNameEn: "BAHARA",
   coupleDisplayName: "بهاره و امین‌الله",
   pageTitle: "جشن پیوند بهاره و امین‌الله",
-  invitationDateFa: "جمعه، ۲۳ میزان ۱۴۰۵",
+  invitationDateFa: "جمعه، ۲۴ میزان ۱۴۰۵",
   invitationDateGregorian: "16 October 2026",
   startTimeFa: "۶:۰۰ شام",
   endTimeFa: "۱۰:۳۰ شب",
