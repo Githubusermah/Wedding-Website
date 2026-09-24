@@ -1,10 +1,10 @@
 export const event = {
-  brideName: "ادیبه",
-  brideNameEn: "ADEEBA",
-  groomName: "فرهاد",
-  groomNameEn: "FARHAD",
-  coupleDisplayName: "فرهاد و ادیبه",
-  pageTitle: "جشن پیوند فرهاد و ادیبه",
+  brideName: "بهارا",
+  brideNameEn: "BAHARA",
+  groomName: "امین‌الله",
+  groomNameEn: "AMINULLAH",
+  coupleDisplayName: "بهارا و امین‌الله",
+  pageTitle: "جشن پیوند بهارا و امین‌الله",
   invitationDateFa: "جمعه، ۲۴ میزان ۱۴۰۵",
   invitationDateGregorian: "16 October 2026",
   startTimeFa: "۶:۰۰ شام",
@@ -25,7 +25,7 @@ export const event = {
   contactPhoneDisplay: "+93 78 287 8787",
   contactPhoneHref: "tel:+93782878787",
   familyLine: "خانواده‌های رضایی و همت",
-  hashtag: "#FarhadAndAdeeba",
+  hashtag: "#BaharaAndAminullah",
   dressCodeFa: "لباس رسمی / پیراهن تنبان فاخر یا دریشی / لباس‌های مجلسی با رنگ‌های ملایم، طلایی یا عنابی",
   photos: [] as Array<{ src: string; alt: string }>
 } as const;
