@@ -56,12 +56,12 @@ export default function VenueSection() {
           {/* Soft Radial Backglow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-4/5 bg-radial from-[var(--gold-light)]/20 via-[var(--gold)]/5 to-transparent rounded-full blur-2xl opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
-          <div className="relative w-full h-[260px] sm:h-[380px] md:h-[440px]">
+          <div className="relative w-full h-[260px] sm:h-[380px] md:h-[440px] flex items-center justify-center p-4">
             <Image
-              src="/venue/sulaimanhall.jpeg"
-              alt={event.venueNameEn}
+              src="/venue/tajcontinental-removebg-preview.png"
+              alt="Taj Continental Wedding Hall"
               fill
-              className="object-cover transition-transform duration-700 group-hover:scale-102"
+              className="object-contain transition-transform duration-700 group-hover:scale-102"
               sizes="(max-width: 768px) 100vw, 800px"
               priority
             />
@@ -70,9 +70,22 @@ export default function VenueSection() {
 
         {/* Address Details & Interactive Navigation Button */}
         <div className="space-y-4 max-w-lg mx-auto pt-2">
-          <div className="flex items-center justify-center gap-2 text-sm sm:text-base text-[var(--ink)] font-medium">
-            <MapPin size={20} className="text-[var(--gold-dark)] shrink-0" />
-            <span>{event.venueAddressFa}</span>
+          <div className="flex flex-col items-center justify-center gap-2 text-sm sm:text-base text-[var(--ink)] font-medium">
+            <div className="flex items-center gap-2">
+              <MapPin size={20} className="text-[var(--gold-dark)] shrink-0" />
+              <span dir="ltr">{event.venueAddressFa}</span>
+            </div>
+            {event.website && (
+              <a
+                href={event.websiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                dir="ltr"
+                className="text-xs sm:text-sm text-[var(--gold-dark)] font-semibold hover:underline"
+              >
+                {event.website}
+              </a>
+            )}
           </div>
 
           <div>
@@ -91,14 +104,14 @@ export default function VenueSection() {
         {/* Google Maps Embed */}
         <div className="mt-8 rounded-2xl overflow-hidden border border-[var(--line-subtle)] shadow-md max-w-3xl mx-auto h-[320px] sm:h-[400px]">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3291.7903312457856!2d69.16466167632781!3d34.40667479893125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38d16f4835c7c2f1%3A0x1464717caf1f15a6!2z2LXYp9mE2YjZhiDYudix2YjYs9uMINqp2KfYriDYs9mE24zZhdin2YYgLSBTdWxhaW1hbiBXZWVkaW5nIEhhbGw!5e0!3m2!1sen!2sno!4v1790064045674!5m2!1sen!2sno"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3286.633593097613!2d69.1428906!3d34.53751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38d16f211dfc784b%3A0x75a57d1ecfc6edcd!2zVGFqIENvbnRpbmVudGFsIFdlZGRpbmcgSGFsbCDYqtin2YTYp9ixINi52LHZiNiz24wg2KrYp9isINqp2KfZhtiq24zZhtmG2KrYp9mE!5e0!3m2!1sen!2snl!4v1790233772130!5m2!1sen!2snl"
             width="100%"
             height="100%"
             style={{ border: 0 }}
             allowFullScreen
             loading="lazy"
             referrerPolicy="strict-origin-when-cross-origin"
-            title="Sulaiman Wedding Hall Map"
+            title="Taj Continental Wedding Hall Map"
           />
         </div>
       </motion.div>
