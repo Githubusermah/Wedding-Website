@@ -70,7 +70,7 @@ export default function FoggedCountdown() {
     >
       <div className="w-full max-w-4xl relative z-10 flex flex-col items-center text-center">
         <h2 className="text-xl sm:text-2xl font-bold text-[var(--ink)] font-[family-name:var(--font-noto-naskh)]">
-          {mode === "countdown" ? "تا آغاز جشن عروسی" : "جشن عروسی بهاره و امین‌الله"}
+          {mode === "countdown" ? "شمارش معکوس" : "جشن عروسی بهاره و امین‌الله"}
         </h2>
         <div className="w-16 h-px bg-[var(--gold-muted)] mx-auto my-5" />
 
@@ -131,44 +131,46 @@ export default function FoggedCountdown() {
               </p>
 
               {timeLeft ? (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 w-full max-w-3xl" dir="rtl">
+                <div
+                  className="flex w-full max-w-3xl items-baseline justify-center gap-1.5 sm:gap-4 whitespace-nowrap overflow-x-auto px-1"
+                  dir="rtl"
+                  aria-label="شمارش معکوس تا آغاز جشن عروسی"
+                >
                   {[
                     { label: "روز", value: timeLeft.days },
                     { label: "ساعت", value: timeLeft.hours },
                     { label: "دقیقه", value: timeLeft.minutes },
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className="flex flex-col items-center justify-center p-4 sm:p-6 rounded-lg bg-[var(--ivory)]/40 border border-[var(--gold)]/20 shadow-sm backdrop-blur-[2px]"
-                    >
-                      <span className="text-3xl sm:text-4xl md:text-5xl font-light font-serif tracking-tight text-[var(--gold)]">
+                  ].map((item, index) => (
+                    <span key={item.label} className="inline-flex items-baseline gap-1 sm:gap-2">
+                      <span className="text-2xl sm:text-4xl md:text-5xl font-light font-serif tracking-tight text-[var(--ink)]">
                         {formatNumber(item.value)}
                       </span>
-                      <span className="text-xs sm:text-sm text-[var(--gold-dark)] mt-2 font-[family-name:var(--font-noto-naskh)]">
+                      <span className="text-[11px] sm:text-sm text-[var(--gold-dark)] font-[family-name:var(--font-noto-naskh)]">
                         {item.label}
                       </span>
-                    </div>
+                      {index < 2 && <span className="mx-0.5 sm:mx-1 text-xl sm:text-3xl text-[var(--gold-muted)]/70">:</span>}
+                    </span>
                   ))}
 
-                  <div className="flex flex-col items-center justify-center p-4 sm:p-6 rounded-lg bg-[var(--ivory)]/40 border border-[var(--gold)]/20 shadow-sm backdrop-blur-[2px]">
-                    <div className="h-12 sm:h-16 overflow-hidden relative w-full flex items-center justify-center">
-                      <AnimatePresence mode="popLayout">
+                  <span className="inline-flex items-baseline gap-1 sm:gap-2">
+                    <span className="relative inline-flex h-9 w-9 sm:h-14 sm:w-14 items-center justify-center overflow-hidden">
+                      <AnimatePresence mode="popLayout" initial={false}>
                         <motion.span
                           key={timeLeft.seconds}
-                          initial={{ y: "70%", opacity: 0 }}
+                          initial={{ y: "110%", opacity: 0 }}
                           animate={{ y: "0%", opacity: 1 }}
-                          exit={{ y: "-70%", opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="absolute text-3xl sm:text-4xl md:text-5xl font-light font-serif tracking-tight text-[var(--gold-dark)]"
+                          exit={{ y: "-110%", opacity: 0 }}
+                          transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                          className="absolute text-2xl sm:text-4xl md:text-5xl font-medium font-serif tracking-tight text-[#5f7d64]"
                         >
                           {formatNumber(timeLeft.seconds)}
                         </motion.span>
                       </AnimatePresence>
-                    </div>
-                    <span className="text-xs sm:text-sm text-[var(--gold-dark)] mt-2 font-[family-name:var(--font-noto-naskh)]">
+                    </span>
+                    <span className="text-[11px] sm:text-sm text-[#5f7d64] font-[family-name:var(--font-noto-naskh)]">
                       ثانیه
                     </span>
-                  </div>
+                  </span>
                 </div>
               ) : (
                 <div className="min-h-32" aria-hidden="true" />
