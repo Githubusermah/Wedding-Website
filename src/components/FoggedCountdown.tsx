@@ -126,7 +126,7 @@ export default function FoggedCountdown() {
               className="w-full flex flex-col items-center"
             >
               <p className="text-xs sm:text-sm text-[var(--ink-muted)] font-[family-name:var(--font-noto-naskh)] mb-6" dir="rtl">
-                تا جمعه، ۲۴ میزان ۱۴۰۵ و آغاز جشن بزرگ ما
+                تا {event.invitationDateFa} و آغاز جشن بزرگ ما
               </p>
 
               {timeLeft ? (
