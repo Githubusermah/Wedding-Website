@@ -72,9 +72,7 @@ export default function GuestGuide() {
 
         {/* Contact Hotline */}
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-right text-xs">
-          <span className="text-[var(--ink-muted)]">
-            سوال یا نیاز به راهنمایی دارید؟ تیم تشریفات در خدمت شماست.
-          </span>
+          <span className="text-[var(--ink-muted)]">سوالی دارید؟ از اینجا تماس بگیرید.</span>
 
           <a
             href={event.contactPhoneHref}
