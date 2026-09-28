@@ -38,6 +38,7 @@ export default function RsvpForm() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showMessageField, setShowMessageField] = useState(false);
@@ -96,11 +97,14 @@ export default function RsvpForm() {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "لطفاً نام و نام خانوادگی خود را بنویسید.";
+    const fullName = formData.fullName.trim();
+    const phoneDigits = formData.phone.replace(/\D/g, "");
+
+    if (fullName.length < 2) {
+      newErrors.fullName = "لطفاً نام و نام خانوادگی خود را کامل بنویسید.";
     }
-    if (!formData.phone.trim()) {
-      newErrors.phone = "لطفاً شماره تماس یا واتساپ خود را وارد کنید.";
+    if (phoneDigits.length < 7) {
+      newErrors.phone = "لطفاً شماره تماس معتبر وارد کنید.";
     }
     if (!formData.attending) {
       newErrors.attending = "لطفاً وضعیت حضور خود را مشخص کنید.";
@@ -113,14 +117,37 @@ export default function RsvpForm() {
     e.preventDefault();
     if (!validate()) return;
 
+    setSubmitError("");
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      if (formData.attending === "yes") {
-        fireGoldConfetti();
-      }
-    }, 600);
+
+    fetch("/api/rsvp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...formData,
+        fullName: formData.fullName.trim(),
+        phone: formData.phone.trim(),
+        message: formData.message.trim(),
+        companionCount: formData.attending === "yes" ? formData.companionCount : 0,
+      }),
+    })
+      .then(async (response) => {
+        const result = (await response.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || "ثبت پاسخ انجام نشد.");
+        }
+      })
+      .then(() => {
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        if (formData.attending === "yes") {
+          fireGoldConfetti();
+        }
+      })
+      .catch((error: unknown) => {
+        setIsSubmitting(false);
+        setSubmitError(error instanceof Error ? error.message : "ثبت پاسخ انجام نشد. لطفاً دوباره تلاش کنید.");
+      });
   };
 
   return (
@@ -463,6 +490,12 @@ export default function RsvpForm() {
                       </div>
 
                       {/* Submit Button */}
+                      {submitError && (
+                        <p role="alert" className="text-xs text-[var(--gold-dark)] font-medium flex items-center gap-1.5" aria-live="assertive">
+                          <XCircle size={15} />
+                          <span>{submitError}</span>
+                        </p>
+                      )}
                       <button
                         type="submit"
                         disabled={isSubmitting}
