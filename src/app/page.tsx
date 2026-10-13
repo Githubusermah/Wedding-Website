@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import HeroVideoIntro from "@/components/HeroVideoIntro";
-import SaveTheDateHero from "@/components/SaveTheDateHero";
+import HeroInvitation from "@/components/hero/HeroInvitation";
 import FoggedCountdown from "@/components/FoggedCountdown";
 import EventFacts from "@/components/EventFacts";
 import RsvpForm from "@/components/RsvpForm";
@@ -49,8 +49,10 @@ export default function Home() {
         />
       )}
 
-      {/* 2. Main Invitation Content (State B revealed when video ends) */}
-      <SaveTheDateHero isStarted={isVideoDismissed} />
+      {/* 2. Main Invitation Hero */}
+      <HeroInvitation isPlayable={isVideoDismissed} />
+
+      {/* 3. Rest of the Invitation Content */}
       <FoggedCountdown />
       <EventFacts />
       <RsvpForm />

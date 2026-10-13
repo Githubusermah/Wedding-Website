@@ -16,8 +16,9 @@ import {
   X,
   EnvelopeOpen,
 } from "@phosphor-icons/react";
-import { event } from "@/lib/event";
+import { weddingConfig } from "../../config/wedding";
 import InitialsMonogram from "@/components/InitialsMonogram";
+import { SectionHeading } from "./ui/SectionHeading";
 
 interface FormData {
   fullName: string;
@@ -69,7 +70,7 @@ export default function RsvpForm() {
       const count = 150;
       const defaults: confetti.Options = {
         origin: { y: 0.6 },
-        colors: ["#5F7D64", "#7E9F83", "#3F5844", "#FAFBF9", "#EAF0EB"],
+        colors: ["#6a1736", "#b98638", "#f4c2cf", "#fff6e0", "#8a5a1c"],
       };
 
       const customConfetti = confetti.create(undefined, {
@@ -152,33 +153,46 @@ export default function RsvpForm() {
 
   return (
     <section id="rsvp" className="relative py-14 px-4 max-w-2xl mx-auto scroll-mt-20 text-center overflow-hidden">
-      {/* Subtle Botanical Leaf Accent - Upper Right */}
-      <div className="absolute top-0 right-0 w-28 sm:w-40 opacity-20 pointer-events-none z-0 transform translate-x-4 -translate-y-2 rotate-45">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/leaves.webp" alt="" aria-hidden="true" className="w-full h-auto object-contain" />
+      {/* Corner Flowers Accent - Upper Right */}
+      <div className="absolute top-0 right-0 w-28 sm:w-36 opacity-25 pointer-events-none z-0 transform translate-x-2 -translate-y-2">
+        <Image
+          src="/hero/corner-flowers.webp"
+          alt=""
+          aria-hidden="true"
+          width={150}
+          height={266}
+          className="w-full h-auto object-contain"
+        />
       </div>
-      {/* RSVP Section on shared paper */}
+      {/* Corner Flowers Accent - Bottom Left */}
+      <div className="absolute bottom-0 left-0 w-28 sm:w-36 opacity-25 pointer-events-none z-0 transform -translate-x-2 translate-y-2 rotate-180">
+        <Image
+          src="/hero/corner-flowers.webp"
+          alt=""
+          aria-hidden="true"
+          width={150}
+          height={266}
+          className="w-full h-auto object-contain"
+        />
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="space-y-4"
+        className="space-y-4 relative z-10"
       >
-        <span className="text-xs text-[var(--gold-dark)] font-semibold tracking-widest uppercase block">
-          R.S.V.P
-        </span>
-        <h2 className="text-2xl sm:text-3xl font-bold text-[var(--ink)] font-serif">
-          تأیید حضور در محفل
-        </h2>
-        <p className="text-xs sm:text-sm text-[var(--ink-muted)] max-w-md mx-auto leading-relaxed">
-          لطفاً جهت هماهنگی بهتر پذیرایی و جایگاه مهمانان گرامی، حضور خود را اطلاع دهید.
-        </p>
+        <SectionHeading
+          eyebrow="R.S.V.P"
+          title="تأیید حضور در محفل"
+          subtitle="لطفاً جهت هماهنگی بهتر پذیرایی و جایگاه مهمانان گرامی، حضور خود را اطلاع دهید."
+        />
 
-        <div className="pt-4">
+        <div className="pt-2">
           <button
             onClick={() => setIsOpen(true)}
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[var(--gold)] hover:bg-[var(--gold-dark)] text-[var(--paper-white)] font-bold text-sm shadow-xs transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[var(--wine)] hover:bg-[#521028] text-[#fff6e0] font-bold text-sm shadow-md transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
           >
             <EnvelopeOpen size={18} />
             <span>پاسخ به دعوتنامه</span>
@@ -205,7 +219,7 @@ export default function RsvpForm() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.3 }}
-              className="relative w-full max-w-md bg-[var(--paper-white)] rounded-2xl p-6 sm:p-8 border border-[var(--line)] shadow-xl z-10 text-right my-auto overflow-hidden"
+              className="relative w-full max-w-md glass-panel p-6 sm:p-8 z-10 text-right my-auto overflow-hidden shadow-2xl"
             >
               {/* Close Button */}
               <button
@@ -221,11 +235,11 @@ export default function RsvpForm() {
               </div>
 
               <div className="text-center mb-6">
-                <h3 className="text-xl font-bold text-[var(--ink)] font-serif">
+                <h3 className="text-xl font-bold text-[var(--ink)] font-vazir">
                   تأیید حضور در محفل پیوند
                 </h3>
                 <p className="text-xs text-[var(--ink-muted)] mt-1">
-                  {event.coupleDisplayName}
+                  {weddingConfig.coupleDisplayNameFa}
                 </p>
               </div>
 
@@ -254,7 +268,7 @@ export default function RsvpForm() {
                           دیدار شما باعث شادی و افتخار ماست.
                         </p>
 
-                        <p className="text-xs text-[var(--gold-dark)] font-medium">
+                        <p className="text-xs text-[var(--gold-dark)] font-semibold">
                           تعداد همراهان ثبت‌شده: {formData.companionCount} نفر
                         </p>
 
@@ -288,7 +302,7 @@ export default function RsvpForm() {
                         animate={{ opacity: 1 }}
                         className="text-center space-y-4 py-2"
                       >
-                        <div className="w-10 h-10 rounded-full bg-[var(--gold-pale)] text-[var(--gold-dark)] mx-auto flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-[var(--gold-light)] text-[var(--wine)] mx-auto flex items-center justify-center">
                           <Heart size={20} />
                         </div>
 
@@ -331,7 +345,7 @@ export default function RsvpForm() {
                       {/* Full Name */}
                       <div>
                         <label htmlFor="fullName" className="block text-xs font-semibold text-[var(--ink)] mb-1">
-                          نام و نام خانوادگی <span className="text-[var(--gold-dark)]">*</span>
+                          نام و نام خانوادگی <span className="text-[var(--wine)]">*</span>
                         </label>
                         <div className="relative">
                           <input
@@ -345,7 +359,7 @@ export default function RsvpForm() {
                           <User size={16} className="absolute left-1 top-2.5 text-[var(--ink-muted)]" />
                         </div>
                         {errors.fullName && (
-                          <p className="text-[11px] text-[var(--gold-dark)] mt-1 font-medium flex items-center gap-1">
+                          <p className="text-[11px] text-[var(--wine)] mt-1 font-medium flex items-center gap-1">
                             <XCircle size={13} />
                             <span>{errors.fullName}</span>
                           </p>
@@ -355,7 +369,7 @@ export default function RsvpForm() {
                       {/* Phone / WhatsApp */}
                       <div>
                         <label htmlFor="phone" className="block text-xs font-semibold text-[var(--ink)] mb-1">
-                          شماره تماس یا واتساپ <span className="text-[var(--gold-dark)]">*</span>
+                          شماره تماس یا واتساپ <span className="text-[var(--wine)]">*</span>
                         </label>
                         <div className="relative">
                           <input
@@ -370,7 +384,7 @@ export default function RsvpForm() {
                           <Phone size={16} className="absolute right-1 top-2.5 text-[var(--ink-muted)]" />
                         </div>
                         {errors.phone && (
-                          <p className="text-[11px] text-[var(--gold-dark)] mt-1 font-medium flex items-center gap-1">
+                          <p className="text-[11px] text-[var(--wine)] mt-1 font-medium flex items-center gap-1">
                             <XCircle size={13} />
                             <span>{errors.phone}</span>
                           </p>
@@ -380,15 +394,15 @@ export default function RsvpForm() {
                       {/* Attendance Radio Group */}
                       <fieldset className="py-2">
                         <legend className="text-xs font-semibold text-[var(--ink)] mb-2">
-                          آیا در محفل حضور می‌یابید؟ <span className="text-[var(--gold-dark)]">*</span>
+                          آیا در محفل حضور می‌یابید؟ <span className="text-[var(--wine)]">*</span>
                         </legend>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           <label
                             htmlFor="attending-yes"
-                            className={`flex items-center gap-2 p-2 rounded-lg border transition-colors cursor-pointer ${
+                            className={`flex items-center gap-2 p-2.5 rounded-lg border transition-colors cursor-pointer ${
                               formData.attending === "yes"
-                                ? "border-[var(--gold)] bg-[var(--gold-pale)] text-[var(--ink)] font-semibold"
+                                ? "border-[var(--gold)] bg-white/70 text-[var(--ink)] font-semibold"
                                 : "border-[var(--line-subtle)] text-[var(--ink-muted)]"
                             }`}
                           >
@@ -399,16 +413,16 @@ export default function RsvpForm() {
                               value="yes"
                               checked={formData.attending === "yes"}
                               onChange={() => setFormData({ ...formData, attending: "yes" })}
-                              className="w-4 h-4 accent-[var(--gold)]"
+                              className="w-4 h-4 accent-[var(--wine)]"
                             />
                             <span className="text-xs">با خوشی شرکت می‌کنم</span>
                           </label>
 
                           <label
                             htmlFor="attending-no"
-                            className={`flex items-center gap-2 p-2 rounded-lg border transition-colors cursor-pointer ${
+                            className={`flex items-center gap-2 p-2.5 rounded-lg border transition-colors cursor-pointer ${
                               formData.attending === "no"
-                                ? "border-[var(--gold)] bg-[var(--gold-pale)] text-[var(--ink)] font-semibold"
+                                ? "border-[var(--gold)] bg-white/70 text-[var(--ink)] font-semibold"
                                 : "border-[var(--line-subtle)] text-[var(--ink-muted)]"
                             }`}
                           >
@@ -419,14 +433,14 @@ export default function RsvpForm() {
                               value="no"
                               checked={formData.attending === "no"}
                               onChange={() => setFormData({ ...formData, attending: "no" })}
-                              className="w-4 h-4 accent-[var(--gold)]"
+                              className="w-4 h-4 accent-[var(--wine)]"
                             />
                             <span className="text-xs">متأسفانه نمی‌توانم حضور یابم</span>
                           </label>
                         </div>
 
                         {errors.attending && (
-                          <p className="text-[11px] text-[var(--gold-dark)] mt-1.5 font-medium flex items-center gap-1">
+                          <p className="text-[11px] text-[var(--wine)] mt-1.5 font-medium flex items-center gap-1">
                             <XCircle size={13} />
                             <span>{errors.attending}</span>
                           </p>
@@ -467,7 +481,7 @@ export default function RsvpForm() {
                           <button
                             type="button"
                             onClick={() => setShowMessageField(true)}
-                            className="text-xs text-[var(--gold-dark)] hover:underline flex items-center gap-1 cursor-pointer pt-1"
+                            className="text-xs text-[var(--gold-dark)] hover:underline flex items-center gap-1 cursor-pointer pt-1 font-semibold"
                           >
                             <ChatText size={14} />
                             <span>پیام تبریک می‌نویسم (اختیاری)</span>
@@ -482,7 +496,7 @@ export default function RsvpForm() {
                               rows={2}
                               value={formData.message}
                               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                              placeholder={`آرزوی خوشبختی و شادکامی برای ${event.coupleDisplayName} عزیز...`}
+                              placeholder={`آرزوی خوشبختی و شادکامی برای ${weddingConfig.coupleDisplayNameFa} عزیز...`}
                               className="w-full px-3 py-2 bg-transparent border-b border-[var(--line)] text-[var(--ink)] text-xs focus:outline-none focus:border-[var(--gold)] transition-colors"
                             />
                           </div>
@@ -491,7 +505,7 @@ export default function RsvpForm() {
 
                       {/* Submit Button */}
                       {submitError && (
-                        <p role="alert" className="text-xs text-[var(--gold-dark)] font-medium flex items-center gap-1.5" aria-live="assertive">
+                        <p role="alert" className="text-xs text-[var(--wine)] font-medium flex items-center gap-1.5" aria-live="assertive">
                           <XCircle size={15} />
                           <span>{submitError}</span>
                         </p>
@@ -499,7 +513,7 @@ export default function RsvpForm() {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full py-2.5 px-4 rounded-full bg-[var(--gold)] hover:bg-[var(--gold-dark)] text-[var(--paper-white)] font-bold text-sm shadow-xs transition-colors disabled:opacity-70 flex items-center justify-center gap-2 cursor-pointer mt-4"
+                        className="w-full py-3 px-4 rounded-full bg-[var(--wine)] hover:bg-[#521028] text-[#fff6e0] font-bold text-sm shadow-md transition-colors disabled:opacity-70 flex items-center justify-center gap-2 cursor-pointer mt-4 focus:ring-2 focus:ring-[var(--gold)]"
                       >
                         {isSubmitting ? (
                           <span>در حال ثبت پاسخ…</span>

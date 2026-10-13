@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "motion/react";
-import { event } from "@/lib/event";
+import { weddingConfig } from "../../config/wedding";
 import { Car, TShirt, Camera, PhoneCall } from "@phosphor-icons/react";
+import { SectionHeading } from "./ui/SectionHeading";
+import { GlassCard } from "./ui/GlassCard";
 
 export default function GuestGuide() {
   const guideTopics = [
@@ -17,7 +19,7 @@ export default function GuestGuide() {
       id: "dresscode",
       title: "پوشش پیشنهادی",
       icon: <TShirt size={20} className="text-[var(--gold-dark)]" />,
-      content: event.dressCodeFa,
+      content: weddingConfig.dressCodeFa,
     },
     {
       id: "photography",
@@ -35,52 +37,51 @@ export default function GuestGuide() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="space-y-8"
+        className="space-y-6"
       >
-        <div className="text-center">
-          <span className="text-xs font-semibold text-[var(--gold-dark)] tracking-widest uppercase block">
-            اطلاعات ضروری
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--ink)] font-serif mt-1">
-            راهنمای مهمانان
-          </h2>
-          <div className="w-12 h-px bg-[var(--gold-muted)] mx-auto mt-3" />
-        </div>
+        <SectionHeading
+          eyebrow="اطلاعات ضروری"
+          title="راهنمای مهمانان"
+        />
 
-        {/* Clean Accordion List with native details disclosure on transparent paper */}
-        <div className="space-y-4 text-right">
-          {guideTopics.map((topic) => (
-            <details
-              key={topic.id}
-              className="group border-b border-[var(--line-subtle)] pb-4 [&_summary::-webkit-details-marker]:hidden"
-            >
-              <summary className="flex items-center justify-between cursor-pointer font-bold text-base text-[var(--ink)] select-none py-1">
-                <div className="flex items-center gap-2.5">
-                  {topic.icon}
-                  <span>{topic.title}</span>
+        {/* Accordion List inside GlassCard */}
+        <GlassCard className="p-4 sm:p-6">
+          <div className="space-y-4 text-right">
+            {guideTopics.map((topic, index) => (
+              <details
+                key={topic.id}
+                className={`group ${
+                  index < guideTopics.length - 1 ? "border-b border-[var(--line-subtle)] pb-4" : ""
+                } [&_summary::-webkit-details-marker]:hidden`}
+              >
+                <summary className="flex items-center justify-between cursor-pointer font-bold text-base text-[var(--ink)] select-none py-1">
+                  <div className="flex items-center gap-2.5">
+                    {topic.icon}
+                    <span>{topic.title}</span>
+                  </div>
+                  <span className="text-xs text-[var(--gold-dark)] transition-transform group-open:rotate-180">
+                    ▼
+                  </span>
+                </summary>
+                <div className="mt-2 text-xs sm:text-sm text-[var(--ink-muted)] leading-relaxed pr-7">
+                  <p>{topic.content}</p>
                 </div>
-                <span className="text-xs text-[var(--gold-dark)] transition-transform group-open:rotate-180">
-                  ▼
-                </span>
-              </summary>
-              <div className="mt-2 text-xs sm:text-sm text-[var(--ink-muted)] leading-relaxed pr-7">
-                <p>{topic.content}</p>
-              </div>
-            </details>
-          ))}
-        </div>
+              </details>
+            ))}
+          </div>
+        </GlassCard>
 
         {/* Contact Hotline */}
-        <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-right text-xs">
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-right text-xs">
           <span className="text-[var(--ink-muted)]">سوالی دارید؟ از اینجا تماس بگیرید.</span>
 
           <a
-            href={event.contactPhoneHref}
+            href={weddingConfig.phoneHref}
             dir="ltr"
             className="inline-flex items-center gap-2 text-[var(--gold-dark)] font-semibold hover:underline"
           >
             <PhoneCall size={16} />
-            <span>{event.contactPhoneDisplay}</span>
+            <span>{weddingConfig.phoneDisplay}</span>
           </a>
         </div>
       </motion.div>

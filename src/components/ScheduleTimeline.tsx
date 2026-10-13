@@ -4,17 +4,16 @@ import { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Door, Sparkle, Heart, ForkKnife, Cake } from "@phosphor-icons/react";
+import { SectionHeading } from "./ui/SectionHeading";
 
 export default function ScheduleTimeline() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Scroll tracking for the golden blossom motion along the timeline
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start 80%", "end 20%"],
   });
 
-  // Map scroll progress to percentage height down the timeline border
   const blossomY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const blossomRotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
 
@@ -74,32 +73,27 @@ export default function ScheduleTimeline() {
           width={128}
           height={128}
           priority
-          className="w-24 sm:w-32 h-auto object-contain"
+          className="w-24 sm:w-32 h-auto object-contain filter drop-shadow(0 4px 10px rgba(160,112,50,0.2))"
         />
       </motion.div>
-      <div className="mb-10">
-        <span className="text-xs text-[var(--gold-dark)] font-semibold tracking-widest uppercase block">
-          برنامه محفل
-        </span>
-        <h2 className="text-2xl sm:text-3xl font-bold text-[var(--ink)] mt-1 font-serif">
-          محفل در یک نگاه
-        </h2>
-        <div className="w-12 h-px bg-[var(--gold-muted)] mx-auto mt-3" />
-      </div>
 
-      {/* Clean Typographic Timeline on Paper with Animated Golden Blossom */}
+      <SectionHeading
+        eyebrow="برنامه محفل"
+        title="محفل در یک نگاه"
+      />
+
+      {/* Timeline on Paper with Animated Blossom */}
       <div
         ref={containerRef}
-        className="relative text-right max-w-md mx-auto space-y-8 pr-8 border-r-2 border-[var(--gold-pale)]"
+        className="relative text-right max-w-md mx-auto space-y-8 pr-8 border-r-2 border-[var(--gold-muted)]"
       >
-        {/* Scroll-Linked Pink Flower Blossom scrolling down the timeline line */}
         <motion.div
           style={{ top: blossomY, rotate: blossomRotate }}
           className="absolute -right-[19px] -translate-y-1/2 z-20 pointer-events-none filter drop-shadow-[0_4px_12px_rgba(220,130,160,0.35)]"
         >
           <Image
             src="/blossom.svg"
-            alt="Pink Flower Blossom"
+            alt=""
             width={38}
             height={38}
             className="w-9 h-9 object-contain"
@@ -117,15 +111,15 @@ export default function ScheduleTimeline() {
             className="relative"
           >
             {/* Fine gold point marker */}
-            <div className="absolute -right-[37px] top-1.5 w-3 h-3 rounded-full bg-[var(--paper-white)] border-2 border-[var(--gold)] shadow-sm" />
+            <div className="absolute -right-[37px] top-1.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-[var(--gold)] shadow-xs" />
 
             <div className="space-y-1">
-              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-[var(--gold-dark)] dir-ltr justify-end">
-                <span>{item.time}</span>
+              <div className="flex items-center gap-2 text-xs font-semibold text-[var(--gold-dark)] font-vazir justify-start">
                 {item.icon}
+                <span>{item.time}</span>
               </div>
 
-              <h3 className="text-base font-bold text-[var(--ink)] font-serif">
+              <h3 className="text-base font-bold text-[var(--ink)] font-vazir">
                 {item.title}
               </h3>
 
