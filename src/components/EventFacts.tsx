@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, Variants } from "motion/react";
 import { event } from "@/lib/event";
 import {
@@ -162,8 +163,54 @@ export default function EventFacts() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative py-8 my-8 max-w-xl mx-auto border-y border-[var(--gold-muted)]/30 bg-gradient-to-b from-transparent via-[var(--gold-pale)]/20 to-transparent rounded-2xl px-4 sm:px-8"
+          className="relative py-8 my-8 max-w-xl mx-auto border-y border-[var(--gold-muted)]/30 bg-gradient-to-b from-transparent via-[var(--gold-pale)]/20 to-transparent rounded-2xl px-4 sm:px-8 overflow-visible"
         >
+          {/* Tropical Leaf Accent - Top Right */}
+          <motion.div
+            animate={{
+              rotate: [-3, 3, -2, 2, -3],
+              x: [0, 5, -3, 4, 0],
+            }}
+            transition={{
+              duration: 7,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            aria-hidden="true"
+            className="hidden sm:block absolute -top-8 -right-8 w-20 h-20 pointer-events-none opacity-80"
+          >
+            <Image
+              src="/botanical/leaves-botanical-sway.webp"
+              alt=""
+              fill
+              sizes="80px"
+              className="object-contain"
+            />
+          </motion.div>
+
+          {/* Tropical Botanical Stem - Bottom Left */}
+          <motion.div
+            animate={{
+              rotate: [3, -3, 2, -2, 3],
+              x: [0, -5, 3, -4, 0],
+            }}
+            transition={{
+              duration: 8.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.4,
+            }}
+            aria-hidden="true"
+            className="hidden sm:block absolute -bottom-8 -left-8 w-20 h-28 pointer-events-none opacity-80"
+          >
+            <Image
+              src="/botanical/botanical-stem-sway.webp"
+              alt=""
+              fill
+              sizes="80px"
+              className="object-contain"
+            />
+          </motion.div>
           {/* Elegant Top Ornaments */}
           <div className="flex items-center justify-center gap-2 mb-6 text-[var(--gold-dark)]">
             <span className="h-px w-14 bg-gradient-to-r from-transparent to-[var(--gold)]" />

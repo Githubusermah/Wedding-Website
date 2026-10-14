@@ -434,7 +434,7 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
           />
         </div>
 
-        {/* 5. Palace Illustration */}
+        {/* 5. Palace Illustration with Tropical Foliage Frame */}
         <div className="illustration-wrap relative flex justify-center items-center my-2 sm:my-4 w-full max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -443,6 +443,55 @@ export default function SaveTheDateHero({ isStarted = true }: SaveTheDateHeroPro
             aria-hidden="true"
             className="halo absolute inset-0 -m-6 z-0 rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(126,159,131,0.25)_0%,rgba(95,125,100,0.08)_50%,transparent_70%)] blur-xl pointer-events-none"
           />
+
+          {/* Tropical Foliage Flanking - Left */}
+          <motion.div
+            animate={{
+              rotate: [-2, 3, -3, 2, -2],
+              x: [0, 4, -3, 5, 0],
+              y: [0, -4, 3, -2, 0],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            aria-hidden="true"
+            className="hidden sm:block absolute -left-12 bottom-0 w-28 md:w-36 h-48 z-10 pointer-events-none"
+          >
+            <Image
+              src="/botanical/corner-foliage-left.webp"
+              alt=""
+              fill
+              sizes="144px"
+              className="object-contain filter drop-shadow-md"
+            />
+          </motion.div>
+
+          {/* Tropical Foliage Flanking - Right */}
+          <motion.div
+            animate={{
+              rotate: [2, -3, 3, -2, 2],
+              x: [0, -5, 3, -4, 0],
+              y: [0, -3, 4, -2, 0],
+            }}
+            transition={{
+              duration: 9.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.5,
+            }}
+            aria-hidden="true"
+            className="hidden sm:block absolute -right-12 bottom-0 w-28 md:w-36 h-48 z-10 pointer-events-none"
+          >
+            <Image
+              src="/botanical/corner-foliage-right.webp"
+              alt=""
+              fill
+              sizes="144px"
+              className="object-contain filter drop-shadow-md"
+            />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.92, y: 12 }}

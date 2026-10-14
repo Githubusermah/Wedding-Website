@@ -12,8 +12,55 @@ export default function FooterReplay() {
   };
 
   return (
-    <footer className="py-16 px-4 border-t border-[var(--line-subtle)] text-center space-y-8 max-w-2xl mx-auto">
-      <div className="flex flex-col items-center justify-center space-y-4">
+    <footer className="py-16 px-4 border-t border-[var(--line-subtle)] text-center space-y-8 max-w-2xl mx-auto relative overflow-visible">
+      {/* Tropical Footer Foliage Sway - Bottom Left */}
+      <motion.div
+        animate={{
+          rotate: [-2, 3, -2, 2, -2],
+          x: [0, 5, -3, 3, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        aria-hidden="true"
+        className="hidden sm:block absolute -bottom-6 -left-12 w-28 md:w-36 h-36 pointer-events-none opacity-80 z-0"
+      >
+        <Image
+          src="/botanical/corner-tropical-bl.webp"
+          alt=""
+          fill
+          sizes="144px"
+          className="object-contain"
+        />
+      </motion.div>
+
+      {/* Tropical Footer Foliage Sway - Bottom Right */}
+      <motion.div
+        animate={{
+          rotate: [2, -3, 2, -2, 2],
+          x: [0, -5, 3, -3, 0],
+        }}
+        transition={{
+          duration: 11,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.7,
+        }}
+        aria-hidden="true"
+        className="hidden sm:block absolute -bottom-6 -right-12 w-28 md:w-36 h-36 pointer-events-none opacity-80 z-0"
+      >
+        <Image
+          src="/botanical/corner-tropical-br.webp"
+          alt=""
+          fill
+          sizes="144px"
+          className="object-contain"
+        />
+      </motion.div>
+
+      <div className="flex flex-col items-center justify-center space-y-4 relative z-10">
         {/* Prominent, Chic Animated Initials Monogram */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85, y: 15 }}
