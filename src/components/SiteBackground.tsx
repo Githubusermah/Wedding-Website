@@ -1,34 +1,21 @@
-"use client";
+import './site-background.css';
 
-import React from "react";
-
+/** Fixed, site-wide textured pink paper. Render ONCE in app/layout.tsx, before {children}. */
 export default function SiteBackground() {
   return (
-    <div
-      className="site-bg-root"
-      aria-hidden="true"
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: -1,
-        pointerEvents: "none",
-        contain: "strict",
-        background:
-          "radial-gradient(ellipse at 50% 35%, #fff6f8 0, #fde4ea 40%, #f6c3d0 80%, #eeaabd 100%)",
-      }}
-    >
-      <div className="L paper" />
-      <div className="L star" />
-      <div className="L fib" />
-      <div className="L grain" />
-      <div className="L light" />
-      <div className="L fleck" />
-      <div className="L fleck b" />
-      <div className="L vig" />
-      <div className="blob b1" />
-      <div className="blob b2" />
-      <div className="blob b3" />
-      <div className="blob b4" />
+    <div className="sb-root" aria-hidden="true">
+      <div className="sb-layer sb-paper" />
+      <div className="sb-layer sb-star" />
+      <div className="sb-layer sb-fib" />
+      <div className="sb-layer sb-grain" />
+      <div className="sb-layer sb-light" />
+      <div className="sb-layer sb-fleck" />
+      <div className="sb-layer sb-fleck sb-fleck-b" />
+      <div className="sb-layer sb-vig" />
+      <div className="sb-blob sb-b1" />
+      <div className="sb-blob sb-b2" />
+      <div className="sb-blob sb-b3" />
+      <div className="sb-blob sb-b4" />
     </div>
   );
 }

@@ -40,7 +40,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen relative pb-20 md:pb-0">
+    <main className="min-h-screen relative z-[1] pb-20 md:pb-0">
       {/* 1. Full-screen Video Intro Overlay (State A) */}
       {!isVideoDismissed && (
         <HeroVideoIntro
@@ -50,7 +50,7 @@ export default function Home() {
       )}
 
       {/* 2. Main Invitation Hero */}
-      <HeroInvitation isPlayable={isVideoDismissed} />
+      <HeroInvitation play={isVideoDismissed ? true : undefined} />
 
       {/* 3. Rest of the Invitation Content */}
       <FoggedCountdown />
