@@ -402,7 +402,7 @@ export default function RsvpForm() {
                             htmlFor="attending-yes"
                             className={`flex items-center gap-2 p-2.5 rounded-lg border transition-colors cursor-pointer ${
                               formData.attending === "yes"
-                                ? "border-[var(--gold)] bg-white/70 text-[var(--ink)] font-semibold"
+                                ? "border-[var(--gold)] text-[var(--ink)] font-semibold"
                                 : "border-[var(--line-subtle)] text-[var(--ink-muted)]"
                             }`}
                           >
@@ -422,7 +422,7 @@ export default function RsvpForm() {
                             htmlFor="attending-no"
                             className={`flex items-center gap-2 p-2.5 rounded-lg border transition-colors cursor-pointer ${
                               formData.attending === "no"
-                                ? "border-[var(--gold)] bg-white/70 text-[var(--ink)] font-semibold"
+                                ? "border-[var(--gold)] text-[var(--ink)] font-semibold"
                                 : "border-[var(--line-subtle)] text-[var(--ink-muted)]"
                             }`}
                           >
