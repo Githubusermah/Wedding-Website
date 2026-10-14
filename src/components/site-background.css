@@ -1,0 +1,21 @@
+/* SiteBackground: fixed, site-wide textured pink paper. Rendered ONCE in app/layout.tsx. */
+.sb-root{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;isolation:isolate;
+background:radial-gradient(ellipse at 50% 35%,#fff6f8 0,#fde4ea 40%,#f6c3d0 80%,#eeaabd 100%)}
+.sb-layer{position:absolute;inset:0;pointer-events:none}
+.sb-paper{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><filter id='p' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='5' seed='3' stitchTiles='stitch' result='n'/><feDiffuseLighting in='n' surfaceScale='1.7' lighting-color='%23fff3f5'><feDistantLight azimuth='50' elevation='62'/></feDiffuseLighting></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>");mix-blend-mode:multiply;opacity:.55}
+.sb-grain{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .28 0 0 0 0 .34 0 0 0 .28 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");mix-blend-mode:multiply;opacity:.8}
+.sb-fib{inset:-25%;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.9 .012' numOctaves='2' seed='5' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 .96 0 0 0 0 .97 0 0 0 2.2 -1.05'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");transform:rotate(24deg);opacity:.32}
+.sb-star{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='110' height='110'><g fill='none' stroke='%23b98638' stroke-width='.9'><rect x='30' y='30' width='50' height='50'/><rect x='30' y='30' width='50' height='50' transform='rotate(45 55 55)'/><circle cx='55' cy='55' r='11'/><path d='M0 0L30 30M110 0L80 30M0 110L30 80M110 110L80 80'/></g></svg>");opacity:.2;background-size:84px;-webkit-mask-image:radial-gradient(ellipse at 50% 48%,transparent 28%,#000 88%);mask-image:radial-gradient(ellipse at 50% 48%,transparent 28%,#000 88%)}
+.sb-fleck{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='2' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .86 0 0 0 0 .64 0 0 0 0 .28 22 0 0 0 -15.6'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");opacity:.8;animation:sb-foil 10s ease-in-out infinite alternate}
+.sb-fleck-b{background-position:230px 170px;animation-duration:14s;animation-delay:-5s;opacity:.5}
+.sb-light{background:radial-gradient(ellipse 70% 55% at 50% 44%,rgba(255,255,255,.7),transparent 70%)}
+.sb-vig{background:radial-gradient(ellipse at center,transparent 50%,rgba(150,50,85,.3) 135%)}
+.sb-blob{position:absolute;border-radius:50%;filter:blur(70px);animation:sb-drift 36s ease-in-out infinite alternate;will-change:transform}
+.sb-b1{width:60vmax;height:60vmax;left:-15vmax;top:-12vmax;background:rgba(255,255,255,.75)}
+.sb-b2{width:55vmax;height:55vmax;right:-22vmax;top:22%;background:rgba(238,128,160,.5);animation-delay:-7s}
+.sb-b3{width:50vmax;height:50vmax;left:5%;bottom:-26vmax;background:rgba(255,236,214,.7);animation-delay:-12s}
+.sb-b4{width:34vmax;height:34vmax;right:8%;top:-12vmax;background:rgba(235,195,120,.35);animation-delay:-4s}
+@keyframes sb-foil{from{opacity:.25}to{opacity:.9}}
+@keyframes sb-drift{to{transform:translate(6vmax,4vmax) scale(1.12)}}
+@media (max-width:640px){.sb-paper,.sb-grain{mix-blend-mode:normal;opacity:.3}.sb-b3,.sb-b4{display:none}}
+@media (prefers-reduced-motion:reduce){.sb-fleck,.sb-blob{animation:none}}

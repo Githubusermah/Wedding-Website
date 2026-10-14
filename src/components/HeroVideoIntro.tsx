@@ -18,6 +18,7 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
     requestAnimationFrame(() => {
       setIsDismissed(true);
       if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("wedding:envelope-opened"));
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       }
       onDismiss?.();
@@ -73,6 +74,7 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
   return (
     <AnimatePresence>
       <motion.div
+        data-envelope-overlay
         initial={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
