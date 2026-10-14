@@ -139,7 +139,7 @@ export default function EventFacts() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative py-8 my-8 max-w-xl mx-auto glass-panel px-4 sm:px-8"
+          className="relative py-8 my-8 max-w-xl mx-auto px-4 sm:px-8 border-y border-[var(--line-subtle)]"
         >
           {/* Top Ornament */}
           <div className="flex items-center justify-center gap-2 mb-6 text-[var(--gold-dark)]">

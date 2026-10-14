@@ -14,7 +14,7 @@ export default function SiteBackground() {
         pointerEvents: "none",
         contain: "strict",
         background:
-          "radial-gradient(ellipse at 50% 35%, #fff6f8 0, #fde4ea 40%, #f6c3d0 80%, #eeaabd 100%)",
+          "radial-gradient(ellipse at 50% 35%, #fff6f8 0%, #fde4ea 42%, #f6c3d0 78%, #eeaabd 100%)",
       }}
     >
       <div className="L paper" />

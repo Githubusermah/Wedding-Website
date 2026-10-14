@@ -144,7 +144,7 @@ export default function FoggedCountdown() {
                     ].map((item) => (
                       <div
                         key={item.label}
-                        className="flex flex-col items-center justify-center p-2 rounded-lg bg-white/40 border border-[var(--line-subtle)]"
+                        className="flex flex-col items-center justify-center p-2"
                       >
                         <div className="relative h-10 sm:h-14 flex items-center justify-center overflow-hidden w-full">
                           <AnimatePresence mode="popLayout" initial={false}>

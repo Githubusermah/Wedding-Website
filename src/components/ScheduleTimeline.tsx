@@ -58,7 +58,7 @@ export default function ScheduleTimeline() {
 
   return (
     <section id="schedule" className="relative py-16 px-4 max-w-xl mx-auto scroll-mt-20 text-center">
-      {/* Decorative Chandelier Asset */}
+      {/* Decorative Animated Swinging Chandelier */}
       <motion.div
         initial={{ opacity: 0, y: -15 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -66,15 +66,25 @@ export default function ScheduleTimeline() {
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex justify-center -mt-6 mb-4 pointer-events-none"
       >
-        <Image
-          src="/chandelier-removebg-preview.png"
-          alt=""
-          aria-hidden="true"
-          width={128}
-          height={128}
-          priority
-          className="w-24 sm:w-32 h-auto object-contain filter drop-shadow(0 4px 10px rgba(160,112,50,0.2))"
-        />
+        <motion.div
+          animate={{ rotate: [-3.5, 3.5, -3.5] }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          style={{ transformOrigin: "top center" }}
+        >
+          <Image
+            src="/chandelier-removebg-preview.png"
+            alt=""
+            aria-hidden="true"
+            width={128}
+            height={128}
+            priority
+            className="w-24 sm:w-32 h-auto object-contain filter drop-shadow(0 6px 12px rgba(160,112,50,0.25))"
+          />
+        </motion.div>
       </motion.div>
 
       <SectionHeading

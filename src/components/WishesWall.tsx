@@ -102,16 +102,16 @@ export default function WishesWall() {
           {wishes.length > 0 && (
             <div className="space-y-4 text-right pt-6 mt-6 border-t border-[var(--line-subtle)]">
               {wishes.map((item) => (
-                <GlassCard
+                <div
                   key={item.id}
-                  className="p-3 space-y-1 bg-white/40 border border-[var(--line-subtle)]"
+                  className="p-3 space-y-1 border-b border-[var(--line-subtle)]"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-xs text-[var(--ink)]">{item.name}</span>
                     <span className="text-[10px] text-[var(--gold-dark)] font-semibold">{item.date}</span>
                   </div>
                   <p className="text-xs text-[var(--ink-muted)] leading-relaxed">{item.message}</p>
-                </GlassCard>
+                </div>
               ))}
             </div>
           )}

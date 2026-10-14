@@ -10,7 +10,7 @@ interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
 export function GlassCard({ children, className = "", ...props }: GlassCardProps) {
   return (
     <div
-      className={`glass-panel p-5 sm:p-7 transition-all duration-300 ${className}`}
+      className={`p-4 sm:p-6 transition-all duration-300 ${className}`}
       {...props}
     >
       {children}
