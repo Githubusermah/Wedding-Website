@@ -8,9 +8,11 @@ import {
   Great_Vibes,
   Alex_Brush,
   Noto_Naskh_Arabic,
+  Aref_Ruqaa,
 } from "next/font/google";
 import "./globals.css";
-import { event } from "@/lib/event";
+import { weddingConfig } from "../../config/wedding";
+import SiteBackground from "@/components/SiteBackground";
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
@@ -22,6 +24,13 @@ const nastaliq = Noto_Nastaliq_Urdu({
   subsets: ["arabic"],
   weight: ["400", "700"],
   variable: "--font-nastaliq",
+  display: "swap",
+});
+
+const arefRuqaa = Aref_Ruqaa({
+  subsets: ["arabic"],
+  weight: ["400", "700"],
+  variable: "--font-aref-ruqaa",
   display: "swap",
 });
 
@@ -70,15 +79,15 @@ const notoNaskh = Noto_Naskh_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: event.pageTitle,
-  description: `دعوت‌نامه رسمی جشن پیوند ${event.coupleDisplayName} در ${event.venueName}`,
+  title: weddingConfig.pageTitle,
+  description: weddingConfig.pageDescription,
   icons: {
     icon: "/icon.svg",
     apple: "/icon.svg",
   },
   openGraph: {
-    title: event.pageTitle,
-    description: `جشن پیوند ${event.coupleDisplayName} - ${event.invitationDateFa}`,
+    title: weddingConfig.pageTitle,
+    description: `جشن پیوند ${weddingConfig.coupleDisplayNameFa} - ${weddingConfig.weekdayFa} ${weddingConfig.solarHijriDateFa}`,
     locale: "fa_AF",
     type: "website",
   },
@@ -93,9 +102,10 @@ export default function RootLayout({
     <html
       lang="fa-AF"
       dir="rtl"
-      className={`${vazirmatn.variable} ${nastaliq.variable} ${cormorant.variable} ${playfair.variable} ${cinzel.variable} ${greatVibes.variable} ${alexBrush.variable} ${notoNaskh.variable}`}
+      className={`${vazirmatn.variable} ${nastaliq.variable} ${arefRuqaa.variable} ${cormorant.variable} ${playfair.variable} ${cinzel.variable} ${greatVibes.variable} ${alexBrush.variable} ${notoNaskh.variable}`}
     >
-      <body className="bg-[var(--ivory)] text-[var(--ink)] antialiased font-vazir">
+      <body className="bg-[#f4c2cf] text-[var(--ink)] antialiased font-vazir relative min-h-screen">
+        <SiteBackground />
         {children}
       </body>
     </html>

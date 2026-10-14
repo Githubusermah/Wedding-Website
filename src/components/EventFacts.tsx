@@ -1,12 +1,14 @@
 "use client";
 
 import { motion, Variants } from "motion/react";
-import { event } from "@/lib/event";
+import { weddingConfig } from "../../config/wedding";
 import {
   generateGoogleCalendarUrl,
   generateIcsContent,
 } from "@/lib/formatters";
 import { Calendar, Clock, MapPin, Sparkle } from "@phosphor-icons/react";
+import { SectionHeading } from "./ui/SectionHeading";
+import { GlassCard } from "./ui/GlassCard";
 
 function TypewriterPoemLine({
   text,
@@ -70,7 +72,7 @@ export default function EventFacts() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `${event.groomNameEn}-${event.brideNameEn}-Wedding.ics`);
+    link.setAttribute("download", `${weddingConfig.brideEn}-${weddingConfig.groomEn}-Wedding.ics`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -88,90 +90,65 @@ export default function EventFacts() {
   ];
 
   return (
-    <section id="event-facts" className="py-14 px-4 max-w-3xl mx-auto scroll-mt-20 text-center">
+    <section id="event-facts" className="py-14 px-4 max-w-4xl mx-auto scroll-mt-20 text-center">
       <motion.div
-        initial={{ opacity: 0, x: 72, y: 10 }}
-        whileInView={{ opacity: 1, x: 0, y: 0 }}
+        initial={{ opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 1.2, ease: [0.22, 0.7, 0.2, 1] }}
         className="space-y-8"
       >
-        <motion.div
-          initial={{ opacity: 0, x: 28 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.65, delay: 0.12, ease: "easeOut" }}
-        >
-          <span className="text-xs font-semibold text-[var(--gold-dark)] tracking-widest uppercase block">
-            مشخصات محفل
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--ink)] mt-1 font-serif">
-            زمان و مکان
-          </h2>
-          <div className="w-12 h-px bg-[var(--gold-muted)] mx-auto mt-3" />
-        </motion.div>
+        <SectionHeading
+          eyebrow="مشخصات محفل"
+          title="زمان و مکان"
+        />
 
-        {/* 3 Column Information Listing directly on paper */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center pt-2">
+        {/* 3 Glass Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center pt-2">
           {/* Fact 1: Date */}
-          <motion.div
-            initial={{ opacity: 0, x: 36 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.65, delay: 0.12, ease: "easeOut" }}
-            className="space-y-2 flex flex-col items-center"
-          >
-            <Calendar size={24} className="text-[var(--gold-dark)]" />
-            <h3 className="font-bold text-sm text-[var(--ink)] uppercase tracking-wider">تاریخ برگزاری</h3>
-            <p className="font-bold text-base text-[var(--ink)]">{event.invitationDateFa}</p>
-            <p className="text-xs text-[var(--ink-muted)] font-mono dir-ltr">{event.invitationDateGregorian}</p>
-          </motion.div>
+          <GlassCard className="flex flex-col items-center space-y-3">
+            <Calendar size={28} className="text-[var(--gold-dark)]" />
+            <h3 className="font-bold text-sm text-[var(--ink)] tracking-normal">تاریخ برگزاری</h3>
+            <p className="font-bold text-base text-[var(--ink)]">{weddingConfig.weekdayFa}، {weddingConfig.solarHijriDateFa}</p>
+            <div className="text-3xl font-bold text-[var(--wine)] my-1 border-y border-[var(--line-subtle)] py-1 w-20 mx-auto">
+              {weddingConfig.solarHijriDayFa}
+            </div>
+            <p className="text-xs text-[var(--gold-dark)] font-semibold" dir="ltr">{weddingConfig.gregorianDateFa}</p>
+          </GlassCard>
 
           {/* Fact 2: Time & Hosts */}
-          <motion.div
-            initial={{ opacity: 0, x: 36 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.65, delay: 0.24, ease: "easeOut" }}
-            className="space-y-2 flex flex-col items-center"
-          >
-            <Clock size={24} className="text-[var(--gold-dark)]" />
-            <h3 className="font-bold text-sm text-[var(--ink)] uppercase tracking-wider">ساعت و میزبانان</h3>
-            <p className="font-bold text-base text-[var(--ink)]">{event.startTimeFa} تا {event.endTimeFa}</p>
-            <p className="text-xs text-[var(--ink-muted)]">{event.familyLine}</p>
-          </motion.div>
+          <GlassCard className="flex flex-col items-center space-y-3">
+            <Clock size={28} className="text-[var(--gold-dark)]" />
+            <h3 className="font-bold text-sm text-[var(--ink)] tracking-normal">ساعت و میزبانان</h3>
+            <p className="font-bold text-base text-[var(--ink)]">{weddingConfig.timeRangeFa}</p>
+            <p className="text-xs text-[var(--ink-muted)] leading-relaxed mt-2">{weddingConfig.hostsFa}</p>
+          </GlassCard>
 
-          {/* Fact 3: Venue & City */}
-          <motion.div
-            initial={{ opacity: 0, x: 36 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.65, delay: 0.36, ease: "easeOut" }}
-            className="space-y-2 flex flex-col items-center"
-          >
-            <MapPin size={24} className="text-[var(--gold-dark)]" />
-            <h3 className="font-bold text-sm text-[var(--ink)] uppercase tracking-wider">مکان برگزاری</h3>
-            <p className="font-bold text-base text-[var(--ink)]">{event.venueName}</p>
-            <p className="text-xs text-[var(--ink-muted)]">{event.venueAddressFa}</p>
-          </motion.div>
+          {/* Fact 3: Venue & Address */}
+          <GlassCard className="flex flex-col items-center space-y-3">
+            <MapPin size={28} className="text-[var(--gold-dark)]" />
+            <h3 className="font-bold text-sm text-[var(--ink)] tracking-normal">مکان برگزاری</h3>
+            <p className="font-bold text-base text-[var(--ink)]">{weddingConfig.venueNameFa}</p>
+            <p className="text-xs text-[var(--ink-muted)] leading-relaxed">{weddingConfig.venueAddressFa}</p>
+          </GlassCard>
         </div>
 
-        {/* Chic Dari Wedding Poem Section under "زمان و مکان" */}
+        {/* Wedding Poem Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative py-8 my-8 max-w-xl mx-auto border-y border-[var(--gold-muted)]/30 bg-gradient-to-b from-transparent via-[var(--gold-pale)]/20 to-transparent rounded-2xl px-4 sm:px-8"
+          className="relative py-8 my-8 max-w-xl mx-auto glass-panel px-4 sm:px-8"
         >
-          {/* Elegant Top Ornaments */}
+          {/* Top Ornament */}
           <div className="flex items-center justify-center gap-2 mb-6 text-[var(--gold-dark)]">
             <span className="h-px w-14 bg-gradient-to-r from-transparent to-[var(--gold)]" />
             <Sparkle size={18} className="text-[var(--gold)] animate-pulse" />
             <span className="h-px w-14 bg-gradient-to-l from-transparent to-[var(--gold)]" />
           </div>
 
-          {/* Calligraphic Poem Couplets written live */}
+          {/* Poem Couplets */}
           <div className="space-y-6 text-center font-nastaliq text-lg sm:text-2xl md:text-3xl text-[var(--ink)] leading-loose">
             {poemCouplets.map((couplet, idx) => (
               <div
@@ -195,32 +172,32 @@ export default function EventFacts() {
             ))}
           </div>
 
-          {/* Elegant Bottom Ornament */}
+          {/* Bottom Ornament */}
           <div className="flex items-center justify-center gap-2 mt-6 text-[var(--gold-dark)]">
             <span className="h-px w-14 bg-gradient-to-r from-transparent to-[var(--gold)]" />
-            <span className="text-sm text-[var(--gold-dark)] font-serif">❦</span>
+            <span className="text-sm text-[var(--gold-dark)]">❦</span>
             <span className="h-px w-14 bg-gradient-to-l from-transparent to-[var(--gold)]" />
           </div>
         </motion.div>
 
-        {/* Quiet gold action links */}
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm">
+        {/* Calendar Pill Buttons */}
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-xs sm:text-sm">
           <a
             href={generateGoogleCalendarUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-[var(--gold-dark)] hover:underline flex items-center gap-1.5 transition-colors"
+            className="px-6 py-2.5 rounded-full bg-[var(--wine)] text-white hover:bg-[#521028] font-semibold transition-colors flex items-center gap-2 shadow-xs"
           >
+            <Calendar size={16} />
             <span>افزودن به تقویم گوگل</span>
           </a>
 
-          <span className="text-[var(--line)]">•</span>
-
           <button
             onClick={handleIcsDownload}
-            className="font-medium text-[var(--gold-dark)] hover:underline flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-6 py-2.5 rounded-full border border-[var(--gold)] text-[var(--gold-dark)] hover:bg-[var(--gold)]/10 font-semibold transition-colors flex items-center gap-2 cursor-pointer"
           >
-            <span>دانلود فایل تقویم (Apple / Outlook)</span>
+            <Calendar size={16} />
+            <span>دانلود فایل تقویم (.ics)</span>
           </button>
         </div>
       </motion.div>

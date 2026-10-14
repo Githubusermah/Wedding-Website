@@ -22,14 +22,14 @@ export default function InitialsMonogram({
     >
       <motion.span
         aria-hidden="true"
-        className="absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgba(126,159,131,0.24),transparent_68%)] blur-xl"
+        className="absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgba(217,174,95,0.3),transparent_68%)] blur-xl"
         animate={{ opacity: [0.45, 0.8, 0.45], scale: [0.92, 1.04, 0.92] }}
         transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.img
         src="/initials-removebg-preview.svg"
         alt="Bahara and Aminullah initials"
-        className="relative z-10 h-full w-full object-contain drop-shadow-[0_8px_18px_rgba(95,125,100,0.2)]"
+        className="relative z-10 h-full w-full object-contain filter drop-shadow-[0_8px_18px_rgba(150,60,85,0.25)]"
         animate={{ opacity: [0.88, 1, 0.88], scale: [0.98, 1, 0.98] }}
         transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
       />

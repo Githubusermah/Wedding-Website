@@ -1,0 +1,300 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { weddingConfig } from "../../../config/wedding";
+import { useFitToZone } from "./useFitToZone";
+
+interface HeroInvitationProps {
+  isPlayable?: boolean;
+}
+
+const G = "#a07032";
+
+const Orn = () => (
+  <svg
+    className="orn r"
+    style={{ animationDelay: "3.1s" }}
+    viewBox="0 0 150 14"
+  >
+    <path d="M0 7H55M95 7H150" stroke={G} strokeWidth={1} />
+    <path d="M75 1L81 7L75 13L69 7Z" fill="none" stroke={G} />
+    <circle cx={62} cy={7} r={2} fill={G} />
+    <circle cx={88} cy={7} r={2} fill={G} />
+  </svg>
+);
+
+const Bis = () => (
+  <svg
+    className="bsvg"
+    viewBox="20 18 695 118"
+    aria-label="بسم الله الرحمن الرحیم"
+  >
+    <defs>
+      <linearGradient id="wf" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#4d1029" />
+        <stop offset="50%" stopColor="#85264e" />
+        <stop offset="100%" stopColor="#4d1029" />
+      </linearGradient>
+      <linearGradient id="eg">
+        <stop offset="0" stopColor="#000" />
+        <stop offset="0.13" stopColor="#fff" />
+      </linearGradient>
+      <mask
+        id="wm"
+        maskUnits="userSpaceOnUse"
+        x={-100}
+        y={-50}
+        width={1000}
+        height={300}
+      >
+        <rect
+          className="edge"
+          x={735}
+          y={-50}
+          width={960}
+          height={300}
+          fill="url(#eg)"
+        />
+      </mask>
+    </defs>
+    <g className="glow" mask="url(#wm)">
+      <g
+        transform="translate(0,151) scale(0.1,-0.1)"
+        fill="url(#wf)"
+      >
+        <path d="M3160 1237 c0 -15 9 -44 20 -64 11 -21 21 -56 21 -78 l1 -40 10 40 c12 48 -1 106 -32 145 l-20 25 0 -28z" />
+        <path d="M2894 1178 c-42 -81 -36 -132 14 -126 24 3 27 8 29 43 2 35 1 37 -7 16 -8 -18 -13 -21 -24 -12 -12 10 -12 20 -1 61 15 58 12 63 -11 18z" />
+        <path d="M722 1183 c-7 -3 -19 -18 -27 -33 l-15 -29 54 6 c87 9 85 -22 -4 -80 -29 -18 -36 -26 -20 -22 66 20 114 54 137 99 15 28 14 31 -7 48 -21 17 -87 24 -118 11z" />
+        <path d="M1911 1137 c-25 -51 -27 -90 -6 -107 20 -17 54 -3 61 26 8 29 -3 45 -16 24 -7 -11 -12 -12 -21 -3 -9 9 -9 23 -1 55 15 57 9 59 -17 5z" />
+        <path d="M2370 1161 c-115 -25 -228 -64 -328 -113 -80 -39 -142 -86 -142 -106 0 -6 60 18 133 53 158 75 388 151 387 127 -1 -4 -7 -18 -15 -32 -31 -54 -10 -44 32 15 24 35 38 75 26 74 -4 0 -46 -9 -93 -18z" />
+        <path d="M1626 1144 c-10 -27 -7 -51 18 -126 32 -98 71 -299 63 -322 -6 -14 -16 -17 -51 -14 -40 3 -45 1 -49 -21 -3 -14 4 -37 19 -59 29 -42 29 -39 1 -83 -46 -74 -132 -129 -202 -129 -46 0 -45 -16 3 -24 69 -11 108 -7 143 17 41 27 89 117 89 165 0 22 9 47 25 68 61 80 64 121 18 316 -18 79 -22 112 -14 126 8 15 4 27 -20 61 -17 22 -32 41 -34 41 -1 0 -6 -7 -9 -16z" />
+        <path d="M2586 1144 c-10 -27 -7 -57 13 -109 26 -68 76 -319 67 -340 -5 -13 -16 -16 -50 -13 -40 3 -45 1 -49 -21 -3 -14 4 -37 18 -58 30 -43 21 -72 -38 -133 -50 -50 -107 -79 -159 -80 -21 0 -38 -4 -38 -9 0 -13 115 -34 146 -27 58 15 124 120 124 196 0 15 12 45 27 66 47 69 54 113 37 212 -8 48 -22 113 -30 144 -8 32 -12 69 -8 83 5 19 -1 36 -21 65 -15 22 -29 40 -30 40 -2 0 -6 -7 -9 -16z" />
+        <path d="M1400 1143 c-14 -2 -85 -20 -159 -39 -275 -71 -614 -214 -639 -269 -6 -14 -9 -25 -6 -25 3 0 37 18 77 39 100 54 261 122 396 165 120 39 318 89 332 84 5 -2 2 -16 -6 -32 -30 -58 -5 -42 36 22 41 65 40 67 -31 55z" />
+        <path d="M1757 1123 c-7 -36 94 -498 105 -481 16 26 7 97 -37 293 -25 110 -45 203 -45 208 0 19 -18 4 -23 -20z" />
+        <path d="M2716 1118 c-7 -41 97 -500 107 -474 14 35 6 90 -38 292 -25 112 -45 206 -45 209 0 3 -4 5 -10 5 -5 0 -11 -15 -14 -32z" />
+        <path d="M3356 1123 c-7 -36 98 -504 107 -479 14 35 6 90 -38 292 -25 112 -45 206 -45 209 0 3 -4 5 -9 5 -5 0 -12 -12 -15 -27z" />
+        <path d="M6920 1014 c0 -42 4 -49 48 -89 50 -45 99 -133 89 -159 -9 -23 -43 -20 -61 5 -14 20 -15 20 -32 -16 -18 -39 -53 -62 -79 -51 -11 4 -14 12 -10 26 9 27 0 25 -43 -9 -47 -37 -81 -46 -107 -28 -16 13 -17 17 -6 31 19 22 11 21 -141 -19 -240 -62 -516 -108 -848 -142 -144 -15 -270 -18 -715 -18 -538 0 -702 7 -970 41 -179 22 -339 54 -367 72 -14 9 -37 25 -50 35 -14 9 -32 15 -41 11 -18 -7 -37 -55 -37 -95 0 -37 -39 -79 -114 -124 -47 -27 -55 -35 -35 -35 41 1 104 36 139 77 l34 40 40 -18 c40 -18 41 -18 56 1 15 19 17 19 135 -5 481 -96 1298 -122 1905 -59 323 33 608 81 809 136 109 30 115 30 145 15 52 -28 87 -30 129 -8 29 15 45 17 63 11 30 -12 67 4 84 36 11 20 18 23 55 17 37 -5 44 -2 64 23 45 57 16 181 -66 282 -19 23 -43 47 -54 52 -17 10 -19 7 -19 -36z m-3310 -369 c14 -16 10 -18 -14 -9 -9 3 -16 10 -16 15 0 14 16 11 30 -6z" />
+        <path d="M6684 1040 c-21 -8 -54 -46 -54 -62 0 -4 10 -4 23 1 20 8 86 6 94 -3 9 -9 -23 -45 -61 -71 -30 -19 -34 -25 -16 -20 70 20 140 82 140 125 0 13 -61 40 -87 39 -10 0 -28 -4 -39 -9z" />
+        <path d="M3006 1028 c-15 -47 -15 -68 0 -82 22 -23 12 -33 -80 -78 -69 -34 -75 -39 -41 -33 50 9 103 36 134 69 14 14 32 26 42 26 46 0 47 54 2 90 -29 23 -52 26 -57 8z m20 -55 c-10 -10 -19 5 -10 18 6 11 8 11 12 0 2 -7 1 -15 -2 -18z m52 -1 c2 -7 -3 -12 -12 -12 -9 0 -16 7 -16 16 0 17 22 14 28 -4z" />
+        <path d="M3262 1022 c-2 -24 -33 -43 -40 -24 -5 16 -22 15 -22 -1 0 -7 -5 -18 -12 -25 -9 -9 -16 -8 -30 5 -17 15 -18 15 -18 -9 0 -37 25 -55 48 -35 10 9 27 14 38 11 29 -8 46 18 41 63 -2 21 -4 28 -5 15z" />
+        <path d="M3617 1023 c-4 -3 -6 -29 -6 -57 1 -28 4 -40 6 -26 8 48 12 53 28 40 12 -10 16 -9 21 4 3 9 4 23 0 31 -5 15 -37 21 -49 8z" />
+        <path d="M2547 1003 c-9 -25 -42 -31 -50 -10 -4 7 -6 6 -6 -4 -2 -27 -28 -44 -46 -29 -13 11 -15 8 -15 -14 0 -29 25 -45 43 -27 6 6 23 11 38 11 35 0 51 21 47 62 -3 30 -4 31 -11 11z" />
+        <path d="M1556 976 c-7 -29 -23 -34 -32 -11 -8 20 -24 9 -24 -16 0 -12 -7 -19 -20 -19 -11 0 -20 5 -20 10 0 6 -4 10 -10 10 -16 0 -12 -46 5 -60 13 -10 19 -10 34 5 12 10 27 14 39 11 11 -4 24 -1 29 6 16 20 23 62 14 77 -6 9 -10 6 -15 -13z" />
+        <path d="M462 968 c-7 -7 -12 -28 -11 -47 0 -32 1 -33 9 -13 10 22 30 31 30 11 0 -5 5 -7 10 -4 16 10 12 52 -6 59 -20 8 -18 8 -32 -6z" />
+        <path d="M3497 953 c-13 -12 -7 -54 8 -60 9 -3 24 2 34 11 17 16 20 15 44 -13 l25 -30 5 25 c2 13 1 24 -4 24 -4 0 -19 11 -33 25 -24 24 -65 33 -79 18z" />
+        <path d="M2210 932 c-35 -5 -60 -31 -60 -60 0 -24 2 -25 52 -19 50 6 128 -8 128 -23 0 -4 -17 -11 -37 -15 -73 -13 -119 -43 -154 -100 -40 -66 -68 -81 -110 -60 -28 15 -30 15 -38 -7 -5 -15 -2 -35 9 -61 10 -21 15 -47 13 -58 -19 -70 -204 -155 -424 -193 -337 -59 -671 -10 -903 132 l-69 43 35 -43 c86 -104 254 -186 442 -214 304 -46 724 34 869 165 42 38 76 100 77 139 0 15 6 22 19 22 10 0 32 15 48 34 28 31 32 32 54 20 31 -17 66 -18 76 -1 4 6 12 37 18 67 11 52 14 56 51 68 25 9 65 12 115 9 61 -4 80 -2 98 12 23 17 22 17 -46 46 -37 16 -95 42 -128 58 -71 35 -101 44 -135 39z m6 -217 c11 -27 0 -36 -24 -19 -12 8 -20 20 -17 25 9 14 35 11 41 -6z" />
+        <path d="M2025 908 c0 -13 9 -38 19 -57 10 -19 22 -55 26 -80 l8 -46 1 64 c1 48 -4 73 -21 102 -25 44 -34 49 -33 17z" />
+        <path d="M3282 905 c-11 -23 -8 -39 18 -115 34 -98 37 -135 14 -144 -41 -16 -72 29 -100 147 -10 42 -21 77 -25 77 -15 0 -18 -68 -5 -128 21 -99 5 -132 -66 -132 -57 0 -73 30 -64 121 6 57 5 70 -6 67 -7 -3 -14 -16 -16 -31 -2 -18 -15 -33 -40 -48 -58 -35 -92 -71 -92 -97 0 -66 53 -83 101 -31 l29 31 11 -29 c16 -44 39 -63 74 -63 35 0 85 33 85 56 0 19 7 18 37 -6 33 -26 75 -26 99 1 39 43 22 227 -29 326 l-13 24 -12 -26z m-262 -236 c-11 -19 -60 -27 -60 -9 0 12 52 40 62 33 5 -2 3 -13 -2 -24z" />
+        <path d="M326 884 c-7 -18 10 -54 26 -54 6 0 19 7 27 14 19 17 30 12 54 -24 17 -24 17 -24 17 -2 0 36 -48 82 -86 82 -20 0 -34 -6 -38 -16z" />
+        <path d="M840 826 c-12 -26 -20 -59 -18 -78 3 -29 6 -33 32 -33 24 0 31 5 38 30 4 18 3 33 -3 40 -7 7 -9 5 -7 -4 2 -8 -5 -17 -14 -19 -21 -4 -23 19 -7 67 17 49 4 47 -21 -3z" />
+        <path d="M1250 841 c-26 -7 -53 -48 -43 -64 3 -5 26 -7 51 -3 42 6 122 -10 122 -23 0 -10 -36 -30 -91 -51 -56 -22 -97 -18 -108 11 -6 18 -8 18 -41 -5 -87 -58 -296 -104 -420 -91 -78 8 -167 37 -220 70 -22 14 -45 22 -53 19 -20 -7 -37 -49 -37 -89 0 -44 -34 -82 -114 -130 -48 -28 -55 -35 -35 -35 39 0 127 49 146 81 20 33 32 35 75 13 29 -15 32 -15 44 1 7 10 15 21 16 26 2 4 28 1 58 -7 41 -11 89 -14 185 -11 145 5 227 25 307 76 l47 30 39 -21 c44 -25 55 -22 209 46 51 23 103 38 135 41 48 3 78 21 78 45 0 4 -35 10 -78 12 -49 4 -99 15 -137 31 -75 30 -103 36 -135 28z m-772 -201 c11 -18 10 -19 -13 -8 -26 12 -34 28 -12 28 7 0 18 -9 25 -20z" />
+        <path d="M7022 627 l-22 -23 28 -27 28 -27 22 23 22 23 -28 27 -28 27 -22 -23z" />
+        <path d="M2385 626 c-17 -12 -16 -14 14 -18 34 -5 52 9 30 23 -19 12 -22 11 -44 -5z" />
+        <path d="M1380 605 c-11 -13 -8 -15 16 -15 l27 0 -20 -22 c-50 -57 -26 -90 42 -58 l40 18 -42 -5 c-51 -7 -55 5 -18 53 21 27 22 33 9 38 -25 10 -41 7 -54 -9z" />
+        <path d="M1762 577 l-21 -23 22 -27 22 -28 25 26 24 26 -25 25 -25 25 -22 -24z" />
+        <path d="M2386 568 c-9 -12 -16 -28 -16 -35 0 -20 37 -25 76 -8 42 17 42 31 -1 15 -34 -13 -62 4 -44 27 7 7 9 16 6 19 -3 3 -12 -5 -21 -18z" />
+        <path d="M6652 530 c-7 -11 -18 -17 -27 -14 -8 4 -21 1 -29 -5 -8 -7 -29 -9 -52 -6 -35 6 -49 0 -134 -52 -52 -33 -110 -65 -128 -72 -18 -8 -30 -16 -27 -19 3 -3 62 23 130 58 107 54 129 62 148 53 17 -8 29 -8 43 0 10 7 32 12 48 12 24 0 32 6 43 33 14 35 5 44 -15 12z" />
+        <path d="M6859 500 c-82 -50 -133 -89 -125 -97 2 -3 46 21 97 51 50 31 96 56 100 56 5 0 13 9 19 20 16 30 2 25 -91 -30z" />
+        <path d="M1128 510 c-10 -15 -16 -16 -32 -8 -15 8 -23 6 -37 -13 -24 -31 -24 -32 11 -52 28 -17 30 -17 42 2 9 16 16 18 32 9 15 -8 23 -6 37 13 24 31 24 31 -11 51 -29 16 -31 16 -42 -2z" />
+        <path d="M2219 470 c-46 -27 -97 -63 -114 -81 -21 -22 -24 -28 -10 -21 50 26 191 114 204 127 32 32 1 22 -80 -25z" />
+        <path d="M2765 464 c-23 -45 -26 -61 -19 -82 18 -52 75 -35 73 22 -1 17 -3 23 -6 14 -4 -18 -43 -26 -43 -10 0 5 7 31 15 57 8 27 13 50 11 52 -1 2 -15 -22 -31 -53z" />
+        <path d="M3090 477 c-77 -44 -159 -99 -176 -119 -24 -26 -18 -24 80 32 80 46 145 95 136 103 -3 2 -21 -5 -40 -16z" />
+        <path d="M3589 430 c-84 -51 -127 -85 -118 -94 3 -3 33 13 67 34 35 22 80 49 101 60 35 17 62 50 42 50 -4 0 -46 -23 -92 -50z" />
+        <path d="M480 419 c-80 -47 -145 -98 -136 -106 2 -3 28 11 58 30 29 19 74 46 100 61 26 15 52 35 58 46 6 11 9 20 8 20 -2 0 -41 -23 -88 -51z" />
+      </g>
+    </g>
+  </svg>
+);
+
+export default function HeroInvitation({ isPlayable = true }: HeroInvitationProps) {
+  const { zoneRef, innerRef } = useFitToZone();
+  const [petals, setPetals] = useState<
+    Array<{ l: number; s: number; d: number; dl: number; k: number }>
+  >([]);
+  const [sparkles, setSparkles] = useState<
+    Array<{ l: number; t: number; dl: number; k: number }>
+  >([]);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPetals(
+        Array.from({ length: 8 }, (_, i) => ({
+          l: Math.random() * 100,
+          s: 8 + Math.random() * 8,
+          d: 20 + Math.random() * 14,
+          dl: -Math.random() * 30,
+          k: i,
+        }))
+      );
+
+      setSparkles(
+        Array.from({ length: 12 }, (_, i) => ({
+          l: 4 + Math.random() * 92,
+          t: 4 + Math.random() * 92,
+          dl: Math.random() * 3,
+          k: i,
+        }))
+      );
+    }, 0);
+
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setHasScrolled(true);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <section
+      className="hero-invitation-root relative w-full h-[100dvh] overflow-hidden select-none"
+      data-play={isPlayable ? "true" : "false"}
+      aria-label="کارت دعوت اصلی"
+    >
+      <div className="app">
+        <div className="frame" />
+
+        {sparkles.map((s) => (
+          <i
+            key={s.k}
+            className="sp"
+            style={{
+              left: `${s.l}%`,
+              top: `${s.t}%`,
+              animationDelay: `${s.dl}s`,
+            }}
+          />
+        ))}
+
+        {/* Corner Flowers */}
+        <div className="fw tl">
+          <Image
+            src="/hero/corner-flowers.webp"
+            alt=""
+            width={300}
+            height={533}
+            priority
+            className="fl"
+          />
+        </div>
+        <div className="fw br">
+          <Image
+            src="/hero/corner-flowers.webp"
+            alt=""
+            width={300}
+            height={533}
+            priority
+            className="fl"
+          />
+        </div>
+
+        {/* Auto-fit Zone */}
+        <div className="zone" ref={zoneRef}>
+          <div className="inner" ref={innerRef}>
+            <Bis />
+            <Orn />
+
+            <div className="sm r" style={{ animationDelay: "3.2s" }}>
+              به یاری خداوند متعال
+            </div>
+
+            <div className="names">
+              <div
+                className="nm n1"
+                style={{
+                  ["--dl" as string]: "3.5s",
+                  fontSize: "58px",
+                }}
+              >
+                {weddingConfig.brideFa}
+              </div>
+              <div className="amp r" style={{ animationDelay: "4.4s" }}>
+                و
+              </div>
+              <div
+                className="nm n2"
+                style={{
+                  ["--dl" as string]: "4.5s",
+                  fontSize: "58px",
+                }}
+              >
+                {weddingConfig.groomFa}
+              </div>
+            </div>
+
+            <div className="dt r" style={{ animationDelay: "5.4s" }}>
+              <div className="dn">{weddingConfig.weekdayFa}</div>
+              <div className="row">
+                <div className="mo">{weddingConfig.solarHijriMonthFa}</div>
+                <div className="d">{weddingConfig.solarHijriDayFa}</div>
+                <div className="yr">{weddingConfig.solarHijriYearFa}</div>
+              </div>
+              <div className="g">{weddingConfig.gregorianDateFa}</div>
+            </div>
+
+            <div className="ven r" style={{ animationDelay: "5.9s" }}>
+              <b>{weddingConfig.venueNameFa}</b>
+              <span>ساعت {weddingConfig.startTimeFa}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Ambient Petals */}
+        {petals.map((p) => (
+          <i
+            key={p.k}
+            className="petal"
+            style={{
+              left: `${p.l}%`,
+              width: `${p.s}px`,
+              height: `${p.s}px`,
+              animationDuration: `${p.d}s`,
+              animationDelay: `${p.dl}s`,
+            }}
+          />
+        ))}
+
+        {/* Scroll Cue */}
+        {!hasScrolled && (
+          <div
+            className="scroll-cue r absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[var(--gold-dark)] text-xs font-semibold cursor-pointer z-10 transition-opacity duration-300 hover:opacity-80"
+            style={{ animationDelay: "7s" }}
+            onClick={() => {
+              window.scrollTo({
+                top: window.innerHeight * 0.9,
+                behavior: "smooth",
+              });
+            }}
+          >
+            <span className="tracking-normal font-vazir">ادامه</span>
+            <svg
+              className="w-4 h-4 animate-bounce text-[var(--gold-dark)]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
+        )}
+      </div>
+
+      <style jsx global>{`
+        .hero-invitation-root[data-play="false"] * {
+          animation-play-state: paused !important;
+        }
+      `}</style>
+    </section>
+  );
+}

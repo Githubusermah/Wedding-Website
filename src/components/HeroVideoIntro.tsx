@@ -24,7 +24,6 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
     });
   }, [onDismiss]);
 
-  // Ensure page is pinned to the top on load & when history scroll restoration is handled
   useEffect(() => {
     if (typeof window !== "undefined") {
       if ("scrollRestoration" in window.history) {
@@ -34,7 +33,6 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
     }
   }, []);
 
-  // Lock document body scrolling while the intro is active
   useEffect(() => {
     if (!isDismissed) {
       const originalBodyOverflow = document.body.style.overflow;
@@ -59,7 +57,6 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
 
     videoRef.current?.play().catch((err) => {
       console.log("Video play error:", err);
-      // Playback itself failed after the user gesture — don't get stuck.
       dismiss();
     });
   };
@@ -84,9 +81,8 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
         role="button"
         tabIndex={0}
         aria-label="باز کردن کارت عروسی"
-        className="fixed inset-0 z-50 w-full h-[100dvh] bg-[var(--ivory,#f7f4ee)] cursor-pointer overflow-hidden select-none focus:outline-none flex items-center justify-center"
+        className="fixed inset-0 z-50 w-full h-[100dvh] bg-[#f4c2cf] cursor-pointer overflow-hidden select-none focus:outline-none flex items-center justify-center"
       >
-        {/* 1. Explicit High-Quality Frame Poster Background Image */}
         {!hasStarted && (
           <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
             <Image
@@ -100,7 +96,6 @@ export default function HeroVideoIntro({ onDismiss, onStart }: HeroVideoIntroPro
           </div>
         )}
 
-        {/* 2. Video Element with mandatory iOS WebKit & cross-browser attributes and MP4/WebM fallbacks */}
         <video
           ref={videoRef}
           poster="/media/envelopegreen-poster.jpg"
