@@ -13,6 +13,7 @@ import WishesWall from "@/components/WishesWall";
 import FooterReplay from "@/components/FooterReplay";
 import MobileActionBar from "@/components/MobileActionBar";
 import AudioPlayer, { AudioPlayerHandle } from "@/components/AudioPlayer";
+import TropicalWindOverlay from "@/components/TropicalWindOverlay";
 
 export default function Home() {
   const [isVideoDismissed, setIsVideoDismissed] = useState(false);
@@ -48,6 +49,9 @@ export default function Home() {
           onStart={handleVideoStart}
         />
       )}
+
+      {/* Global Tropical Continuous Wind Sway Overlay */}
+      <TropicalWindOverlay />
 
       {/* 2. Hero Section revealed with real-time text animations when video ends */}
       <SaveTheDateHero isStarted={isVideoDismissed} />

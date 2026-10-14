@@ -124,12 +124,54 @@ export default function RsvpForm() {
   };
 
   return (
-    <section id="rsvp" className="relative py-14 px-4 max-w-2xl mx-auto scroll-mt-20 text-center overflow-hidden">
-      {/* Subtle Botanical Leaf Accent - Upper Right */}
-      <div className="absolute top-0 right-0 w-28 sm:w-40 opacity-20 pointer-events-none z-0 transform translate-x-4 -translate-y-2 rotate-45">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/leaves.webp" alt="" aria-hidden="true" className="w-full h-auto object-contain" />
-      </div>
+    <section id="rsvp" className="relative py-14 px-4 max-w-2xl mx-auto scroll-mt-20 text-center overflow-visible">
+      {/* Tropical Flower Cluster Accent - Top Right */}
+      <motion.div
+        animate={{
+          rotate: [-2, 3, -2, 2, -2],
+          x: [0, 4, -3, 3, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        aria-hidden="true"
+        className="hidden sm:block absolute -top-6 -right-10 w-24 h-28 pointer-events-none opacity-80 z-0"
+      >
+        <Image
+          src="/botanical/flowers-tropical-accent.webp"
+          alt=""
+          fill
+          sizes="96px"
+          className="object-contain"
+        />
+      </motion.div>
+
+      {/* Tropical Leaf Accent - Bottom Left */}
+      <motion.div
+        animate={{
+          rotate: [2, -3, 2, -2, 2],
+          x: [0, -4, 3, -3, 0],
+        }}
+        transition={{
+          duration: 9.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.5,
+        }}
+        aria-hidden="true"
+        className="hidden sm:block absolute -bottom-6 -left-10 w-24 h-24 pointer-events-none opacity-80 z-0"
+      >
+        <Image
+          src="/botanical/leaves-botanical-sway.webp"
+          alt=""
+          fill
+          sizes="96px"
+          className="object-contain"
+        />
+      </motion.div>
+
       {/* RSVP Section on shared paper */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}

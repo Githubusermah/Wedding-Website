@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion } from "motion/react";
 import { PaperPlaneTilt } from "@phosphor-icons/react";
 
@@ -38,13 +39,36 @@ export default function WishesWall() {
   };
 
   return (
-    <section className="py-14 px-4 max-w-2xl mx-auto text-center">
+    <section className="py-14 px-4 max-w-2xl mx-auto text-center relative overflow-visible">
+      {/* Tropical Flower Sway - Top Right */}
+      <motion.div
+        animate={{
+          rotate: [-2.5, 3, -2, 2.5, -2.5],
+          x: [0, 4, -3, 3, 0],
+        }}
+        transition={{
+          duration: 8.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        aria-hidden="true"
+        className="hidden sm:block absolute -top-6 -right-10 w-24 h-28 pointer-events-none opacity-80 z-0"
+      >
+        <Image
+          src="/botanical/flowers-tropical-accent.webp"
+          alt=""
+          fill
+          sizes="96px"
+          className="object-contain"
+        />
+      </motion.div>
+
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="space-y-8"
+        className="space-y-8 relative z-10"
       >
         <div>
           <span className="text-xs text-[var(--gold-dark)] font-semibold tracking-widest uppercase block">

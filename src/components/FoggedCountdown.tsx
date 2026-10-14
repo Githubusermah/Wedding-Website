@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { event } from "@/lib/event";
 import { toEasternArabicNumerals } from "@/lib/formatters";
@@ -42,8 +43,55 @@ export default function FoggedCountdown() {
   }, []);
 
   return (
-    <section className="py-12 px-4 max-w-3xl mx-auto text-center">
-      <div className="space-y-4">
+    <section className="py-12 px-4 max-w-3xl mx-auto text-center relative overflow-visible">
+      {/* Tropical Botanical Sway - Left */}
+      <motion.div
+        animate={{
+          rotate: [-3, 2.5, -2, 3, -3],
+          x: [0, 4, -4, 3, 0],
+        }}
+        transition={{
+          duration: 9,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        aria-hidden="true"
+        className="hidden sm:block absolute -left-12 top-2 w-24 h-40 pointer-events-none opacity-85"
+      >
+        <Image
+          src="/botanical/corner-foliage-left.webp"
+          alt=""
+          fill
+          sizes="96px"
+          className="object-contain"
+        />
+      </motion.div>
+
+      {/* Tropical Botanical Sway - Right */}
+      <motion.div
+        animate={{
+          rotate: [2.5, -3, 3, -2, 2.5],
+          x: [0, -4, 4, -3, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.6,
+        }}
+        aria-hidden="true"
+        className="hidden sm:block absolute -right-12 top-2 w-24 h-40 pointer-events-none opacity-85"
+      >
+        <Image
+          src="/botanical/corner-foliage-right.webp"
+          alt=""
+          fill
+          sizes="96px"
+          className="object-contain"
+        />
+      </motion.div>
+
+      <div className="space-y-4 relative z-10">
         <h2 className="text-xl sm:text-2xl font-bold text-[var(--ink)]">
           زمان باقی‌مانده تا آغاز محفل
         </h2>

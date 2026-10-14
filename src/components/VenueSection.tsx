@@ -7,16 +7,53 @@ import { NavigationArrow, MapPin, Sparkle } from "@phosphor-icons/react";
 
 export default function VenueSection() {
   return (
-    <section id="venue" className="relative py-20 px-4 max-w-5xl mx-auto scroll-mt-20 text-center overflow-hidden">
-      {/* Subtle Botanical Leaves - Top Right & Top Left */}
-      <div className="absolute top-0 right-0 w-32 sm:w-48 md:w-64 opacity-25 pointer-events-none z-0 transform translate-x-6 -translate-y-4 rotate-12">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/leaves.webp" alt="" aria-hidden="true" className="w-full h-auto object-contain" />
-      </div>
-      <div className="absolute top-0 left-0 w-32 sm:w-48 md:w-64 opacity-25 pointer-events-none z-0 transform -translate-x-6 -translate-y-4 -scale-x-100 -rotate-12">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/leaves.webp" alt="" aria-hidden="true" className="w-full h-auto object-contain" />
-      </div>
+    <section id="venue" className="relative py-20 px-4 max-w-5xl mx-auto scroll-mt-20 text-center overflow-visible">
+      {/* Tropical Botanical Accent - Top Right */}
+      <motion.div
+        animate={{
+          rotate: [-2, 3, -2, 2, -2],
+          x: [0, 5, -3, 4, 0],
+        }}
+        transition={{
+          duration: 9,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        aria-hidden="true"
+        className="hidden sm:block absolute -top-8 -right-12 w-28 md:w-36 h-48 pointer-events-none opacity-85 z-0"
+      >
+        <Image
+          src="/botanical/corner-foliage-right.webp"
+          alt=""
+          fill
+          sizes="144px"
+          className="object-contain"
+        />
+      </motion.div>
+
+      {/* Tropical Botanical Accent - Top Left */}
+      <motion.div
+        animate={{
+          rotate: [2, -3, 2, -2, 2],
+          x: [0, -5, 3, -4, 0],
+        }}
+        transition={{
+          duration: 10.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.5,
+        }}
+        aria-hidden="true"
+        className="hidden sm:block absolute -top-8 -left-12 w-28 md:w-36 h-48 pointer-events-none opacity-85 z-0"
+      >
+        <Image
+          src="/botanical/corner-foliage-left.webp"
+          alt=""
+          fill
+          sizes="144px"
+          className="object-contain"
+        />
+      </motion.div>
       {/* Fine Paper & Pistachio Green Ambient Backlight */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-tr from-[var(--gold-pale)] via-[#F4F8F5] to-transparent rounded-full blur-3xl opacity-60 pointer-events-none" />
 
